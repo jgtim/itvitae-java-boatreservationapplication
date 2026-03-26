@@ -19,9 +19,6 @@ public class Tabs extends JFrame {
         JTabbedPane tabPane = new JTabbedPane();
 
         // Creating JPanels (tabbladen)
-        JPanel bootCatalogue = new JPanel();
-        bootCatalogue.add(new JLabel("Welkom bij de Boot Catalogus"));
-
         JPanel agenda = new JPanel();
         agenda.add(new JLabel("Welkom bij de Agenda"));
 
@@ -30,7 +27,7 @@ public class Tabs extends JFrame {
 
         // Adding JPanels to JTabbedPane
         tabPane.add("Agenda", agenda);
-        tabPane.add("Catalogus", bootCatalogue);
+        tabPane.add("Catalogus", new BoatTab());
         tabPane.add("Reserveringen", reservations);
 
         // Adding JTabbedPane to JFrame and setting to visible
