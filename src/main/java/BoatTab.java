@@ -7,6 +7,12 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class BoatTab extends JPanel {
+    // Begonnen aan het versimpelen van de code. Misschien later afmaken
+    //    private final JPanel boatSidePanel = new JPanel();
+    //    private final JTextField boatSearchField = new JTextField();
+    //    private final JLabel detailLabel = new JLabel("");
+    //    private final JButton detailHeaderBtn = new JButton("Zoek en selecteer een boot.");
+
     BoatTab() {
         // Setting layout as BorderLayout
         setLayout(new BorderLayout());
