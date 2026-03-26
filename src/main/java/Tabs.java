@@ -1,3 +1,5 @@
+import presentatie.AgendaTab;
+
 import javax.swing.*;
 
 public class Tabs extends JFrame {
@@ -18,13 +20,18 @@ public class Tabs extends JFrame {
         JTabbedPane tabPane = new JTabbedPane();
 
         // Creating JPanels (tabbladen)
-        JPanel agenda = new JPanel();
-        agenda.add(new JLabel("Welkom bij de Agenda"));
+        JPanel bootCatalogue = new JPanel();
+        bootCatalogue.add(new JLabel("Welkom bij de Boot Catalogus"));
+
+        JPanel agenda = new AgendaTab();
+//        agenda.add(new JLabel("Welkom bij de Agenda"));
+
 
         JPanel reservations = new JPanel();
         reservations.add(new JLabel("Welkom bij de Reserveringen"));
 
         // Adding JPanels to JTabbedPane
+
         tabPane.add("Agenda", agenda);
         tabPane.add("Catalogus", new BoatTab());
         tabPane.add("Reserveringen", reservations);
