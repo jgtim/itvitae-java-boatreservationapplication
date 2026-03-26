@@ -5,16 +5,15 @@ import javax.swing.*;
 public class Tabs extends JFrame {
 
     Tabs() {
+        UIManager.put("TabbedPane.font", Fonts.H3);
+
         // Configuring MainFrame (window voor window voor tabbladen)
         setTitle("Molveno Bootverhuur");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1280, 720);
-        setFont(Fonts.H1);
-        setForeground(Colors.DARK);
-        setBackground(Colors.LIGHT);
 
         // Setting Window Icon
-        ImageIcon logo = new ImageIcon(Main.class.getResource("/images/MolvenoLogo.png"));
+        ImageIcon logo = new ImageIcon(Tabs.class.getResource("/images/MolvenoLogo.png"));
         setIconImage(logo.getImage());
 
         // Creating JTabbedPane (window voor tabbladen)
@@ -34,7 +33,7 @@ public class Tabs extends JFrame {
         // Adding JPanels to JTabbedPane
 
         tabPane.add("Agenda", agenda);
-        tabPane.add("Catalogus", bootCatalogue);
+        tabPane.add("Catalogus", new BoatTab());
         tabPane.add("Reserveringen", reservations);
 
         // Adding JTabbedPane to JFrame and setting to visible
