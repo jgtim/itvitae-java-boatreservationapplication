@@ -2,10 +2,10 @@ package service;
 
 import domain.CustomerRecord;
 
-public class Customer {
+public class CustomerDto {
     CustomerRecord customerRecord;
 
-    public Customer(String naam, int telefoonNummer, String email) {
+    public CustomerDto(String naam, int telefoonNummer, String email) {
         customerRecord = new CustomerRecord(naam, telefoonNummer, email);
     }
 }

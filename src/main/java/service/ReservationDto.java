@@ -3,10 +3,10 @@ package service;
 import domain.CustomerRecord;
 import domain.ReservationRecord;
 
-public class Reservation {
+public class ReservationDto {
     private ReservationRecord reservationRecord;
 
-    public Reservation(String naam, int telefoonNummer, String email, boolean kamerFacturatie, boolean betaald) {
+    public ReservationDto(String naam, Integer telefoonNummer, String email, boolean kamerFacturatie, boolean betaald) {
         reservationRecord = new ReservationRecord(new CustomerRecord(naam, telefoonNummer, email), kamerFacturatie, betaald);
     }
 
