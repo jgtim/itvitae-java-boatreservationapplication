@@ -1,3 +1,6 @@
+import domain.MolvenoColor;
+import domain.MolvenoFont;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -26,26 +29,26 @@ public class BoatTab extends JPanel {
         // Boat details (on right side)
         JPanel boatDetails = new JPanel(new BorderLayout(10, 10));
         boatDetails.setBorder(new EmptyBorder(15, 15, 15, 15));
-        boatDetails.setBackground(Colors.LIGHT);
+        boatDetails.setBackground(MolvenoColor.LIGHT.getColor());
 
         // Header Button (NORTH on JPanel boatDetails)
         JButton detailHeaderBtn = new JButton("Zoek en selecteer een boot aan de linkerkant.");
         detailHeaderBtn.setContentAreaFilled(false);
         detailHeaderBtn.setBorderPainted(false);
         detailHeaderBtn.setFocusPainted(false);
-        detailHeaderBtn.setFont(Fonts.H3);
-        detailHeaderBtn.setForeground(Colors.DARK);
-        detailHeaderBtn.setBackground(Colors.BEIGE);
+        detailHeaderBtn.setFont(MolvenoFont.H3.getFont());
+        detailHeaderBtn.setForeground(MolvenoColor.DARK.getColor());
+        detailHeaderBtn.setBackground(MolvenoColor.BEIGE.getColor());
         boatDetails.add(detailHeaderBtn, BorderLayout.NORTH);
 
         // JPanel detailPanel, divided in LEFT and RIGHT, below detailHeaderBtn
         JPanel detailPanel = new JPanel(new GridLayout(1, 2));
-        detailPanel.setBorder(BorderFactory.createLineBorder(Colors.DARK));
+        detailPanel.setBorder(BorderFactory.createLineBorder(MolvenoColor.DARK.getColor()));
 
         // LEFT; text in the form of JLabel detailLabel
         JLabel detailLabel = new JLabel("");
-        detailLabel.setFont(Fonts.PARAGRAPH);
-        detailLabel.setForeground(Colors.DARK);
+        detailLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
+        detailLabel.setForeground(MolvenoColor.DARK.getColor());
         detailLabel.setVerticalAlignment(SwingConstants.TOP);
         detailLabel.setHorizontalAlignment(SwingConstants.LEFT);
         detailLabel.setBorder(new EmptyBorder(15, 15, 15, 15));
@@ -53,10 +56,10 @@ public class BoatTab extends JPanel {
 
         // RIGHT, photo placeholder in the form of JPanel photoPanel (can be removed later)
         JPanel photoPanel = new JPanel();
-        photoPanel.setFont(Fonts.PARAGRAPH);
-        photoPanel.setForeground(Colors.DARK);
-        photoPanel.setBackground(Colors.BLUE);
-        photoPanel.setBorder(BorderFactory.createLineBorder(Colors.DARK));
+        photoPanel.setFont(MolvenoFont.PARAGRAPH.getFont());
+        photoPanel.setForeground(MolvenoColor.DARK.getColor());
+        photoPanel.setBackground(MolvenoColor.BLUE.getColor());
+        photoPanel.setBorder(BorderFactory.createLineBorder(MolvenoColor.DARK.getColor()));
         photoPanel.add(new JLabel("FOTO"));
         detailPanel.add(photoPanel);
 
@@ -69,7 +72,7 @@ public class BoatTab extends JPanel {
         JPanel boatSidePanel = new JPanel();
         boatSidePanel.setLayout(new BoxLayout(boatSidePanel, BoxLayout.Y_AXIS));
         boatSidePanel.setBorder(new EmptyBorder(15, 15, 15, 15));
-        boatSidePanel.setBackground(Colors.LIGHT);
+        boatSidePanel.setBackground(MolvenoColor.LIGHT.getColor());
 
         // Looping over ArrayList boatList and creating button for each element, setting button dimensions. Then adding to ArrayList boatButtons
         ArrayList<JButton> boatButtons = new ArrayList<>();
@@ -78,9 +81,9 @@ public class BoatTab extends JPanel {
             JButton boatBtn = new JButton(b.getName());
             boatBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
             boatBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-            boatBtn.setFont(Fonts.BUTTONLABEL);
-            boatBtn.setForeground(Colors.DARK);
-            boatBtn.setBackground(Colors.BEIGE);
+            boatBtn.setFont(MolvenoFont.BUTTONLABEL.getFont());
+            boatBtn.setForeground(MolvenoColor.DARK.getColor());
+            boatBtn.setBackground(MolvenoColor.BEIGE.getColor());
             boatButtons.add(boatBtn);
 
             // Creating interaction between Boat Buttons in JScrollPane and JButton detailHeader
@@ -119,20 +122,20 @@ public class BoatTab extends JPanel {
         JTextField boatSearchField = new JTextField();
 
         // Difficult way of adjusting look and feel of boatSearchField to make it pretty
-        Font searchTitleFont = Fonts.PARAGRAPH;
+        Font searchTitleFont = MolvenoFont.PARAGRAPH.getFont();
         TitledBorder searchBorder = BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Colors.DARK),
+                BorderFactory.createLineBorder(MolvenoColor.DARK.getColor()),
                 "Zoek gewenste boot: ",
                 TitledBorder.LEFT,
                 TitledBorder.TOP,
                 searchTitleFont,
-                Colors.DARK
+                MolvenoColor.DARK.getColor()
         );
         // Easy adjusting look and feel
         boatSearchField.setBorder(searchBorder);
         boatSearchField.setPreferredSize(new Dimension(200, 60));
-        boatSearchField.setFont(Fonts.PARAGRAPH);
-        boatSearchField.setForeground(Colors.DARK);
+        boatSearchField.setFont(MolvenoFont.PARAGRAPH.getFont());
+        boatSearchField.setForeground(MolvenoColor.DARK.getColor());
 
 
         // --- THE SEARCH LOGIC - GIFTED TO ME BY DARK FORCES - NEED TO UNDERSTAND LATER ---
@@ -179,7 +182,7 @@ public class BoatTab extends JPanel {
 
         // Create JPanel wrapper for boatSearchField so margins can be added
         JPanel boatSearchBarWrapper = new JPanel(new BorderLayout());
-        boatSearchBarWrapper.setBackground(Colors.LIGHT);
+        boatSearchBarWrapper.setBackground(MolvenoColor.LIGHT.getColor());
         boatSearchBarWrapper.setBorder(new EmptyBorder(10, 10, 10, 10));
         boatSearchBarWrapper.add(boatSearchField, BorderLayout.CENTER);
 
