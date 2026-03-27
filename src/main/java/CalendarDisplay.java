@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.HashMap;
 
@@ -19,28 +21,46 @@ public class CalendarDisplay {
         BoxLayout boxLayoutManager = new BoxLayout(DisplayPanel, BoxLayout.Y_AXIS);
         DisplayPanel.setLayout(boxLayoutManager);
         this.allCells = new JButton[20][20];
+//        JPanel headerRow = new JPanel(); //TODO maybe seperate everything in JPanels per hour. code relies on buttons being one grid tho
+//        BoxLayout headerLayout = new BoxLayout(headerRow, BoxLayout.X_AXIS);
+//        headerRow.setLayout(headerLayout);
+//        JLabel headerLabels[] = new JLabel[13];
+//        for(int i = 9; i < 21; i++){
+//            int labelnum = i-9;
+//            headerLabels[labelnum] = new JLabel(i + ":00");
+//            headerLabels[labelnum].setBorder(new EmptyBorder(new Insets(8, 0, 8, 64)));
+//            headerLabels[labelnum].setSize(new Dimension(32, 1));
+//            headerLabels[labelnum].setBackground(Color.CYAN);
+//            headerRow.add(headerLabels[labelnum]);
+//        }
+//        headerLabels[12] = new JLabel("21:00");
+//        headerLabels[12].setBorder(new EmptyBorder(new Insets(8, 0, 8, 32)));
+//        headerLabels[12].setSize(new Dimension(16, 1));
+//        headerLabels[12].setBackground(Color.CYAN);
+//        headerRow.add(headerLabels[12]);
+
+ //       DisplayPanel.add(headerRow);
 
         HashMap<String, CalendarCell[]>  CalGrid = Calendar.getCalendarGrid();
         for(int i = 0; i < CalGrid.size(); i++){
             final int row = i;
-            JPanel panelrow = new JPanel();
-            BoxLayout boxLayoutManagerRow = new BoxLayout(panelrow, BoxLayout.X_AXIS);
-            panelrow.setLayout(boxLayoutManagerRow);
-            JButton buttonRow[] = new JButton[CalGrid.get(BoatIDs[i]).length];
-            for(int j = 0; j < CalGrid.get(BoatIDs[i]).length; j++){
+            JPanel cellRow = new JPanel();
+            BoxLayout boxLayoutManagerRow = new BoxLayout(cellRow, BoxLayout.X_AXIS);
+            cellRow.setLayout(boxLayoutManagerRow);
+            JButton buttonRow[] = new JButton[50];
+            for(int j = 0; j < 50; j++){
                 final int column = j;
                 buttonRow[j] = new JButton();
                 //TODO determine button size here based on final app
-                buttonRow[j].setMargin(new Insets(5, 5, 5, 5));
-                //buttonRow[j].setSize(new Dimension(50, 50));
+                buttonRow[j].setMargin(new Insets(8, 8, 8, 8));
                 buttonRow[j].setBackground(CalGrid.get(BoatIDs[row])[column].getAvailable() ? Color.WHITE: Color.BLACK);
                 buttonRow[j].addActionListener(e -> {
                     selectTimeCell(row, column);
                 });
-                panelrow.add(buttonRow[j]);
+                cellRow.add(buttonRow[j]);
             }
             allCells[i] = buttonRow;
-            DisplayPanel.add(panelrow);
+            DisplayPanel.add(cellRow);
         }
 
         JPanel buttonrow = new JPanel();
@@ -62,7 +82,7 @@ public class CalendarDisplay {
         frame.add(this.DisplayPanel);
 
 
-        frame.setSize(1000, 200);
+        frame.setSize(1280, 720);
         frame.setVisible(true);
     }
 
