@@ -20,33 +20,12 @@ public class CalendarDisplay {
 
         BoxLayout boxLayoutManager = new BoxLayout(DisplayPanel, BoxLayout.Y_AXIS);
         DisplayPanel.setLayout(boxLayoutManager);
-        this.allCells = new JButton[20][20];
-//        JPanel headerRow = new JPanel(); //TODO maybe seperate everything in JPanels per hour. code relies on buttons being one grid tho
-//        BoxLayout headerLayout = new BoxLayout(headerRow, BoxLayout.X_AXIS);
-//        headerRow.setLayout(headerLayout);
-//        JLabel headerLabels[] = new JLabel[13];
-//        for(int i = 9; i < 21; i++){
-//            int labelnum = i-9;
-//            headerLabels[labelnum] = new JLabel(i + ":00");
-//            headerLabels[labelnum].setBorder(new EmptyBorder(new Insets(8, 0, 8, 64)));
-//            headerLabels[labelnum].setSize(new Dimension(32, 1));
-//            headerLabels[labelnum].setBackground(Color.CYAN);
-//            headerRow.add(headerLabels[labelnum]);
-//        }
-//        headerLabels[12] = new JLabel("21:00");
-//        headerLabels[12].setBorder(new EmptyBorder(new Insets(8, 0, 8, 32)));
-//        headerLabels[12].setSize(new Dimension(16, 1));
-//        headerLabels[12].setBackground(Color.CYAN);
-//        headerRow.add(headerLabels[12]);
+        this.allCells = new JButton[BoatIDs.length][50];
 
- //       DisplayPanel.add(headerRow);
 
         HashMap<String, CalendarCell[]>  CalGrid = Calendar.getCalendarGrid();
         for(int i = 0; i < CalGrid.size(); i++){
             final int row = i;
-            JPanel cellRow = new JPanel();
-            BoxLayout boxLayoutManagerRow = new BoxLayout(cellRow, BoxLayout.X_AXIS);
-            cellRow.setLayout(boxLayoutManagerRow);
             JButton buttonRow[] = new JButton[50];
             for(int j = 0; j < 50; j++){
                 final int column = j;
@@ -57,11 +36,41 @@ public class CalendarDisplay {
                 buttonRow[j].addActionListener(e -> {
                     selectTimeCell(row, column);
                 });
-                cellRow.add(buttonRow[j]);
             }
             allCells[i] = buttonRow;
-            DisplayPanel.add(cellRow);
         }
+
+        JPanel fullCalendar = new JPanel();
+        BoxLayout CalBoxLayout = new BoxLayout(fullCalendar, BoxLayout.X_AXIS);
+        fullCalendar.setLayout(CalBoxLayout);
+        for(int i = 0; i < 13; i++){
+            JPanel CalendarSegment = new JPanel();
+            BoxLayout CalSegBox = new BoxLayout(CalendarSegment, BoxLayout.Y_AXIS);
+            CalendarSegment.setLayout(CalSegBox);
+            CalendarSegment.setBorder(new LineBorder(Color.BLACK));
+            int hour = i+9;
+            JLabel headerLabel = new JLabel(hour + ":00");
+            CalendarSegment.add(headerLabel);
+            for(int j = 0; j < allCells.length; j++){
+                JPanel cellRow = new JPanel();
+                BoxLayout boxLayoutManagerRow = new BoxLayout(cellRow, BoxLayout.X_AXIS);
+                cellRow.setLayout(boxLayoutManagerRow);
+                if(i == 0){
+                    cellRow.add(new JLabel(BoatIDs[j]));
+                }
+                int zeroPoint = 4 * i;
+                int numPanels = 4;
+                if(i == 12){
+                    numPanels = 2;
+                }
+                for(int k = zeroPoint; k < zeroPoint + numPanels; k++){
+                    cellRow.add(allCells[j][k]);
+                }
+                CalendarSegment.add(cellRow);
+            }
+            fullCalendar.add(CalendarSegment);
+        }
+        DisplayPanel.add(fullCalendar);
 
         JPanel buttonrow = new JPanel();
         BoxLayout boxLayoutManagerRow = new BoxLayout(buttonrow, BoxLayout.X_AXIS);
