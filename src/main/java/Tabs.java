@@ -1,11 +1,13 @@
+import domain.MolvenoFont;
 import presentatie.AgendaTab;
+import presentatie.ReservationsTab;
 
 import javax.swing.*;
 
 public class Tabs extends JFrame {
 
     Tabs() {
-        UIManager.put("TabbedPane.font", Fonts.H3);
+        UIManager.put("TabbedPane.font", MolvenoFont.H3.getFont());
 
         // Configuring MainFrame (window voor window voor tabbladen)
         setTitle("Molveno Bootverhuur");
@@ -24,11 +26,8 @@ public class Tabs extends JFrame {
         bootCatalogue.add(new JLabel("Welkom bij de Boot Catalogus"));
 
         JPanel agenda = new AgendaTab();
-//        agenda.add(new JLabel("Welkom bij de Agenda"));
 
-
-        JPanel reservations = new JPanel();
-        reservations.add(new JLabel("Welkom bij de Reserveringen"));
+        JPanel reservations = new ReservationsTab();
 
         // Adding JPanels to JTabbedPane
 

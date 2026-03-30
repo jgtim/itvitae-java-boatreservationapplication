@@ -1,5 +1,8 @@
 package presentatie;
 
+import data.ReservationCsvHandler;
+import service.ReservationDto;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -8,12 +11,13 @@ public class ReserveringPopup extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JPanel inputPane;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JCheckBox checkBox1;
+    private JTextField nameField;
+    private JTextField phoneNumberField;
+    private JCheckBox kamerFacturatieCheckBox;
     private JPanel tijdInformatie;
-    private JCheckBox checkBox2;
+    private JCheckBox betaaldCheckBox;
     private JPanel confirmationButtonsPanel;
+    private JTextField emailField;
 
     public ReserveringPopup() {
         setContentPane(contentPane);
@@ -49,8 +53,27 @@ public class ReserveringPopup extends JDialog {
     }
 
     private void onOK() {
-        // add your code here
-        dispose();
+        if (!isFormValid()) {
+            return;
+        }
+
+        ReservationDto newReservation = getReservationDto();
+
+        var reservationCsvHandler = new ReservationCsvHandler();
+        reservationCsvHandler.addReservation(newReservation);
+    }
+
+    private ReservationDto getReservationDto() {
+        ReservationDto newReservation = new ReservationDto(
+                nameField.getText(),
+                (phoneNumberField.getText().isEmpty()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
+                (emailField.getText().isEmpty()) ? null : emailField.getText(),
+                kamerFacturatieCheckBox.isSelected(),
+                betaaldCheckBox.isSelected()
+        );
+
+
+        return newReservation;
     }
 
     private void onCancel() {
@@ -58,10 +81,14 @@ public class ReserveringPopup extends JDialog {
         dispose();
     }
 
-    public static void main(String[] args) {
-        ReserveringPopup dialog = new ReserveringPopup();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
+    private boolean isFormValid() {
+        if (nameField.getText().isEmpty()) {
+            System.out.println("Must enter name");
+            return false;
+        } else if (phoneNumberField.getText().isEmpty() && emailField.getText().isEmpty()) {
+            System.out.println("Must enter phone number or email");
+            return false;
+        }
+        return true;
     }
 }
