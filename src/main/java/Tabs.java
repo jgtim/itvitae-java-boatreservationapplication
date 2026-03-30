@@ -1,3 +1,4 @@
+import domain.MolvenoFont;
 import presentatie.AgendaTab;
 
 import javax.swing.*;
@@ -5,7 +6,7 @@ import javax.swing.*;
 public class Tabs extends JFrame {
 
     Tabs() {
-        UIManager.put("TabbedPane.font", Fonts.H3);
+        UIManager.put("TabbedPane.font", MolvenoFont.H3.getFont());
 
         // Configuring MainFrame (window voor window voor tabbladen)
         setTitle("Molveno Bootverhuur");
