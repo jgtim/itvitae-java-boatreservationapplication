@@ -100,7 +100,7 @@ public class CalendarDisplay extends JPanel {
                     end = this.selectedEnd[1];
                 }
                 String totTijd = timePoints[end + 1];
-                String date =  Calendar.getCalendarDate();
+                String date = datePicker.getDate().toString();
 
                 ReserveringPopup reserveringPopup = new ReserveringPopup(this, vanTijd, totTijd, date);
                 //ReserveringPopup reserveringPopup = new ReserveringPopup(datePicker.getDate());

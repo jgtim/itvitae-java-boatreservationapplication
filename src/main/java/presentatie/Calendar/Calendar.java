@@ -37,6 +37,4 @@ public class Calendar {
     public HashMap<String, CalendarCell[]> getCalendarGrid(){
         return this.CalendarGrid;
     }
-
-    public String getCalendarDate(){return this.CalendarDate;}
 }

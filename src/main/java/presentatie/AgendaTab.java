@@ -17,10 +17,10 @@ public class AgendaTab extends JPanel {
         datePicker.setDateToToday();
         newReservationButton.addActionListener(e -> {
             datePicker.setTextFieldToValidStateIfNeeded();
-            ReserveringPopup reserveringPopup = new ReserveringPopup(datePicker.getDate());
-            reserveringPopup.pack();
-            reserveringPopup.setLocationRelativeTo(null);
-            reserveringPopup.setVisible(true);
+//            ReserveringPopup reserveringPopup = new ReserveringPopup(datePicker.getDate());
+//            reserveringPopup.pack();
+//            reserveringPopup.setLocationRelativeTo(null);
+//            reserveringPopup.setVisible(true);
         });
     }
 }
