@@ -1,12 +1,27 @@
+package presentatie;
+
 import domain.MolvenoFont;
-import presentatie.AgendaTab;
-import presentatie.ReservationsTab;
+import presentatie.BoatTab.BoatTab;
+
 
 import javax.swing.*;
 
 public class Tabs extends JFrame {
 
     Tabs() {
+        // UIManager Class manipulation
+
+        // --- Setting Look and Feel:
+        // Default Java: getCrossPlatformLookAndFeelClassName()
+        // System Native: UIManager.getSystemLookAndFeelClassName
+        // Vector Based: "javax.swing.plaf.nimbus.NimbusLookAndFeel"
+        try {
+            UIManager.setLookAndFeel((UIManager.getSystemLookAndFeelClassName()));
+        } catch  (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
+        // Changing font ob the TabbedPane (not possible without UIManager)
         UIManager.put("TabbedPane.font", MolvenoFont.H3.getFont());
 
         // Configuring MainFrame (window voor window voor tabbladen)
