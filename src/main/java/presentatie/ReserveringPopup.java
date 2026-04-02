@@ -19,10 +19,14 @@ public class ReserveringPopup extends JDialog {
     private JCheckBox betaaldCheckBox;
     private JPanel confirmationButtonsPanel;
     private JTextField emailField;
+    private JLabel vanLabel;
+    private JLabel totLabel;
     private CalendarDisplay DisplayTab;
 
-    public ReserveringPopup(CalendarDisplay display) {
+    public ReserveringPopup(CalendarDisplay display, String van, String tot) {
         this.DisplayTab = display;
+        vanLabel.setText(van);
+        totLabel.setText(tot);
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
