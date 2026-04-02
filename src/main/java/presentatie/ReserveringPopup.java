@@ -5,8 +5,10 @@ import service.ReservationDto;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.time.LocalDate;
 
 public class ReserveringPopup extends JDialog {
+    private LocalDate date;
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -18,6 +20,9 @@ public class ReserveringPopup extends JDialog {
     private JCheckBox betaaldCheckBox;
     private JPanel confirmationButtonsPanel;
     private JTextField emailField;
+    private JPanel dateInfo;
+    private JLabel dateLabel;
+    private JLabel dateField;
 
     public ReserveringPopup() {
         setContentPane(contentPane);
@@ -50,6 +55,11 @@ public class ReserveringPopup extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    }
+
+    public void setDate(LocalDate dateInput) {
+        date = dateInput;
+        dateField.setText(date.toString());
     }
 
     private void onOK() {
