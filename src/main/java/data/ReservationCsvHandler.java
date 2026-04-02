@@ -13,7 +13,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ReservationCsvHandler {
+public class ReservationCsvHandler implements ReservationRepositoryHandler{
 
     private final Path FILE_PATH = Paths.get("data/ReservationRepository.csv");
 
@@ -32,7 +32,7 @@ public class ReservationCsvHandler {
         return result;
     }
 
-    public ArrayList<String> getLines() {
+    private ArrayList<String> getLines() {
         ArrayList<String> result = new ArrayList<String>();
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH.toString()))) {
             String line;

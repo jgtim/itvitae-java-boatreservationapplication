@@ -5,7 +5,7 @@ import service.ReservationDto;
 import java.util.ArrayList;
 
 public class ReservationService {
-    ArrayList<ReservationDto> reservationList = new ArrayList<ReservationDto>();
+    ArrayList<ReservationDto> reservations = new ArrayList<ReservationDto>();
 
     public ReservationService() {
         updateReservationList();

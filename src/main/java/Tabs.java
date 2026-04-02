@@ -1,4 +1,7 @@
+import data.ReservationJsonHandler;
+import data.ReservationRepositoryHandler;
 import domain.MolvenoFont;
+import domain.TabIndex;
 import presentatie.AgendaTab;
 import presentatie.ReservationsTab;
 
@@ -25,15 +28,24 @@ public class Tabs extends JFrame {
         JPanel bootCatalogue = new JPanel();
         bootCatalogue.add(new JLabel("Welkom bij de Boot Catalogus"));
 
-        JPanel agenda = new AgendaTab();
 
-        JPanel reservations = new ReservationsTab();
+        ReservationRepositoryHandler reservationRepositoryHandler = new ReservationJsonHandler();
+        ReservationsTab reservations = new ReservationsTab(reservationRepositoryHandler);
+        AgendaTab agenda = new AgendaTab(reservationRepositoryHandler);
 
         // Adding JPanels to JTabbedPane
 
         tabPane.add("Agenda", agenda);
         tabPane.add("Catalogus", new BoatTab());
         tabPane.add("Reserveringen", reservations);
+
+        // Add a listener for when the tab changes
+        tabPane.addChangeListener(e -> {
+            int selectedIndex = tabPane.getSelectedIndex();
+            if (selectedIndex == TabIndex.RESERVERINGEN.getIndex()) {
+                reservations.onSelected();
+            }
+        });
 
         // Adding JTabbedPane to JFrame and setting to visible
         add(tabPane);

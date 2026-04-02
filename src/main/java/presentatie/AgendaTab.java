@@ -1,6 +1,7 @@
 package presentatie;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import data.ReservationRepositoryHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,11 +13,11 @@ public class AgendaTab extends JPanel {
     private JPanel panel1;
     private DatePicker datePicker;
 
-    public AgendaTab() {
+    public AgendaTab(ReservationRepositoryHandler reservationRepositoryHandler) {
         setLayout(new GridBagLayout());
         add(panel1);
         newReservationButton.addActionListener(e -> {
-            ReserveringPopup reserveringPopup = new ReserveringPopup();
+            ReserveringPopup reserveringPopup = new ReserveringPopup(reservationRepositoryHandler);
             reserveringPopup.pack();
             reserveringPopup.setLocationRelativeTo(null);
             reserveringPopup.setVisible(true);
