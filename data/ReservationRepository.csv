@@ -1,14 +1,2 @@
-Naam, Telefoonnummer, Email, betaald, kamerFacturatie
-John DOe, 12345678, johndoe@example.com, true, false
-John doe, 123456, null, false, true
-John doe, null, sklfmewf@gmail.com, true, false
-James, 123456, null, false, true
-John3, 12341234, John3@example.com, false, true
-wouter, 555, wouter.gaykema, false, false
-wouter, 111, null, false, false
-wouter, 111, null, false, false
-wouterrr, 1, null, false, false
-wouter, 1, null, false, false
-wouter, null, a, false, false
-11, 1, 1, false, false
-1, 1, 1, false, false
+Naam, Telefoonnummer, Email, betaald, kamerFacturatie, datum, begintijd, eindtijd
+1, 1, 1, false, false, 2014-02-14, 14:15, 15:00

@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class CalendarDisplay {
 
-    private Calendar Calendar;
+    public static Calendar Calendar;
     private JPanel DisplayPanel = new JPanel();
     private String[] BoatIDs = {"Boat1", "Boat2", "Boat3"}; //TODO placeholder data; maybe let user input selection of them
     private JButton[][] allCells;

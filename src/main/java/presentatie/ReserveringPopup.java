@@ -22,9 +22,13 @@ public class ReserveringPopup extends JDialog {
     private JLabel vanLabel;
     private JLabel totLabel;
     private CalendarDisplay DisplayTab;
+    private String begintijd;
+    private String eindtijd;
 
     public ReserveringPopup(CalendarDisplay display, String van, String tot) {
         this.DisplayTab = display;
+        this.begintijd = van;
+        this.eindtijd = tot;
         vanLabel.setText(van);
         totLabel.setText(tot);
         setContentPane(contentPane);
@@ -78,7 +82,10 @@ public class ReserveringPopup extends JDialog {
                 (phoneNumberField.getText().isEmpty()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
                 (emailField.getText().isEmpty()) ? null : emailField.getText(),
                 kamerFacturatieCheckBox.isSelected(),
-                betaaldCheckBox.isSelected()
+                betaaldCheckBox.isSelected(),
+                CalendarDisplay.Calendar.CalendarDate,
+                begintijd,
+                eindtijd
         );
 
 
