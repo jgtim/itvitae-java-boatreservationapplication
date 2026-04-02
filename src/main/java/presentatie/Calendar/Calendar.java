@@ -1,6 +1,6 @@
-import java.time.LocalDate;
+package presentatie.Calendar;
+
 import java.util.HashMap;
-import java.util.List;
 
 public class Calendar {
     private String CalendarDate;
@@ -14,7 +14,7 @@ public class Calendar {
 
 
 
-    Calendar(String currentDate){
+    public Calendar(String currentDate){
         this.CalendarDate = currentDate;
         this.CalendarGrid = new HashMap<String, CalendarCell[]>();
 
