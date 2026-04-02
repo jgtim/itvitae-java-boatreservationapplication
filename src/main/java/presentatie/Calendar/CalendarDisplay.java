@@ -1,5 +1,6 @@
 package presentatie.Calendar;
 
+import com.github.lgooddatepicker.components.DatePicker;
 import presentatie.ReserveringPopup;
 
 import javax.swing.*;
@@ -7,35 +8,37 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.HashMap;
 
-public class CalendarDisplay {
-
+public class CalendarDisplay extends JPanel {
     private Calendar Calendar;
-    private JPanel DisplayPanel = new JPanel();
     private String[] BoatIDs = {"Boat1", "Boat2", "Boat3"}; //TODO placeholder data; maybe let user input selection of them
     private JButton[][] allCells;
     private Integer[] selectedStart = {null, null};
     private Integer[] selectedEnd = {null, null};
 
-    public CalendarDisplay(Calendar Calendar){
-        this.Calendar = Calendar;
-        JFrame frame = new JFrame("Set Reservation");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public CalendarDisplay() {
 
-        BoxLayout boxLayoutManager = new BoxLayout(DisplayPanel, BoxLayout.Y_AXIS);
-        DisplayPanel.setLayout(boxLayoutManager);
+        this.Calendar = new Calendar();
+
+        BoxLayout boxLayoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
+        setLayout(boxLayoutManager);
+
+        var datePicker = new DatePicker();
+        datePicker.setMaximumSize(new Dimension(200, 25));
+        datePicker.setDateToToday();
+        add(datePicker);
+
         this.allCells = new JButton[BoatIDs.length][50];
 
-
-        HashMap<String, CalendarCell[]>  CalGrid = Calendar.getCalendarGrid();
-        for(int i = 0; i < CalGrid.size(); i++){
+        HashMap<String, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
+        for (int i = 0; i < CalGrid.size(); i++) {
             final int row = i;
             JButton buttonRow[] = new JButton[50];
-            for(int j = 0; j < 50; j++){
+            for (int j = 0; j < 50; j++) {
                 final int column = j;
                 buttonRow[j] = new JButton();
                 //TODO determine button size here based on final app
                 buttonRow[j].setMargin(new Insets(8, 8, 8, 8));
-                buttonRow[j].setBackground(CalGrid.get(BoatIDs[row])[column].getAvailable() ? Color.WHITE: Color.BLACK);
+                buttonRow[j].setBackground(CalGrid.get(BoatIDs[row])[column].getAvailable() ? Color.WHITE : Color.BLACK);
                 buttonRow[j].addActionListener(e -> {
                     selectTimeCell(row, column);
                 });
@@ -46,34 +49,34 @@ public class CalendarDisplay {
         JPanel fullCalendar = new JPanel();
         BoxLayout CalBoxLayout = new BoxLayout(fullCalendar, BoxLayout.X_AXIS);
         fullCalendar.setLayout(CalBoxLayout);
-        for(int i = 0; i < 13; i++){
+        for (int i = 0; i < 13; i++) {
             JPanel CalendarSegment = new JPanel();
             BoxLayout CalSegBox = new BoxLayout(CalendarSegment, BoxLayout.Y_AXIS);
             CalendarSegment.setLayout(CalSegBox);
             CalendarSegment.setBorder(new LineBorder(Color.BLACK));
-            int hour = i+9;
+            int hour = i + 9;
             JLabel headerLabel = new JLabel(hour + ":00");
             CalendarSegment.add(headerLabel);
-            for(int j = 0; j < allCells.length; j++){
+            for (int j = 0; j < allCells.length; j++) {
                 JPanel cellRow = new JPanel();
                 BoxLayout boxLayoutManagerRow = new BoxLayout(cellRow, BoxLayout.X_AXIS);
                 cellRow.setLayout(boxLayoutManagerRow);
-                if(i == 0){
+                if (i == 0) {
                     cellRow.add(new JLabel(BoatIDs[j]));
                 }
                 int zeroPoint = 4 * i;
                 int numPanels = 4;
-                if(i == 12){
+                if (i == 12) {
                     numPanels = 2;
                 }
-                for(int k = zeroPoint; k < zeroPoint + numPanels; k++){
+                for (int k = zeroPoint; k < zeroPoint + numPanels; k++) {
                     cellRow.add(allCells[j][k]);
                 }
                 CalendarSegment.add(cellRow);
             }
             fullCalendar.add(CalendarSegment);
         }
-        DisplayPanel.add(fullCalendar);
+        add(fullCalendar);
 
         JPanel buttonrow = new JPanel();
         BoxLayout boxLayoutManagerRow = new BoxLayout(buttonrow, BoxLayout.X_AXIS);
@@ -81,9 +84,9 @@ public class CalendarDisplay {
 
         JButton selectButton = new JButton("Reserve");
         selectButton.addActionListener(e -> {
-            if(this.selectedStart[0] != null){
+            if (this.selectedStart[0] != null) {
                 //reserveBoat();
-                ReserveringPopup reserveringPopup = new ReserveringPopup(this);
+                ReserveringPopup reserveringPopup = new ReserveringPopup(datePicker.getDate());
                 reserveringPopup.pack();
                 reserveringPopup.setLocationRelativeTo(null);
                 reserveringPopup.setVisible(true);
@@ -97,12 +100,7 @@ public class CalendarDisplay {
             cancelSelection();
         });
         buttonrow.add(cancelButton);
-        DisplayPanel.add(buttonrow);
-        frame.add(this.DisplayPanel);
-
-
-        frame.setSize(1280, 720);
-        frame.setVisible(true);
+        add(buttonrow);
     }
 
     private void cancelSelection() {
@@ -195,9 +193,5 @@ public class CalendarDisplay {
             }
 
         }
-    }
-
-    public void show(){
-        System.out.println("show");
     }
 }

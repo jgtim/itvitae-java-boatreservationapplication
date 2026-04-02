@@ -10,7 +10,6 @@ import java.awt.event.*;
 import java.time.LocalDate;
 
 public class ReserveringPopup extends JDialog {
-    private LocalDate date;
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -26,11 +25,14 @@ public class ReserveringPopup extends JDialog {
     private JPanel dateInfo;
     private JLabel dateLabel;
     private JLabel dateField;
+    private LocalDate date;
 
-    public ReserveringPopup() {
+    public ReserveringPopup(LocalDate date) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        dateField.setText(date.toString());
+        this.date = date;
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -58,11 +60,6 @@ public class ReserveringPopup extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
-
-    public void setDate(LocalDate dateInput) {
-        date = dateInput;
-        dateField.setText(date.toString());
     }
 
     private void onOK() {

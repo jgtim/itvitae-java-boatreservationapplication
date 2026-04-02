@@ -1,12 +1,10 @@
 package presentatie;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import presentatie.Calendar.Calendar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.LocalDate;
 
 public class AgendaTab extends JPanel {
     private JButton newReservationButton;
@@ -19,8 +17,7 @@ public class AgendaTab extends JPanel {
         datePicker.setDateToToday();
         newReservationButton.addActionListener(e -> {
             datePicker.setTextFieldToValidStateIfNeeded();
-            ReserveringPopup reserveringPopup = new ReserveringPopup();
-            reserveringPopup.setDate(datePicker.getDate());
+            ReserveringPopup reserveringPopup = new ReserveringPopup(datePicker.getDate());
             reserveringPopup.pack();
             reserveringPopup.setLocationRelativeTo(null);
             reserveringPopup.setVisible(true);
