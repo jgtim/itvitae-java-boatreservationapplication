@@ -26,7 +26,10 @@ public class ReservationCsvHandler {
                     (Objects.equals(splitline[1], "null")) ? null : Integer.parseInt(splitline[1]),
                     (Objects.equals(splitline[2], "null")) ? null : splitline[2],
                     Boolean.parseBoolean(splitline[3]),
-                    Boolean.parseBoolean(splitline[4])
+                    Boolean.parseBoolean(splitline[4]),
+                    splitline[5],
+                    splitline[6],
+                    splitline[7]
             ));
         }
         return result;
