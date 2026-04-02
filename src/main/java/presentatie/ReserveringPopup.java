@@ -83,7 +83,7 @@ public class ReserveringPopup extends JDialog {
                 (emailField.getText().isEmpty()) ? null : emailField.getText(),
                 kamerFacturatieCheckBox.isSelected(),
                 betaaldCheckBox.isSelected(),
-                CalendarDisplay.Calendar.CalendarDate,
+                CalendarDisplay.getCalendar().getCalendarDate(),
                 begintijd,
                 eindtijd
         );

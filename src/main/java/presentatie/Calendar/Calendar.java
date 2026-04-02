@@ -3,7 +3,7 @@ package presentatie.Calendar;
 import java.util.HashMap;
 
 public class Calendar {
-    public static String CalendarDate;
+    private String CalendarDate;
     private HashMap<String, CalendarCell[]> CalendarGrid;
     private String[] BoatIDs = {"Boat1", "Boat2", "Boat3"}; //placeholder data
     private String[] timeBoxes = {"9:00", "9:15", "9:30", "9:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15",
@@ -41,4 +41,6 @@ public class Calendar {
     public HashMap<String, CalendarCell[]> getCalendarGrid(){
         return this.CalendarGrid;
     }
+
+    public String getCalendarDate(){return this.CalendarDate;}
 }
