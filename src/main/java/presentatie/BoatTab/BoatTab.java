@@ -1,5 +1,7 @@
 package presentatie.BoatTab;
 
+import domain.BoatType;
+import domain.LakeArea;
 import domain.MolvenoColor;
 import domain.MolvenoFont;
 import service.Boat;
@@ -13,22 +15,21 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class BoatTab extends JPanel {
-    // Begonnen aan het versimpelen van de code. Misschien later afmaken
-    //    private final JPanel boatSidePanel = new JPanel();
-    //    private final JTextField boatSearchField = new JTextField();
-    //    private final JLabel detailLabel = new JLabel("");
-    //    private final JButton detailHeaderBtn = new JButton("Zoek en selecteer een boot.");
 
     public BoatTab() {
         // Setting layout as BorderLayout
         setLayout(new BorderLayout());
 
         // Creating ArrayList to work with Boat class data
+        ArrayList<BoatType> boatTypeList = new ArrayList<>();
+
+
         ArrayList<Boat> boatList = new ArrayList<>();
         for (int i = 1; i <= 60; i++) {
-            boatList.add(new Boat("Boot " + i, i, 15.90, 27.50, "Elektrische Sloep", "Koelkast, zonnescherm"));
+            boatList.add(new Boat(BoatType.STANDARD_ROWBOAT, "Rowboat " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
         }
 
+        // RIGHT SIDE -------------------------------------------------------------------------------------------------
         // Boat details (on right side)
         JPanel boatDetails = new JPanel(new BorderLayout(10, 10));
         boatDetails.setBorder(new EmptyBorder(15, 15, 15, 15));
@@ -70,51 +71,43 @@ public class BoatTab extends JPanel {
         boatDetails.add(detailPanel, BorderLayout.CENTER);
 
 
-        // --- SIDEBAR ON LEFT ---
-        // create JPanel boatSidePanel with infinite amount of rows (syntax 0), 1 column
-        JPanel boatSidePanel = new JPanel();
-        boatSidePanel.setLayout(new BoxLayout(boatSidePanel, BoxLayout.Y_AXIS));
-        boatSidePanel.setBorder(new EmptyBorder(15, 15, 15, 15));
-        boatSidePanel.setBackground(MolvenoColor.LIGHT.getColor());
+        // --- SIDEBAR ON LEFT ----------------------------------------------------------------------------------------
+        // Create JPanel with a CardLayout for swapping views:
+        // From selecting Boat Types (top card) to the Boat Type members (bottom card)
+        CardLayout cardLayout = new CardLayout();
+        JPanel boatSideCardPanel = new JPanel(cardLayout);
 
-        // Looping over ArrayList boatList and creating button for each element, setting button dimensions. Then adding to ArrayList boatButtons
-        ArrayList<JButton> boatButtons = new ArrayList<>();
+        // Creating two panel: one for Boat Types and one for Boat Type Members
+        // --- Boat Type Panel ---
+        JPanel boatTypePanel = new JPanel();
+        boatTypePanel.setLayout(new BoxLayout(boatTypePanel, BoxLayout.Y_AXIS));
 
-        for (Boat b : boatList) {
-            JButton boatBtn = new JButton(b.getName());
-            boatBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-            boatBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-            boatBtn.setFont(MolvenoFont.BUTTONLABEL.getFont());
-            boatBtn.setForeground(MolvenoColor.DARK.getColor());
-            boatBtn.setBackground(MolvenoColor.BEIGE.getColor());
-            boatButtons.add(boatBtn);
+        boatTypePanel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        boatTypePanel.setBackground(MolvenoColor.LIGHT.getColor());
 
-            // Creating interaction between Boat Buttons in JScrollPane and JButton detailHeader
-            boatBtn.addActionListener(e -> {
-                detailHeaderBtn.setText(b.getName());
+        // Temporary Button --------------------------------------------------------------------------------------------
+        JButton membersButton = new JButton("See all Members");
+        boatTypePanel.add(membersButton);
 
-                // Creating String boatInfo in html formatting to display Boat object boatInfo
-                String boatInfo = "<html>" +
-                        "<b>Naam:</b> " + b.getName() + "<br><br>" +
-                        "<b>Capaciteit:</b> " + b.getCapacity() + "<br><br>" +
-                        "<b>Prijs per 15 minuten:</b> " + b.getPrice15() + "<br>" +
-                        "<b>Prijs per 30 minuten:</b> " + b.getPrice30() + "<br><br>" +
-                        "<b>Type:</b> " + b.getType() + "<br><br>" +
-                        "<b>Kenmerken:</b> " + b.getFeatures() + "<br><br>" +
-                        "<b>Boot ID:</b> " + b.hashCode() +
-                        "<html>";
-                // Setting html formatted String boatInfo to JLabel detailLabel
-                detailLabel.setText(boatInfo);
-            });
+        // --- Boat Type Member Panel ---
+        JPanel boatTypeMemberPanel = new JPanel();
+        boatTypeMemberPanel.setLayout(new BoxLayout(boatTypeMemberPanel, BoxLayout.Y_AXIS));
 
-            // Adding functional Boat Buttons to JPanel boatSidePanel
-            boatSidePanel.add(boatBtn);
-            boatSidePanel.add(Box.createVerticalStrut(5)); // Because we're using BoxLayout, we need vertical strut to create margins
-        }
+        boatTypeMemberPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        boatTypeMemberPanel.setBackground(MolvenoColor.LIGHT.getColor());
 
-        // Put JPanel boatSidePanel in a scrollable JScrollPane boatScrollPane
-        JScrollPane boatScrollPane = new JScrollPane(boatSidePanel);
-        // set scrollPane behavior
+
+
+        // --- Adding Panel Cards to CardLayout ---
+        boatSideCardPanel.add(boatTypePanel, "BOAT_TYPE_SELECT");
+        boatSideCardPanel.add(boatTypeMemberPanel, "BOAT_MEMBER_SELECT");
+
+        // --- Adding ActionListerners to the JButtons
+        membersButton.addActionListener(e -> cardLayout.show(boatSideCardPanel, "BOAT_MEMBER_SELECT"));
+
+        populateBoatMemberButtons(boatList, boatTypeMemberPanel, detailHeaderBtn, detailLabel, cardLayout, boatSideCardPanel);
+
+        JScrollPane boatScrollPane = new JScrollPane(boatSideCardPanel);
         boatScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // just making sure
         boatScrollPane.getVerticalScrollBar().setUnitIncrement(16); // smoother scrolling, otherwise too slow
         boatScrollPane.setPreferredSize(new Dimension(180, 0)); // set Thumb and Track width
@@ -141,6 +134,7 @@ public class BoatTab extends JPanel {
         boatSearchField.setForeground(MolvenoColor.DARK.getColor());
 
 
+        // ------------------------------------------------------------------------------------------------------------
         // --- THE SEARCH LOGIC - GIFTED TO ME BY DARK FORCES - NEED TO UNDERSTAND LATER ---
         boatSearchField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -162,7 +156,7 @@ public class BoatTab extends JPanel {
                 // Creating String filter with is set to whatever text is typed in the boatSearchField (and changed to all lowercase)
                 String filter = boatSearchField.getText().toLowerCase();
                 // Creating Component Array to include the JButtons and created strut (for margins). Need to hide both for pretty view!
-                Component[] components = boatSidePanel.getComponents();
+                Component[] components = boatTypePanel.getComponents();
 
                 for (int i = 0; i < components.length; i++) {
                     Component comp = components[i];
@@ -178,10 +172,11 @@ public class BoatTab extends JPanel {
                         }
                     }
                 }
-                boatSidePanel.revalidate();
-                boatSidePanel.repaint();
+                boatTypePanel.revalidate();
+                boatTypePanel.repaint();
             }
         });
+        // ------------------------------------------------------------------------------------------------------------
 
         // Create JPanel wrapper for boatSearchField so margins can be added
         JPanel boatSearchBarWrapper = new JPanel(new BorderLayout());
@@ -197,5 +192,79 @@ public class BoatTab extends JPanel {
 
         add(sidebarWrapper, BorderLayout.WEST);
         add(boatDetails, BorderLayout.CENTER);
+    }
+
+
+    // METHODS ---------------------------------------------------------------------------------------------------------
+    // Method for populating Boat Type Buttons in the left side Scroll Pane (top card)
+    private void populateBoatTypeButtons(JPanel targetPanel, CardLayout cardLayout, JPanel deck, JPanel memberPanel, JButton header, JLabel details, ArrayList<Boat> fullBoatList) {
+        targetPanel.removeAll();
+
+        for (BoatType type : BoatType.values()) {
+            JButton typeBtn = new JButton(type.getDisplayBoatType());
+            typeBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+            typeBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+            typeBtn.setFont(MolvenoFont.BUTTONLABEL.getFont());
+            typeBtn.setForeground(MolvenoColor.DARK.getColor());
+            typeBtn.setBackground(MolvenoColor.BEIGE.getColor());
+        }
+    }
+
+
+    // Method for populating Boat Member Buttons in the left side Scroll Pane (bottom card)
+    private void populateBoatMemberButtons(ArrayList<Boat> boatList, JPanel targetPanel, JButton header, JLabel details, CardLayout cardLayout, JPanel deck) {
+        targetPanel.removeAll();
+
+        // Creating single button on top to return to Boat Types
+        JButton typesButton = new JButton("<<< Go Back");
+        typesButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        typesButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        typesButton.setFont(MolvenoFont.BUTTONLABEL.getFont());
+        typesButton.setForeground(MolvenoColor.DARK.getColor());
+        typesButton.setBackground(MolvenoColor.BEIGE.getColor());
+
+        typesButton.addActionListener(e -> cardLayout.show(deck, "BOAT_TYPE_SELECT"));
+
+        targetPanel.add(typesButton);
+        targetPanel.add(Box.createVerticalStrut(15)); // Extra space after back button
+
+        for (Boat b : boatList) {
+            // for every boat in list of boats, create and style a JButton
+            JButton boatBtn = new JButton(b.getBoatTypeMember());
+            boatBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+            boatBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+            boatBtn.setFont(MolvenoFont.BUTTONLABEL.getFont());
+            boatBtn.setForeground(MolvenoColor.DARK.getColor());
+            boatBtn.setBackground(MolvenoColor.BEIGE.getColor());
+
+            // Creating interaction between Boat Buttons in JScrollPane and JButton detailHeader
+            boatBtn.addActionListener(e -> {
+                header.setText(b.getBoatTypeMember());
+                // Creating String boatInfo in html formatting to display Boat object boatInfo
+                String boatInfo = "<html>" +
+                        "<b>Type:</b> " + b.getBoatType().getDisplayBoatType() + "<br>" +
+                        "<b>Name:</b> " + b.getBoatTypeMember() + "<br><br>" +
+                        "<b>Lake Area:</b> " + b.getLakeArea().getDisplayLakeArea() + "<br><br>" +
+
+                        "<b>Capacity:</b> " + b.getCapacity() + "<br><br>" +
+
+                        "<b>Electric motor:</b> " + (b.isElectric() ? "Yes" : "No") + "<br>" +
+                        "<b>Life jacket on board:</b> " + (b.hasLifeJacket() ? "Yes" : "No") + "<br><br>" +
+
+                        "<b>Price per 15 minutes:</b> " + b.getPrice15() + " euros <br>" +
+                        "<b>Price per 30 minutes:</b> " + b.getPrice30() + " euros <br><br>" +
+
+                        "<b>Boot ID:</b> " + b.getId() +
+                        "<html>";
+                // Setting html formatted String boatInfo to JLabel detailLabel
+                details.setText(boatInfo);
+            });
+
+            // Adding functional Boat Buttons to JPanel boatTypePanel
+            targetPanel.add(boatBtn);
+            targetPanel.add(Box.createVerticalStrut(5)); // Because we're using BoxLayout, we need vertical strut to create margins
+        }
+        targetPanel.revalidate();
+        targetPanel.repaint();
     }
 }
