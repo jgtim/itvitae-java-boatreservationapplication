@@ -1,5 +1,8 @@
+package presentatie.Calendar;
+
+import presentatie.ReserveringPopup;
+
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.HashMap;
@@ -78,7 +81,14 @@ public class CalendarDisplay {
 
         JButton selectButton = new JButton("Reserve");
         selectButton.addActionListener(e -> {
-            reserveBoat();
+            if(this.selectedStart[0] != null){
+                //reserveBoat();
+                ReserveringPopup reserveringPopup = new ReserveringPopup(this);
+                reserveringPopup.pack();
+                reserveringPopup.setLocationRelativeTo(null);
+                reserveringPopup.setVisible(true);
+            }
+
         });
         buttonrow.add(selectButton);
 
@@ -106,7 +116,7 @@ public class CalendarDisplay {
         }
     }
 
-    private void reserveBoat() {
+    public void reserveBoat() {
         //TODO this should happen after doing stuff in the popup window
         if(this.selectedStart[0] != null){
             int endTime;

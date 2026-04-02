@@ -1,3 +1,5 @@
+package service;
+
 // Public Class Boat. Needs to be connected to database later and already linked to Boat Tab
 public class Boat {
     private final String name;

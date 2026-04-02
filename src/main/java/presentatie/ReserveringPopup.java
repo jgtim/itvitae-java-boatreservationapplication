@@ -1,6 +1,8 @@
 package presentatie;
 
 import data.ReservationCsvHandler;
+import presentatie.Calendar.CalendarDisplay;
+import presentatie.Calendar.CalendarDisplay;
 import service.ReservationDto;
 
 import javax.swing.*;
@@ -20,6 +22,7 @@ public class ReserveringPopup extends JDialog {
     private JCheckBox betaaldCheckBox;
     private JPanel confirmationButtonsPanel;
     private JTextField emailField;
+    private CalendarDisplay DisplayTab;
     private JPanel dateInfo;
     private JLabel dateLabel;
     private JLabel dateField;
@@ -71,6 +74,8 @@ public class ReserveringPopup extends JDialog {
 
         var reservationCsvHandler = new ReservationCsvHandler();
         reservationCsvHandler.addReservation(newReservation);
+        this.DisplayTab.reserveBoat();
+        dispose();
     }
 
     private ReservationDto getReservationDto() {
