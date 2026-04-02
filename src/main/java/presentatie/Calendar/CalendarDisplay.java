@@ -96,7 +96,9 @@ public class CalendarDisplay {
                     end = this.selectedEnd[1];
                 }
                 String totTijd = timePoints[end + 1];
-                ReserveringPopup reserveringPopup = new ReserveringPopup(this, vanTijd, totTijd);
+                String date =  Calendar.getCalendarDate();
+
+                ReserveringPopup reserveringPopup = new ReserveringPopup(this, vanTijd, totTijd, date);
                 reserveringPopup.pack();
                 reserveringPopup.setLocationRelativeTo(null);
                 reserveringPopup.setVisible(true);
@@ -214,5 +216,5 @@ public class CalendarDisplay {
         System.out.println("show");
     }
 
-    public static Calendar getCalendar(){return this.Calendar;}
+    public Calendar getCalendar(){return this.Calendar;}
 }
