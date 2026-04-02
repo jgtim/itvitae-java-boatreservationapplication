@@ -1,5 +1,8 @@
+package presentatie.BoatTab;
+
 import domain.MolvenoColor;
 import domain.MolvenoFont;
+import service.Boat;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,7 +19,7 @@ public class BoatTab extends JPanel {
     //    private final JLabel detailLabel = new JLabel("");
     //    private final JButton detailHeaderBtn = new JButton("Zoek en selecteer een boot.");
 
-    BoatTab() {
+    public BoatTab() {
         // Setting layout as BorderLayout
         setLayout(new BorderLayout());
 
