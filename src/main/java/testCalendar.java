@@ -1,3 +1,6 @@
+import presentatie.Calendar.Calendar;
+import presentatie.Calendar.CalendarDisplay;
+
 public class testCalendar {
     public static void main(String[] args) {
 
