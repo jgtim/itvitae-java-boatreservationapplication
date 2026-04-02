@@ -85,10 +85,6 @@ public class BoatTab extends JPanel {
         boatTypePanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         boatTypePanel.setBackground(MolvenoColor.LIGHT.getColor());
 
-        // Temporary Button --------------------------------------------------------------------------------------------
-        JButton membersButton = new JButton("See all Members");
-        boatTypePanel.add(membersButton);
-
         // --- Boat Type Member Panel ---
         JPanel boatTypeMemberPanel = new JPanel();
         boatTypeMemberPanel.setLayout(new BoxLayout(boatTypeMemberPanel, BoxLayout.Y_AXIS));
@@ -97,15 +93,11 @@ public class BoatTab extends JPanel {
         boatTypeMemberPanel.setBackground(MolvenoColor.LIGHT.getColor());
 
 
-
         // --- Adding Panel Cards to CardLayout ---
         boatSideCardPanel.add(boatTypePanel, "BOAT_TYPE_SELECT");
         boatSideCardPanel.add(boatTypeMemberPanel, "BOAT_MEMBER_SELECT");
 
-        // --- Adding ActionListerners to the JButtons
-        membersButton.addActionListener(e -> cardLayout.show(boatSideCardPanel, "BOAT_MEMBER_SELECT"));
-
-        populateBoatMemberButtons(boatList, boatTypeMemberPanel, detailHeaderBtn, detailLabel, cardLayout, boatSideCardPanel);
+        populateBoatTypeButtons(boatTypePanel, cardLayout, boatSideCardPanel, boatTypeMemberPanel, detailHeaderBtn, detailLabel, boatList);
 
         JScrollPane boatScrollPane = new JScrollPane(boatSideCardPanel);
         boatScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // just making sure
@@ -207,7 +199,27 @@ public class BoatTab extends JPanel {
             typeBtn.setFont(MolvenoFont.BUTTONLABEL.getFont());
             typeBtn.setForeground(MolvenoColor.DARK.getColor());
             typeBtn.setBackground(MolvenoColor.BEIGE.getColor());
+
+            // When we click on a type:
+            typeBtn.addActionListener(e -> {
+                // Filter a list of boats of ONLY the type clicked
+                ArrayList<Boat> filteredBoats = new ArrayList<>();
+                for (Boat b : fullBoatList) {
+                    if (b.getBoatType().equals(type)) {
+                        filteredBoats.add(b);
+                    }
+                }
+                // Populate Member card with that list:
+                populateBoatMemberButtons(filteredBoats, memberPanel, header, details, cardLayout, deck);
+
+                // Go to the Member card
+                cardLayout.show(deck, "BOAT_MEMBER_SELECT");
+            });
+            targetPanel.add(typeBtn);
+            targetPanel.add(Box.createVerticalStrut(5));
         }
+        targetPanel.revalidate();
+        targetPanel.repaint();
     }
 
 
