@@ -28,14 +28,13 @@ public class Calendar {
         for(int i = 0; i < BoatIDs.length; i++){
             //50 calendar cells with boat ID
             //TODO maybe boatID = int or something, if so change it here
+            System.out.println(BoatIDs[i]);
             //ArrayList<ReservationDto> boatReservations = getReservationsForBoat(reservationList, BoatIDs[i]);
             ArrayList<ReservationDto> boatReservations = reservationList; //TODO delete this when boat IDs are working
             ArrayList<String> reservedTimes = new ArrayList<>();
             for(int r = 0; r < boatReservations.size(); r++){
                 ReservationRecord record = boatReservations.get(r).getReservationRecord();
-
                 String[] newTimes = Arrays.copyOfRange(timeBoxes, timeList.indexOf(record.begintijd()), timeList.indexOf(record.eindtijd()));
-                System.out.println("TIMES: " + newTimes.toString());
                 Collections.addAll(reservedTimes, newTimes);
             }
             CalendarCell currentRow[] = new CalendarCell[50];
@@ -68,7 +67,7 @@ public class Calendar {
         ArrayList<ReservationDto> totalReservationList =  reservationHandler.getReservationList();
         ArrayList<ReservationDto> partialReservationList = new ArrayList<>();
         for(int i = 0; i < totalReservationList.size(); i++){
-            if(Objects.equals(totalReservationList.get(i).getReservationRecord().datum(), date)){
+            if(Objects.equals(totalReservationList.get(i).getReservationRecord().datum(), date.toString())){
                 partialReservationList.add(totalReservationList.get(i));
             }
         }

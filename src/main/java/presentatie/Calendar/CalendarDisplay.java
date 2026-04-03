@@ -48,6 +48,10 @@ public class CalendarDisplay extends JPanel {
                 //TODO determine button size here based on final app
                 buttonRow[j].setMargin(new Insets(8, 8, 8, 8));
                 buttonRow[j].setBackground(CalGrid.get(BoatIDs[row])[column].getAvailable() ? Color.WHITE : Color.BLACK);
+                //buttonRow[j].setBorderPainted(false);//TODO get the buttons to change color
+                //buttonRow[j].setOpaque(false);
+                //buttonRow[j].putClientProperty("JButton.backgroundColor", Color.RED);
+                //buttonRow[j].setForeground(Color.RED);
                 buttonRow[j].addActionListener(e -> {
                     selectTimeCell(row, column);
                 });
