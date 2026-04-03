@@ -12,6 +12,10 @@ public class ReservationDto {
         reservationRecord = new ReservationRecord(new CustomerRecord(naam, telefoonNummer, email), kamerFacturatie, betaald, datum, begintijd, eindtijd, boatIDs);
     }
 
+    public ReservationRecord getReservationRecord() {
+        return reservationRecord;
+    }
+
     @Override
     public String toString() {
         return reservationRecord.toString();

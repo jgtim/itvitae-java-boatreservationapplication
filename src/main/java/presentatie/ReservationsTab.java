@@ -13,10 +13,14 @@ import java.util.ArrayList;
 public class ReservationsTab extends JPanel {
     private JPanel mainPanel;
     private JTable table1;
+    private JPanel card2;
+    private ReservationItemPanel reservationItemPanel;
+    private JPanel cardLayout;
     private DefaultTableModel tableModel;
     private ReservationRepositoryHandler reservationRepositoryHandler;
 
     public ReservationsTab(ReservationRepositoryHandler repoHandler) {
+        reservationItemPanel.setCardLayoutParent(cardLayout);
         reservationRepositoryHandler = repoHandler;
         add(mainPanel);
 
