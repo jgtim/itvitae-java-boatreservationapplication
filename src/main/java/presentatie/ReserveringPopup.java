@@ -1,12 +1,13 @@
 package presentatie;
 
-import data.ReservationCsvHandler;
+import data.ReservationRepositoryHandler;
 import presentatie.Calendar.CalendarDisplay;
 import service.ReservationDto;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class ReserveringPopup extends JDialog {
     private JPanel contentPane;
@@ -26,11 +27,17 @@ public class ReserveringPopup extends JDialog {
     private JPanel dateInfo;
     private JLabel dateLabel;
     private JLabel dateField;
+    private JButton addBoatButton;
+    private JPanel newboatPanel;
+    private JTextField boatIdInputField;
+    private JLabel addedBoatsLabel;
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
+    private ArrayList<Integer> boatIDs = new ArrayList<Integer>();
+    private ReservationRepositoryHandler reservationRepositoryHandler;
 
-    public ReserveringPopup(CalendarDisplay display, String van, String tot, LocalDate datum) { //LocalDate date
+    public ReserveringPopup(ReservationRepositoryHandler handler, CalendarDisplay display, String van, String tot, LocalDate datum) { //LocalDate date
         this.DisplayTab = display;
         this.begintijd = van;
         this.eindtijd = tot;
@@ -38,6 +45,7 @@ public class ReserveringPopup extends JDialog {
         vanLabel.setText(van);
         totLabel.setText(tot);
         dateField.setText(datum.toString());
+        reservationRepositoryHandler = handler;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -68,6 +76,15 @@ public class ReserveringPopup extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        addBoatButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int newBoatID = Integer.parseInt(boatIdInputField.getText());
+                boatIDs.add(newBoatID);
+                addedBoatsLabel.setText("Added: " + boatIDs.toString());
+                boatIdInputField.setText("");
+            }
+        });
     }
 
     private void onOK() {
@@ -77,8 +94,7 @@ public class ReserveringPopup extends JDialog {
 
         ReservationDto newReservation = getReservationDto();
 
-        var reservationCsvHandler = new ReservationCsvHandler();
-        reservationCsvHandler.addReservation(newReservation);
+        reservationRepositoryHandler.addReservation(newReservation);
         this.DisplayTab.reserveBoat();
         dispose();
     }
@@ -92,7 +108,9 @@ public class ReserveringPopup extends JDialog {
                 betaaldCheckBox.isSelected(),
                 datum.toString(),
                 begintijd,
-                eindtijd
+                eindtijd,
+                boatIDs
+
         );
 
 
