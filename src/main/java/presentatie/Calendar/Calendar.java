@@ -1,11 +1,16 @@
 package presentatie.Calendar;
 
-import java.util.HashMap;
+import data.ReservationCsvHandler;
+import domain.ReservationRecord;
+import service.ReservationDto;
+import data.ReservationCsvHandler;
+
+import java.util.*;
 
 public class Calendar {
     private String CalendarDate;
     private HashMap<String, CalendarCell[]> CalendarGrid;
-    private String[] BoatIDs = {"Boat1", "Boat2", "Boat3"}; //placeholder data
+    private String[] BoatIDs = {"Boat1", "Boat2", "Boat3"}; //TODO placeholder data
     private String[] timeBoxes = {"9:00", "9:15", "9:30", "9:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15",
             "11:30", "11:45", "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15",
             "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15",
@@ -17,16 +22,30 @@ public class Calendar {
     public Calendar(String currentDate){
         this.CalendarDate = currentDate;
         this.CalendarGrid = new HashMap<String, CalendarCell[]>();
-
+        List<String> timeList = Arrays.asList(timeBoxes);
+        ArrayList<ReservationDto> reservationList = getReservationsForDate(this.CalendarDate);
         for(int i = 0; i < BoatIDs.length; i++){
             //50 calendar cells with boat ID
+            //TODO maybe boatID = int or something, if so change it here
+            //ArrayList<ReservationDto> boatReservations = getReservationsForBoat(reservationList, BoatIDs[i]);
+            ArrayList<ReservationDto> boatReservations = reservationList; //TODO delete this when boat IDs are working
+            ArrayList<String> reservedTimes = new ArrayList<>();
+            for(int r = 0; r < boatReservations.size(); r++){
+                ReservationRecord record = boatReservations.get(r).getReservationRecord();
+
+                String[] newTimes = Arrays.copyOfRange(timeBoxes, timeList.indexOf(record.begintijd()), timeList.indexOf(record.eindtijd()));
+                System.out.println("TIMES: " + newTimes);
+                Collections.addAll(reservedTimes, newTimes);
+            }
             CalendarCell currentRow[] = new CalendarCell[50];
             for(int j = 0; j < 50; j++){
-                currentRow[j] = new CalendarCell(BoatIDs[i], timeBoxes[j]);
+                boolean Available = !reservedTimes.contains(timeBoxes[j]);
+                currentRow[j] = new CalendarCell(BoatIDs[i], timeBoxes[j], Available);
             }
             CalendarGrid.put(BoatIDs[i], currentRow);
         }
     }
+
 
     public void showCalendar(){
         for(int i = 0; i < CalendarGrid.size(); i++){
@@ -43,4 +62,29 @@ public class Calendar {
     }
 
     public String getCalendarDate(){return this.CalendarDate;}
+
+    private ArrayList<ReservationDto> getReservationsForDate(String date){
+        ReservationCsvHandler reservationHandler = new ReservationCsvHandler();
+        ArrayList<ReservationDto> totalReservationList =  reservationHandler.getReservationList();
+        ArrayList<ReservationDto> partialReservationList = new ArrayList<>();
+        for(int i = 0; i < totalReservationList.size(); i++){
+            if(Objects.equals(totalReservationList.get(i).getReservationRecord().datum(), date)){
+                partialReservationList.add(totalReservationList.get(i));
+            }
+        }
+        return partialReservationList;
+    }
+
+    //TODO uncomment this when boatIDs are implemented in reservations, change term boatID to what's used there
+//    private ArrayList<ReservationDto> getReservationsForBoat(ArrayList<ReservationDto> reservationList, String BoatID) {
+//        ArrayList<ReservationDto> partialReservationList = new ArrayList<>();
+//        for(int i = 0; i < reservationList.size(); i++){
+//            if(Objects.equals(reservationList.get(i).getReservationRecord().boatID(), BoatID)){
+//                partialReservationList.add(reservationList.get(i));
+//            }
+//        }
+//        return partialReservationList;
+//    }
 }
+
+

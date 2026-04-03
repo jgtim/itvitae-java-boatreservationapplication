@@ -14,4 +14,6 @@ public class ReservationDto {
     public String toString() {
         return reservationRecord.toString();
     }
+
+    public ReservationRecord getReservationRecord(){return reservationRecord;}
 }

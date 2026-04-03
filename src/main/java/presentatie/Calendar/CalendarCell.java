@@ -6,9 +6,9 @@ public class CalendarCell {
     private boolean Available;
     private final String timeBox;
 
-    public CalendarCell(String boatID, String timeBox) {
+    public CalendarCell(String boatID, String timeBox, boolean Available) {
         this.BoatID = boatID;
-        this.Available = true; //TODO make this false based on reservations data
+        this.Available = Available;
         this.timeBox = timeBox;
     }
 
