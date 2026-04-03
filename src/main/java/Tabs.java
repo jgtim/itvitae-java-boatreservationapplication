@@ -29,6 +29,7 @@ public class Tabs extends JFrame {
         bootCatalogue.add(new JLabel("Welkom bij de Boot Catalogus"));
 
 
+        // Creates a ReservationService and passes those to the Agenda and Reservations tab
         ReservationRepositoryHandler reservationRepositoryHandler = new ReservationJsonHandler();
         ReservationsTab reservations = new ReservationsTab(reservationRepositoryHandler);
         AgendaTab agenda = new AgendaTab(reservationRepositoryHandler);

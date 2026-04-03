@@ -4,14 +4,9 @@ import service.ReservationDto;
 
 import java.util.ArrayList;
 
-public class ReservationService {
-    ArrayList<ReservationDto> reservations = new ArrayList<ReservationDto>();
-
-    public ReservationService() {
-        updateReservationList();
-    }
-
-    private void updateReservationList() {
-
-    }
+public interface ReservationService {
+    /**
+     * @return ArrayList&ltReservationDto&gt
+     */
+    ArrayList<ReservationDto> getReservationList();
 }
