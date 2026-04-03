@@ -64,5 +64,19 @@
       "betaald": true,
       "kamerFacturatie": false
     }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "lwijflewjfk",
+        "telefoonNummer": 12349083,
+        "email": "skjeklfje@gmail.com"
+      },
+      "betaald": true,
+      "kamerFacturatie": true,
+      "datum": "2026-04-03",
+      "begintijd": "10:00",
+      "eindtijd": "15:00"
+    }
   }
 ]

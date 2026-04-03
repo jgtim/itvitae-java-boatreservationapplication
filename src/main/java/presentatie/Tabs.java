@@ -1,15 +1,32 @@
+package presentatie;
+
 import data.ReservationJsonHandler;
 import data.ReservationRepositoryHandler;
 import domain.MolvenoFont;
 import domain.TabIndex;
-import presentatie.AgendaTab;
-import presentatie.ReservationsTab;
+import presentatie.BoatTab.BoatTab;
+import presentatie.Calendar.Calendar;
+import presentatie.Calendar.CalendarDisplay;
+
 
 import javax.swing.*;
 
 public class Tabs extends JFrame {
 
     Tabs() {
+        // UIManager Class manipulation
+
+        // --- Setting Look and Feel:
+        // Default Java: getCrossPlatformLookAndFeelClassName()
+        // System Native: UIManager.getSystemLookAndFeelClassName
+        // Vector Based: "javax.swing.plaf.nimbus.NimbusLookAndFeel"
+        try {
+            UIManager.setLookAndFeel((UIManager.getSystemLookAndFeelClassName()));
+        } catch  (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
+        // Changing font ob the TabbedPane (not possible without UIManager)
         UIManager.put("TabbedPane.font", MolvenoFont.H3.getFont());
 
         // Configuring MainFrame (window voor window voor tabbladen)
@@ -28,11 +45,9 @@ public class Tabs extends JFrame {
         JPanel bootCatalogue = new JPanel();
         bootCatalogue.add(new JLabel("Welkom bij de Boot Catalogus"));
 
-
-        // Creates a ReservationService and passes those to the Agenda and Reservations tab
         ReservationRepositoryHandler reservationRepositoryHandler = new ReservationJsonHandler();
+        JPanel agenda = new CalendarDisplay(reservationRepositoryHandler);
         ReservationsTab reservations = new ReservationsTab(reservationRepositoryHandler);
-        AgendaTab agenda = new AgendaTab(reservationRepositoryHandler);
 
         // Adding JPanels to JTabbedPane
 

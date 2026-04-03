@@ -2,10 +2,12 @@ package presentatie;
 
 import data.ReservationCsvHandler;
 import data.ReservationRepositoryHandler;
+import presentatie.Calendar.CalendarDisplay;
 import service.ReservationDto;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.time.LocalDate;
 
 public class ReserveringPopup extends JDialog {
     private JPanel contentPane;
@@ -19,9 +21,25 @@ public class ReserveringPopup extends JDialog {
     private JCheckBox betaaldCheckBox;
     private JPanel confirmationButtonsPanel;
     private JTextField emailField;
+    private JLabel vanLabel;
+    private JLabel totLabel;
+    private CalendarDisplay DisplayTab;
+    private JPanel dateInfo;
+    private JLabel dateLabel;
+    private JLabel dateField;
+    private LocalDate datum;
+    private String begintijd;
+    private String eindtijd;
     private ReservationRepositoryHandler reservationRepositoryHandler;
 
-    public ReserveringPopup(ReservationRepositoryHandler handler) {
+    public ReserveringPopup(ReservationRepositoryHandler handler, CalendarDisplay display, String van, String tot, LocalDate datum) { //LocalDate date
+        this.DisplayTab = display;
+        this.begintijd = van;
+        this.eindtijd = tot;
+        this.datum = datum;
+        vanLabel.setText(van);
+        totLabel.setText(tot);
+        dateField.setText(datum.toString());
         reservationRepositoryHandler = handler;
         setContentPane(contentPane);
         setModal(true);
@@ -63,6 +81,7 @@ public class ReserveringPopup extends JDialog {
         ReservationDto newReservation = getReservationDto();
 
         reservationRepositoryHandler.addReservation(newReservation);
+        this.DisplayTab.reserveBoat();
         dispose();
     }
 
@@ -72,7 +91,10 @@ public class ReserveringPopup extends JDialog {
                 (phoneNumberField.getText().isEmpty()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
                 (emailField.getText().isEmpty()) ? null : emailField.getText(),
                 kamerFacturatieCheckBox.isSelected(),
-                betaaldCheckBox.isSelected()
+                betaaldCheckBox.isSelected(),
+                datum.toString(),
+                begintijd,
+                eindtijd
         );
 
 
