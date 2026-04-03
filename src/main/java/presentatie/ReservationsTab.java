@@ -6,6 +6,7 @@ import service.ReservationDto;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import java.util.ArrayList;
 
@@ -17,16 +18,20 @@ public class ReservationsTab extends JPanel {
 
     public ReservationsTab(ReservationRepositoryHandler repoHandler) {
         reservationRepositoryHandler = repoHandler;
-
         add(mainPanel);
 
-        String[] columnNames = {"Naam", "Telefoonnummer", "Email", "Betaald", "Kamerfacturatie"};
+        String[] columnNames = {"Naam", "Telefoonnummer", "Email", "Betaald", "Kamerfacturatie", "Datum", "Begintijd", "Eindtijd", "Boat IDs"};
 
         String[][] tableData = {};
 
         tableModel = new DefaultTableModel(tableData, columnNames);
         table1.setModel(tableModel);
-        table1.setBounds(30, 40, 200, 300);
+        table1.setBounds(30, 40, 900, 400);
+
+        TableColumn columnBetaald = table1.getColumnModel().getColumn(3);
+        TableColumn columnKamerFacturatie = table1.getColumnModel().getColumn(4);
+        columnBetaald.setPreferredWidth(50);
+        columnKamerFacturatie.setPreferredWidth(50);
 
         reloadTable();
     }
@@ -41,7 +46,9 @@ public class ReservationsTab extends JPanel {
 
         if (reservationDtos != null) {
             for (ReservationDto reservationDto : reservationDtos) {
-                tableModel.addRow(reservationDto.toString().split(", "));
+                String[] reservationFields = reservationDto.toString().split(", ");
+                reservationFields[reservationFields.length-1] = reservationFields[reservationFields.length-1].replace(".", ",");
+                tableModel.addRow(reservationFields);
             }
         }
     }

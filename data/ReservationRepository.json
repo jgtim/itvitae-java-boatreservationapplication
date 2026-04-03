@@ -78,5 +78,40 @@
       "begintijd": "10:00",
       "eindtijd": "15:00"
     }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "newcustomer",
+        "telefoonNummer": 123456789,
+        "email": "newcustomer@example.com"
+      },
+      "betaald": true,
+      "kamerFacturatie": true,
+      "datum": "2026-04-03",
+      "begintijd": "10:45",
+      "eindtijd": "13:45"
+    }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "John Boat",
+        "telefoonNummer": 12345678,
+        "email": "johnboat@ocean.com"
+      },
+      "betaald": true,
+      "kamerFacturatie": true,
+      "datum": "2026-04-03",
+      "begintijd": "11:00",
+      "eindtijd": "14:15",
+      "boatIDs": [
+        234,
+        32,
+        56,
+        97,
+        57
+      ]
+    }
   }
 ]
