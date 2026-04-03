@@ -1,10 +1,19 @@
 package domain;
 
-public record ReservationRecord(CustomerRecord customerRecord, boolean betaald, boolean kamerFacturatie) {
+import java.util.ArrayList;
+
+public record ReservationRecord(CustomerRecord customerRecord, boolean betaald, boolean kamerFacturatie, String datum, String begintijd, String eindtijd, ArrayList<Integer> boatIDs) {
 
 
     @Override
     public String toString() {
-        return "" + customerRecord + ", " + betaald + ", " + kamerFacturatie;
+        return ""
+                + customerRecord + ", "
+                + betaald + ", "
+                + kamerFacturatie + ", "
+                + datum + ", " + begintijd
+                + ", " + eindtijd
+                + ", "
+                + ((boatIDs != null) ? boatIDs.toString().replace(",", "."): boatIDs);
     }
 }
