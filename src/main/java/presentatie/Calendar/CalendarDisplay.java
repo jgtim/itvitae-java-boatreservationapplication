@@ -59,7 +59,7 @@ public class CalendarDisplay extends JPanel {
                 buttonRow[j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
 
                 // Setting a fixed size for all buttons
-                buttonRow[j].setPreferredSize(new Dimension(20, 20)); // Set a fixed size for the "cell"
+                buttonRow[j].setPreferredSize(new Dimension(20, 20));
                 buttonRow[j].setMinimumSize(new Dimension(20, 20));
                 buttonRow[j].setMaximumSize(new Dimension(20, 20));
                 // TODO determine button size here based on final app
