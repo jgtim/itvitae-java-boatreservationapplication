@@ -7,7 +7,6 @@ import domain.MolvenoFont;
 import service.Boat;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
@@ -119,54 +118,50 @@ public class BoatTab extends JPanel {
         boatScrollPane.setPreferredSize(new Dimension(180, 0)); // set Thumb and Track width
 
 
-        // --- DIFFICULT SEARCH MAGIC BELOW ---
-        // Creating a searchbar in the form of JTextField boatSearchField
-        JTextField boatSearchField = new JTextField();
+        // SEARCHBAR ON TOP OF LEFT SCROLL PANE ------------------------------------------------------------------------
+        // Creating a searchbar in the form of JTextField boatSearchBar
+        JTextField boatSearchBar = new JTextField();
 
-        // Difficult way of adjusting look and feel of boatSearchField to make it pretty
-        Font searchTitleFont = MolvenoFont.PARAGRAPH.getFont();
-        TitledBorder searchBorder = BorderFactory.createTitledBorder(
+        // Adjusting look and feel of boatSearchBar by using a TitledBorder
+        Font searchBarFont = MolvenoFont.PARAGRAPH.getFont();
+        TitledBorder searchBarBorder = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(MolvenoColor.DARK.getColor()),
-                "Zoek gewenste boot: ",
+                "Find your boat: ",
                 TitledBorder.LEFT,
                 TitledBorder.TOP,
-                searchTitleFont,
-                MolvenoColor.DARK.getColor()
-        );
-        // Easy adjusting look and feel
-        boatSearchField.setBorder(searchBorder);
-        boatSearchField.setPreferredSize(new Dimension(200, 60));
-        boatSearchField.setFont(MolvenoFont.PARAGRAPH.getFont());
-        boatSearchField.setForeground(MolvenoColor.DARK.getColor());
+                searchBarFont,
+                MolvenoColor.DARK.getColor());
+
+        // Using Titled Border and adjusting rest of Look and Feel
+        boatSearchBar.setBorder(searchBarBorder);
+        boatSearchBar.setPreferredSize(new Dimension(250, 60));
+        boatSearchBar.setFont(MolvenoFont.PARAGRAPH.getFont());
+        boatSearchBar.setForeground(MolvenoColor.DARK.getColor());
 
 
-        // ------------------------------------------------------------------------------------------------------------
-        // --- THE SEARCH LOGIC - GIFTED TO ME BY DARK FORCES - NEED TO UNDERSTAND LATER ---
-        boatSearchField.getDocument().addDocumentListener(new DocumentListener() {
+        // Searchbar Logic
+        boatSearchBar.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void changedUpdate(DocumentEvent e) {
-                filter();
-            }
-
+            public void changedUpdate(DocumentEvent e) { filter(); }
             @Override
-            public void removeUpdate(DocumentEvent e) {
-                filter();
-            }
-
+            public void removeUpdate(DocumentEvent e) { filter(); }
             @Override
-            public void insertUpdate(DocumentEvent e) {
-                filter();
-            }
+            public void insertUpdate(DocumentEvent e) { filter(); }
 
+            // Method to filter what is typed in the Search Bar
             public void filter() {
-                // Creating String filter with is set to whatever text is typed in the boatSearchField (and changed to all lowercase)
-                String filter = boatSearchField.getText().toLowerCase();
-                // Creating Component Array to include the JButtons and created strut (for margins). Need to hide both for pretty view!
-                Component[] components = boatTypePanel.getComponents();
+                // Creating String 'filter' with is set to whatever text is typed in the boatSearchBar (and changed to all lowercase)
+                String filter = boatSearchBar.getText().toLowerCase();
 
+                // Checking which of the two cards in CardLayout is currently showing
+                JPanel activePanel;
+                if (boatTypePanel.isShowing()) { activePanel = boatTypePanel; }
+                else { activePanel = boatTypeMemberPanel; }
+
+                // Creating Component Array to include the JButtons and created strut (for margins). Need to hide both for pretty view!
+                Component[] components = activePanel.getComponents();
                 for (int i = 0; i < components.length; i++) {
                     Component comp = components[i];
-
                     if (comp instanceof JButton) {
                         JButton btn = (JButton) comp;
                         boolean matches = btn.getText().toLowerCase().contains(filter);
@@ -182,13 +177,13 @@ public class BoatTab extends JPanel {
                 boatTypePanel.repaint();
             }
         });
-        // ------------------------------------------------------------------------------------------------------------
+        // -------------------------------------------------------------------------------------------------------------
 
-        // Create JPanel wrapper for boatSearchField so margins can be added
+        // Create JPanel wrapper for boatSearchBar so margins can be added
         JPanel boatSearchBarWrapper = new JPanel(new BorderLayout());
         boatSearchBarWrapper.setBackground(MolvenoColor.LIGHT.getColor());
         boatSearchBarWrapper.setBorder(new EmptyBorder(10, 10, 10, 10));
-        boatSearchBarWrapper.add(boatSearchField, BorderLayout.CENTER);
+        boatSearchBarWrapper.add(boatSearchBar, BorderLayout.CENTER);
 
         // Create JPanel wrapper for combining boatSearchBarWrapper (NORTH) and boatScrollPane (CENTER)
         JPanel sidebarWrapper = new JPanel(new BorderLayout());
@@ -199,7 +194,6 @@ public class BoatTab extends JPanel {
         add(sidebarWrapper, BorderLayout.WEST);
         add(boatDetails, BorderLayout.CENTER);
     }
-
 
     // METHODS ---------------------------------------------------------------------------------------------------------
     // Method for populating Boat Type Buttons in the left side Scroll Pane (top card)

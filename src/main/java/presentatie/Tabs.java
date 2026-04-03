@@ -21,11 +21,11 @@ public class Tabs extends JFrame {
             e.printStackTrace();
         }
 
-        // Changing font ob the TabbedPane (not possible without UIManager)
+        // Changing font of the TabbedPane (not possible without UIManager)
         UIManager.put("TabbedPane.font", MolvenoFont.H3.getFont());
 
         // Configuring MainFrame (window voor window voor tabbladen)
-        setTitle("Molveno Bootverhuur");
+        setTitle("Molveno Boat Rental");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1280, 720);
 
@@ -37,18 +37,15 @@ public class Tabs extends JFrame {
         JTabbedPane tabPane = new JTabbedPane();
 
         // Creating JPanels (tabbladen)
-        JPanel bootCatalogue = new JPanel();
-        bootCatalogue.add(new JLabel("Welkom bij de Boot Catalogus"));
-
+        JPanel boatCatalogue = new BoatTab();
         JPanel agenda = new AgendaTab();
-
         JPanel reservations = new ReservationsTab();
 
         // Adding JPanels to JTabbedPane
 
         tabPane.add("Agenda", agenda);
-        tabPane.add("Catalogus", new BoatTab());
-        tabPane.add("Reserveringen", reservations);
+        tabPane.add("Catalogue", boatCatalogue);
+        tabPane.add("Reservations", reservations);
 
         // Adding JTabbedPane to JFrame and setting to visible
         add(tabPane);
