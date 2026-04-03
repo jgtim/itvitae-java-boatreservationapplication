@@ -35,7 +35,7 @@ public class Calendar {
                 ReservationRecord record = boatReservations.get(r).getReservationRecord();
 
                 String[] newTimes = Arrays.copyOfRange(timeBoxes, timeList.indexOf(record.begintijd()), timeList.indexOf(record.eindtijd()));
-                System.out.println("TIMES: " + newTimes);
+                System.out.println("TIMES: " + newTimes.toString());
                 Collections.addAll(reservedTimes, newTimes);
             }
             CalendarCell currentRow[] = new CalendarCell[50];
