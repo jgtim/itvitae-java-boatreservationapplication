@@ -48,15 +48,20 @@ public class CalendarDisplay extends JPanel {
                 final int column = j;
                 buttonRow[j] = new JButton();
 
+                // IMPORTANT -------------------------------------------------------------------------------------------
+                // Because of use of JButtons, our own colors get overridden with system standard
+                // When we disable this, we have to manually add lots of tweaks.
+                // BETTER CHOICE: Change JButtons to JPanels with MouseListener. Much easier for styling.
 
                 buttonRow[j].setContentAreaFilled(false); // Disable automatic filling
                 buttonRow[j].setOpaque(true); // Making sure our colors get selected
-                // Creating grey line to seperate borders
+                // Creating line to seperate borders
                 buttonRow[j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+
                 // Setting a fixed size for all buttons
-                buttonRow[j].setPreferredSize(new Dimension(30, 20)); // Set a fixed size for the "cell"
-                buttonRow[j].setMinimumSize(new Dimension(30, 20));
-                buttonRow[j].setMaximumSize(new Dimension(30, 20));
+                buttonRow[j].setPreferredSize(new Dimension(20, 20)); // Set a fixed size for the "cell"
+                buttonRow[j].setMinimumSize(new Dimension(20, 20));
+                buttonRow[j].setMaximumSize(new Dimension(20, 20));
                 // TODO determine button size here based on final app
                 buttonRow[j].setMargin(new Insets(8, 8, 8, 8));
                 buttonRow[j].setBackground(CalGrid.get(BoatIDs[row])[column].getAvailable() ? MolvenoColor.LIGHT.getColor() : MolvenoColor.DARK.getColor());
