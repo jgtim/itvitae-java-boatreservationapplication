@@ -7,6 +7,7 @@ import domain.MolvenoFont;
 import service.Boat;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
@@ -17,39 +18,46 @@ import java.util.ArrayList;
 public class BoatTab extends JPanel {
 
     public BoatTab() {
-        // Setting layout as BorderLayout
+        // Setting BoatTab layout as BorderLayout
         setLayout(new BorderLayout());
 
         // Creating ArrayList to work with Boat class data
         ArrayList<BoatType> boatTypeList = new ArrayList<>();
 
-
+        // Creating List of all individual Boats | Testing search function of scrollable pane on left side
         ArrayList<Boat> boatList = new ArrayList<>();
-        for (int i = 1; i <= 60; i++) {
+        for (int i = 1; i <= 10; i++) {
             boatList.add(new Boat(BoatType.STANDARD_ROWBOAT, "Rowboat " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+            boatList.add(new Boat(BoatType.FAMILY_ROWBOAT, "Rowboat " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+            boatList.add(new Boat(BoatType.KAYAK, "Kayak " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+            boatList.add(new Boat(BoatType.PEDAL, "Pedal Boat " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+            boatList.add(new Boat(BoatType.SILENT_ELECTRIC, "Electric Boat " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+            boatList.add(new Boat(BoatType.PREMIUM_ELECTRIC, "Electric Boat " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
         }
 
         // RIGHT SIDE -------------------------------------------------------------------------------------------------
-        // Boat details (on right side)
+        // JPanel boat details (on right side of tab)
         JPanel boatDetails = new JPanel(new BorderLayout(10, 10));
-        boatDetails.setBorder(new EmptyBorder(15, 15, 15, 15));
+        boatDetails.setBorder(new EmptyBorder(10, 10, 10, 10));
         boatDetails.setBackground(MolvenoColor.LIGHT.getColor());
 
         // Header Button (NORTH on JPanel boatDetails)
-        JButton detailHeaderBtn = new JButton("Zoek en selecteer een boot aan de linkerkant.");
+        JButton detailHeaderBtn = new JButton("Find and select your boat on the left hand side.");
         detailHeaderBtn.setContentAreaFilled(false);
         detailHeaderBtn.setBorderPainted(false);
         detailHeaderBtn.setFocusPainted(false);
         detailHeaderBtn.setFont(MolvenoFont.H3.getFont());
         detailHeaderBtn.setForeground(MolvenoColor.DARK.getColor());
         detailHeaderBtn.setBackground(MolvenoColor.BEIGE.getColor());
+        // Adding Header Button to North side boatDetails JPanel
         boatDetails.add(detailHeaderBtn, BorderLayout.NORTH);
 
         // JPanel detailPanel, divided in LEFT and RIGHT, below detailHeaderBtn
         JPanel detailPanel = new JPanel(new GridLayout(1, 2));
         detailPanel.setBorder(BorderFactory.createLineBorder(MolvenoColor.DARK.getColor()));
+        detailPanel.setBackground(MolvenoColor.LIGHT.getColor());
 
-        // LEFT; text in the form of JLabel detailLabel
+        // LEFT, 1st column of detailPanel; text in the form of JLabel detailLabel
         JLabel detailLabel = new JLabel("");
         detailLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
         detailLabel.setForeground(MolvenoColor.DARK.getColor());
@@ -58,13 +66,19 @@ public class BoatTab extends JPanel {
         detailLabel.setBorder(new EmptyBorder(15, 15, 15, 15));
         detailPanel.add(detailLabel);
 
-        // RIGHT, photo placeholder in the form of JPanel photoPanel (can be removed later)
-        JPanel photoPanel = new JPanel();
+        // RIGHT, 2nd column of detailPanel; photo placeholder in the form of JPanel photoPanel (can be removed later)
+        // This photoPanel needs a GridBagLayout, to make sure the line and padding are implemented
+        JPanel photoPanel = new JPanel(new GridBagLayout());
         photoPanel.setFont(MolvenoFont.PARAGRAPH.getFont());
         photoPanel.setForeground(MolvenoColor.DARK.getColor());
         photoPanel.setBackground(MolvenoColor.BLUE.getColor());
-        photoPanel.setBorder(BorderFactory.createLineBorder(MolvenoColor.DARK.getColor()));
-        photoPanel.add(new JLabel("FOTO"));
+
+
+
+        photoPanel.setBorder(BorderFactory.createMatteBorder(50, 50, 50, 50, MolvenoColor.LIGHT.getColor()));
+
+        JLabel photoLabel = new JLabel("PHOTO");
+        photoPanel.add(photoLabel);
         detailPanel.add(photoPanel);
 
         // Add JPanel detailPanel (with on LEFT detailLabel and on RIGHT photoPanel) to JPanel boatDetails
@@ -75,31 +89,31 @@ public class BoatTab extends JPanel {
         // Create JPanel with a CardLayout for swapping views:
         // From selecting Boat Types (top card) to the Boat Type members (bottom card)
         CardLayout cardLayout = new CardLayout();
-        JPanel boatSideCardPanel = new JPanel(cardLayout);
+        JPanel boatSidePanel = new JPanel(cardLayout);
 
-        // Creating two panel: one for Boat Types and one for Boat Type Members
+        // Creating two panels: one for Boat Types and one for Boat Type Members
         // --- Boat Type Panel ---
         JPanel boatTypePanel = new JPanel();
         boatTypePanel.setLayout(new BoxLayout(boatTypePanel, BoxLayout.Y_AXIS));
-
-        boatTypePanel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        boatTypePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         boatTypePanel.setBackground(MolvenoColor.LIGHT.getColor());
 
         // --- Boat Type Member Panel ---
         JPanel boatTypeMemberPanel = new JPanel();
         boatTypeMemberPanel.setLayout(new BoxLayout(boatTypeMemberPanel, BoxLayout.Y_AXIS));
-
-        boatTypeMemberPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        boatTypeMemberPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         boatTypeMemberPanel.setBackground(MolvenoColor.LIGHT.getColor());
 
+        // --- Adding Panel Cards to JPanel with CardLayout ---
+        boatSidePanel.add(boatTypePanel, "BOAT_TYPE_SELECT");
+        boatSidePanel.add(boatTypeMemberPanel, "BOAT_MEMBER_SELECT");
 
-        // --- Adding Panel Cards to CardLayout ---
-        boatSideCardPanel.add(boatTypePanel, "BOAT_TYPE_SELECT");
-        boatSideCardPanel.add(boatTypeMemberPanel, "BOAT_MEMBER_SELECT");
+        // Calling method to create JButtons in BoatTypePanel and implements search function for Boat Types
+        // This method calls another method: one that creates JButtons for Boat Type Members
+        populateBoatTypeButtons(boatTypePanel, cardLayout, boatSidePanel, boatTypeMemberPanel, detailHeaderBtn, detailLabel, boatList);
 
-        populateBoatTypeButtons(boatTypePanel, cardLayout, boatSideCardPanel, boatTypeMemberPanel, detailHeaderBtn, detailLabel, boatList);
-
-        JScrollPane boatScrollPane = new JScrollPane(boatSideCardPanel);
+        // Here we put the created and functional boatTypePanel with CardLayout in a scrollable JScrollPane
+        JScrollPane boatScrollPane = new JScrollPane(boatSidePanel);
         boatScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // just making sure
         boatScrollPane.getVerticalScrollBar().setUnitIncrement(16); // smoother scrolling, otherwise too slow
         boatScrollPane.setPreferredSize(new Dimension(180, 0)); // set Thumb and Track width
@@ -176,9 +190,9 @@ public class BoatTab extends JPanel {
         boatSearchBarWrapper.setBorder(new EmptyBorder(10, 10, 10, 10));
         boatSearchBarWrapper.add(boatSearchField, BorderLayout.CENTER);
 
-        // Create JPanel wrapper for boatSearchBarWrapper (NORTH) and boatScrollPane (CENTER)
+        // Create JPanel wrapper for combining boatSearchBarWrapper (NORTH) and boatScrollPane (CENTER)
         JPanel sidebarWrapper = new JPanel(new BorderLayout());
-        sidebarWrapper.setPreferredSize(new Dimension(200, 0));
+        sidebarWrapper.setPreferredSize(new Dimension(250, 0));
         sidebarWrapper.add(boatSearchBarWrapper, BorderLayout.NORTH);
         sidebarWrapper.add(boatScrollPane, BorderLayout.CENTER);
 
