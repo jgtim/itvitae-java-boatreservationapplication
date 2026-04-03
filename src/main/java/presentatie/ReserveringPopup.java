@@ -6,6 +6,7 @@ import service.ReservationDto;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.time.LocalDate;
 
 public class ReserveringPopup extends JDialog {
     private JPanel contentPane;
@@ -22,17 +23,21 @@ public class ReserveringPopup extends JDialog {
     private JLabel vanLabel;
     private JLabel totLabel;
     private CalendarDisplay DisplayTab;
+    private JPanel dateInfo;
+    private JLabel dateLabel;
+    private JLabel dateField;
+    private LocalDate datum;
     private String begintijd;
     private String eindtijd;
-    private String datum;
 
-    public ReserveringPopup(CalendarDisplay display, String van, String tot, String datum) {
+    public ReserveringPopup(CalendarDisplay display, String van, String tot, LocalDate datum) { //LocalDate date
         this.DisplayTab = display;
         this.begintijd = van;
         this.eindtijd = tot;
         this.datum = datum;
         vanLabel.setText(van);
         totLabel.setText(tot);
+        dateField.setText(datum.toString());
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -85,7 +90,7 @@ public class ReserveringPopup extends JDialog {
                 (emailField.getText().isEmpty()) ? null : emailField.getText(),
                 kamerFacturatieCheckBox.isSelected(),
                 betaaldCheckBox.isSelected(),
-                datum,
+                datum.toString(),
                 begintijd,
                 eindtijd
         );

@@ -2,6 +2,8 @@ package presentatie;
 
 import domain.MolvenoFont;
 import presentatie.BoatTab.BoatTab;
+import presentatie.Calendar.Calendar;
+import presentatie.Calendar.CalendarDisplay;
 
 
 import javax.swing.*;
@@ -40,9 +42,8 @@ public class Tabs extends JFrame {
         JPanel bootCatalogue = new JPanel();
         bootCatalogue.add(new JLabel("Welkom bij de Boot Catalogus"));
 
-        JPanel agenda = new AgendaTab();
-
         JPanel reservations = new ReservationsTab();
+        JPanel agenda = new CalendarDisplay();
 
         // Adding JPanels to JTabbedPane
 
