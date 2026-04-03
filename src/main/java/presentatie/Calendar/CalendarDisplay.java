@@ -6,6 +6,7 @@ import presentatie.ReserveringPopup;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.HashMap;
 
 public class CalendarDisplay extends JPanel {
@@ -20,10 +21,9 @@ public class CalendarDisplay extends JPanel {
             "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15",
             "17:30", "17:45", "18:00", "18:15", "18:30", "18:45", "19:00", "19:15", "19:30", "19:45", "20:00", "20:15",
             "20:30", "20:45", "21:00", "21:15", "21:30"};
+    private LocalDate dateSelected;
 
     public CalendarDisplay() {
-
-        this.Calendar = new Calendar();
 
         BoxLayout boxLayoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
         setLayout(boxLayoutManager);
@@ -32,6 +32,9 @@ public class CalendarDisplay extends JPanel {
         datePicker.setMaximumSize(new Dimension(200, 25));
         datePicker.setDateToToday();
         add(datePicker);
+
+        dateSelected = datePicker.getDate();
+        this.Calendar = new Calendar(dateSelected);
 
         this.allCells = new JButton[BoatIDs.length][50];
 
@@ -91,6 +94,8 @@ public class CalendarDisplay extends JPanel {
         JButton selectButton = new JButton("Reserve");
         selectButton.addActionListener(e -> {
             if (this.selectedStart[0] != null) {
+                datePicker.setTextFieldToValidStateIfNeeded();
+                dateSelected = datePicker.getDate();
                 //reserveBoat();
                 String vanTijd = timePoints[this.selectedStart[1]];
                 int end;
@@ -100,10 +105,8 @@ public class CalendarDisplay extends JPanel {
                     end = this.selectedEnd[1];
                 }
                 String totTijd = timePoints[end + 1];
-                String date = datePicker.getDate().toString();
 
-                ReserveringPopup reserveringPopup = new ReserveringPopup(this, vanTijd, totTijd, date);
-                //ReserveringPopup reserveringPopup = new ReserveringPopup(datePicker.getDate());
+                ReserveringPopup reserveringPopup = new ReserveringPopup(this, vanTijd, totTijd, dateSelected);
                 reserveringPopup.pack();
                 reserveringPopup.setLocationRelativeTo(null);
                 reserveringPopup.setVisible(true);
