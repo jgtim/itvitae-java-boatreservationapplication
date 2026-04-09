@@ -2,6 +2,7 @@ package presentatie.Calendar;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import data.ReservationRepositoryHandler;
+import domain.MolvenoColor;
 import presentatie.ReserveringPopup;
 
 import javax.swing.*;
@@ -41,15 +42,33 @@ public class CalendarDisplay extends JPanel {
 
         this.allCells = new JButton[BoatIDs.length][50];
 
+        //the calendar grid ties a boat ID to a list of calendar cell objects, which contain data about that time point for that boat
         HashMap<Integer, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
+        //this for loop creates the buttons representing calendar cells
         for (int i = 0; i < CalGrid.size(); i++) {
             final int row = i;
             JButton buttonRow[] = new JButton[50];
             for (int j = 0; j < 50; j++) {
                 final int column = j;
                 buttonRow[j] = new JButton();
+
+                // IMPORTANT -------------------------------------------------------------------------------------------
+                // Because of use of JButtons, our own colors get overridden with system standard
+                // When we disable this, we have to manually add lots of tweaks.
+                // BETTER CHOICE: Change JButtons to JPanels with MouseListener. Much easier for styling.
+
+                buttonRow[j].setContentAreaFilled(false); // Disable automatic filling
+                buttonRow[j].setOpaque(true); // Making sure our colors get selected
+                // Creating line to seperate borders
+                buttonRow[j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+
+                // Setting a fixed size for all buttons
+                buttonRow[j].setPreferredSize(new Dimension(20, 20));
+                buttonRow[j].setMinimumSize(new Dimension(20, 20));
+                buttonRow[j].setMaximumSize(new Dimension(20, 20));
+                // TODO determine button size here based on final app
                 buttonRow[j].setMargin(new Insets(8, 8, 8, 8));
-                buttonRow[j].setBackground(CalGrid.get(BoatIDs[row])[column].getAvailable() ? Color.WHITE : Color.BLACK);
+                buttonRow[j].setBackground(CalGrid.get(BoatIDs[row])[column].getAvailable() ? MolvenoColor.LIGHT.getColor() : MolvenoColor.DARK.getColor());
                 buttonRow[j].addActionListener(e -> {
                     selectTimeCell(row, column);
                 });
@@ -60,14 +79,16 @@ public class CalendarDisplay extends JPanel {
         JPanel fullCalendar = new JPanel();
         BoxLayout CalBoxLayout = new BoxLayout(fullCalendar, BoxLayout.X_AXIS);
         fullCalendar.setLayout(CalBoxLayout);
+        //here the panel containing the calendar is split into 13 pieces; 1 for each hour
         for (int i = 0; i < 13; i++) {
             JPanel CalendarSegment = new JPanel();
             BoxLayout CalSegBox = new BoxLayout(CalendarSegment, BoxLayout.Y_AXIS);
             CalendarSegment.setLayout(CalSegBox);
-            CalendarSegment.setBorder(new LineBorder(Color.BLACK));
+            CalendarSegment.setBorder(new LineBorder(MolvenoColor.DARK.getColor()));
             int hour = i + 9;
             JLabel headerLabel = new JLabel(hour + ":00");
             CalendarSegment.add(headerLabel);
+            //this loop creates a row of cells for each hour, placing cells that were created earlier as part of one 2D grid
             for (int j = 0; j < allCells.length; j++) {
                 JPanel cellRow = new JPanel();
                 BoxLayout boxLayoutManagerRow = new BoxLayout(cellRow, BoxLayout.X_AXIS);
@@ -80,6 +101,7 @@ public class CalendarDisplay extends JPanel {
                 if (i == 12) {
                     numPanels = 2;
                 }
+                //this part of the code adds a cell from the "allCells" grid inside of the JPanel
                 for (int k = zeroPoint; k < zeroPoint + numPanels; k++) {
                     cellRow.add(allCells[j][k]);
                 }
@@ -88,7 +110,7 @@ public class CalendarDisplay extends JPanel {
             fullCalendar.add(CalendarSegment);
         }
         add(fullCalendar);
-
+        //this panel contains the "reserve" and "cancel" buttons
         JPanel buttonrow = new JPanel();
         BoxLayout boxLayoutManagerRow = new BoxLayout(buttonrow, BoxLayout.X_AXIS);
         buttonrow.setLayout(boxLayoutManagerRow);
@@ -98,7 +120,7 @@ public class CalendarDisplay extends JPanel {
             if (this.selectedStart[0] != null) {
                 datePicker.setTextFieldToValidStateIfNeeded();
                 dateSelected = datePicker.getDate();
-                //reserveBoat();
+                //start & end times are pulled from the timePoints list, based on the position of the calendar cell in the grid
                 String vanTijd = timePoints[this.selectedStart[1]];
                 int end;
                 if(this.selectedEnd[0] == null){
@@ -106,12 +128,13 @@ public class CalendarDisplay extends JPanel {
                 }else{
                     end = this.selectedEnd[1];
                 }
+                //end time is 1 time point after the cell selected as the end point
                 String totTijd = timePoints[end + 1];
                 //find list of boats that are already reserved in this range of time
                 ArrayList<Integer> reservedBoats = new ArrayList<Integer>();
                 for(int row = 0; row < allCells.length; row++){
                     for(int col = this.selectedStart[1]; col < end + 1; col++){
-                        if(allCells[row][col].getBackground() == Color.BLACK){
+                        if(allCells[row][col].getBackground() == MolvenoColor.DARK.getColor()){
                             reservedBoats.add(BoatIDs[row]);
                             break;
                         }
@@ -134,12 +157,13 @@ public class CalendarDisplay extends JPanel {
         add(buttonrow);
     }
 
+    //this function is tied to the cancel button and simply undoes any selections that have already been made
     private void cancelSelection() {
         if(this.selectedStart[0] != null){
-            allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(Color.WHITE);
+            allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(MolvenoColor.LIGHT.getColor());
             this.selectedStart = new Integer[]{null, null};
             if(this.selectedEnd[0] != null){
-                allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(Color.WHITE);
+                allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(MolvenoColor.LIGHT.getColor());
                 this.selectedEnd = new Integer[]{null, null};
             }
         }
@@ -159,76 +183,83 @@ public class CalendarDisplay extends JPanel {
 
             for(int j = this.selectedStart[1]; j < endTime + 1; j++){
                 this.Calendar.getCalendarGrid().get(BoatIDs[row])[j].reserve();
-                allCells[row][j].setBackground(Color.BLACK);
+                allCells[row][j].setBackground(MolvenoColor.DARK.getColor());
             }
         }
         //make green & red cells white again
-        if(allCells[this.selectedStart[0]][this.selectedStart[1]].getBackground() != Color.BLACK){
-            allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(Color.WHITE);
+        if(allCells[this.selectedStart[0]][this.selectedStart[1]].getBackground() != MolvenoColor.DARK.getColor()){
+            allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(MolvenoColor.LIGHT.getColor());
         }
-        if(this.selectedEnd[0] != null && allCells[this.selectedEnd[0]][this.selectedEnd[1]].getBackground() != Color.BLACK){
-            allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(Color.WHITE);
+        if(this.selectedEnd[0] != null && allCells[this.selectedEnd[0]][this.selectedEnd[1]].getBackground() != MolvenoColor.DARK.getColor()){
+            allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(MolvenoColor.LIGHT.getColor());
         }
         //reset markers for selected cells
         this.selectedStart = new Integer[]{null, null};
         this.selectedEnd = new Integer[]{null, null};
     }
 
+
+    /* this is the function that handles the selection of cells by clicking on them.
+    selectedStart & selectedEnd keep track of which cells are selected by row & column.
+    background is set to green when set as the starting cell, to red when set as ending cell
+    previously selected cells are set to white when a new selection is made
+    black cells are already selected
+    */
     private void selectTimeCell(int row, int column) {
         //scenario 1: no selection has been made yet
-        if(this.selectedStart[0] == null && allCells[row][column].getBackground() != Color.BLACK){
-            allCells[row][column].setBackground(Color.GREEN);
+        if(this.selectedStart[0] == null && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+            allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
             this.selectedStart = new Integer[]{row, column};
         //scenario 2: new boat selected
-        }else if(this.selectedStart[0] != row && allCells[row][column].getBackground() != Color.BLACK){
-            allCells[row][column].setBackground(Color.GREEN);
-            allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(Color.WHITE);
+        }else if(this.selectedStart[0] != row && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+            allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
+            allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(MolvenoColor.LIGHT.getColor());
             this.selectedStart = new Integer[]{row, column};
             if (this.selectedEnd[0] != null){
-                allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(Color.WHITE);
+                allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(MolvenoColor.LIGHT.getColor());
                 this.selectedEnd = new Integer[]{null, null};
             }
         }else{
             //scenario 3: select current end point to turn it into the start point
             if(this.selectedEnd[1] != null && this.selectedEnd[1] == column){
-                allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(Color.WHITE);
-                allCells[row][column].setBackground(Color.GREEN);
+                allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(MolvenoColor.LIGHT.getColor());
+                allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
                 this.selectedStart = new Integer[]{row, column};
                 this.selectedEnd = new Integer[]{null, null};
             }else if(column > this.selectedStart[1]){
                 //check if the block attempting to be reserved is available
                 boolean allAvailable = true;
                 for(int i = this.selectedStart[1]; i < column + 1; i++){
-                    if(allCells[row][i].getBackground() == Color.BLACK){
+                    if(allCells[row][i].getBackground() == MolvenoColor.DARK.getColor()){
                         allAvailable = false;
                         break;
                     }
                 }
                 //scenario 4: new endpoint selected
                 if(allAvailable){
-                    allCells[row][column].setBackground(Color.RED);
+                    allCells[row][column].setBackground(MolvenoColor.ORANGE.getColor());
                     if (this.selectedEnd[0] != null){
-                        allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(Color.WHITE);
+                        allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(MolvenoColor.LIGHT.getColor());
                     }
                     this.selectedEnd = new Integer[]{row, column};
                 //scenario 5: new start point selected past reserved block
-                }else if(allCells[row][column].getBackground() != Color.BLACK){
-                    allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(Color.WHITE);
-                    allCells[row][column].setBackground(Color.GREEN);
+                }else if(allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+                    allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(MolvenoColor.LIGHT.getColor());
+                    allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
                     this.selectedStart = new Integer[]{row, column};
                     if (this.selectedEnd[0] != null){
-                        allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(Color.WHITE);
+                        allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(MolvenoColor.LIGHT.getColor());
                         this.selectedEnd = new Integer[]{null, null};
                     }
                 }
             }else {
                 //scenario 6: new start point selected for the same boat (same as scenario 4)
-                if(allCells[row][column].getBackground() != Color.BLACK){
-                    allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(Color.WHITE);
-                    allCells[row][column].setBackground(Color.GREEN);
+                if(allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+                    allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(MolvenoColor.LIGHT.getColor());
+                    allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
                     this.selectedStart = new Integer[]{row, column};
                     if (this.selectedEnd[0] != null){
-                        allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(Color.WHITE);
+                        allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(MolvenoColor.LIGHT.getColor());
                         this.selectedEnd = new Integer[]{null, null};
                     }
                 }
