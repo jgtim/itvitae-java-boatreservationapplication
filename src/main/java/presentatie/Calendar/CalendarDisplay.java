@@ -1,6 +1,7 @@
 package presentatie.Calendar;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import data.ReservationRepositoryHandler;
 import presentatie.ReserveringPopup;
 
 import javax.swing.*;
@@ -23,7 +24,7 @@ public class CalendarDisplay extends JPanel {
             "20:30", "20:45", "21:00", "21:15", "21:30"};
     private LocalDate dateSelected;
 
-    public CalendarDisplay() {
+    public CalendarDisplay(ReservationRepositoryHandler reservationRepositoryHandler) {
 
         BoxLayout boxLayoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
         setLayout(boxLayoutManager);
@@ -106,7 +107,7 @@ public class CalendarDisplay extends JPanel {
                 }
                 String totTijd = timePoints[end + 1];
 
-                ReserveringPopup reserveringPopup = new ReserveringPopup(this, vanTijd, totTijd, dateSelected);
+                ReserveringPopup reserveringPopup = new ReserveringPopup(reservationRepositoryHandler, this, vanTijd, totTijd, dateSelected);
                 reserveringPopup.pack();
                 reserveringPopup.setLocationRelativeTo(null);
                 reserveringPopup.setVisible(true);
