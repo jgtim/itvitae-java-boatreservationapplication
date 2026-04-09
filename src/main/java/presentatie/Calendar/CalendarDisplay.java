@@ -39,7 +39,9 @@ public class CalendarDisplay extends JPanel {
 
         this.allCells = new JButton[BoatIDs.length][50];
 
+        //the calendar grid ties a boat ID to a list of calendar cell objects, which contain data about that time point for that boat
         HashMap<Integer, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
+        //this for loop creates the buttons representing calendar cells
         for (int i = 0; i < CalGrid.size(); i++) {
             final int row = i;
             JButton buttonRow[] = new JButton[50];
@@ -49,10 +51,6 @@ public class CalendarDisplay extends JPanel {
                 //TODO determine button size here based on final app
                 buttonRow[j].setMargin(new Insets(8, 8, 8, 8));
                 buttonRow[j].setBackground(CalGrid.get(BoatIDs[row])[column].getAvailable() ? Color.WHITE : Color.BLACK);
-                //buttonRow[j].setBorderPainted(false);//TODO get the buttons to change color
-                //buttonRow[j].setOpaque(false);
-                //buttonRow[j].putClientProperty("JButton.backgroundColor", Color.RED);
-                //buttonRow[j].setForeground(Color.RED);
                 buttonRow[j].addActionListener(e -> {
                     selectTimeCell(row, column);
                 });
@@ -63,6 +61,7 @@ public class CalendarDisplay extends JPanel {
         JPanel fullCalendar = new JPanel();
         BoxLayout CalBoxLayout = new BoxLayout(fullCalendar, BoxLayout.X_AXIS);
         fullCalendar.setLayout(CalBoxLayout);
+        //here the panel containing the calendar is split into 13 pieces; 1 for each hour
         for (int i = 0; i < 13; i++) {
             JPanel CalendarSegment = new JPanel();
             BoxLayout CalSegBox = new BoxLayout(CalendarSegment, BoxLayout.Y_AXIS);
@@ -71,6 +70,7 @@ public class CalendarDisplay extends JPanel {
             int hour = i + 9;
             JLabel headerLabel = new JLabel(hour + ":00");
             CalendarSegment.add(headerLabel);
+            //this loop creates a row of cells for each hour, placing cells that were created earlier as part of one 2D grid
             for (int j = 0; j < allCells.length; j++) {
                 JPanel cellRow = new JPanel();
                 BoxLayout boxLayoutManagerRow = new BoxLayout(cellRow, BoxLayout.X_AXIS);
@@ -83,6 +83,7 @@ public class CalendarDisplay extends JPanel {
                 if (i == 12) {
                     numPanels = 2;
                 }
+                //this part of the code adds a cell from the "allCells" grid inside of the JPanel
                 for (int k = zeroPoint; k < zeroPoint + numPanels; k++) {
                     cellRow.add(allCells[j][k]);
                 }
@@ -91,7 +92,7 @@ public class CalendarDisplay extends JPanel {
             fullCalendar.add(CalendarSegment);
         }
         add(fullCalendar);
-
+        //this panel contains the "reserve" and "cancel" buttons
         JPanel buttonrow = new JPanel();
         BoxLayout boxLayoutManagerRow = new BoxLayout(buttonrow, BoxLayout.X_AXIS);
         buttonrow.setLayout(boxLayoutManagerRow);
@@ -101,7 +102,7 @@ public class CalendarDisplay extends JPanel {
             if (this.selectedStart[0] != null) {
                 datePicker.setTextFieldToValidStateIfNeeded();
                 dateSelected = datePicker.getDate();
-                //reserveBoat();
+                //start & end times are pulled from the timePoints list, based on the position of the calendar cell in the grid
                 String vanTijd = timePoints[this.selectedStart[1]];
                 int end;
                 if(this.selectedEnd[0] == null){
@@ -109,6 +110,7 @@ public class CalendarDisplay extends JPanel {
                 }else{
                     end = this.selectedEnd[1];
                 }
+                //end time is 1 time point after the cell selected as the end point
                 String totTijd = timePoints[end + 1];
 
                 ReserveringPopup reserveringPopup = new ReserveringPopup(reservationRepositoryHandler, this, vanTijd, totTijd, dateSelected);
@@ -128,6 +130,7 @@ public class CalendarDisplay extends JPanel {
         add(buttonrow);
     }
 
+    //this function is tied to the cancel button and simply undoes any selections that have already been made
     private void cancelSelection() {
         if(this.selectedStart[0] != null){
             allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(Color.WHITE);
@@ -139,8 +142,10 @@ public class CalendarDisplay extends JPanel {
         }
     }
 
+    //this function marks selected cells as reserved
     public void reserveBoat() {
-        //TODO this should happen after doing stuff in the popup window
+        //TODO start & end point should be based on selected boats in the popup
+        //this if statement just makes sure something has actually been selected
         if(this.selectedStart[0] != null){
             int endTime;
             if(this.selectedEnd[0] == null){
@@ -157,6 +162,13 @@ public class CalendarDisplay extends JPanel {
         }
     }
 
+
+    /* this is the function that handles the selection of cells by clicking on them.
+    selectedStart & selectedEnd keep track of which cells are selected by row & column.
+    background is set to green when set as the starting cell, to red when set as ending cell
+    previously selected cells are set to white when a new selection is made
+    black cells are already selected
+    */
     private void selectTimeCell(int row, int column) {
         //scenario 1: no selection has been made yet
         if(this.selectedStart[0] == null && allCells[row][column].getBackground() != Color.BLACK){
