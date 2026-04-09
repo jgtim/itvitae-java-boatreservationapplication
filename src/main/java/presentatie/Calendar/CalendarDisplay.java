@@ -8,12 +8,14 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class CalendarDisplay extends JPanel {
     private Calendar Calendar;
     private JPanel DisplayPanel = new JPanel();
-    private String[] BoatIDs = {"Boat1", "Boat2", "Boat3"}; //TODO placeholder data; maybe let user input selection of them
+    private String[] BoatIDs = {"1", "2", "3"}; //TODO placeholder data; maybe let user input selection of them
     private JButton[][] allCells;
     private Integer[] selectedStart = {null, null};
     private Integer[] selectedEnd = {null, null};
@@ -46,7 +48,6 @@ public class CalendarDisplay extends JPanel {
             for (int j = 0; j < 50; j++) {
                 final int column = j;
                 buttonRow[j] = new JButton();
-                //TODO determine button size here based on final app
                 buttonRow[j].setMargin(new Insets(8, 8, 8, 8));
                 buttonRow[j].setBackground(CalGrid.get(BoatIDs[row])[column].getAvailable() ? Color.WHITE : Color.BLACK);
                 buttonRow[j].addActionListener(e -> {
@@ -106,8 +107,17 @@ public class CalendarDisplay extends JPanel {
                     end = this.selectedEnd[1];
                 }
                 String totTijd = timePoints[end + 1];
-
-                ReserveringPopup reserveringPopup = new ReserveringPopup(reservationRepositoryHandler, this, vanTijd, totTijd, dateSelected);
+                //find list of boats that are already reserved in this range of time
+                ArrayList<Integer> reservedBoats = new ArrayList<Integer>();
+                for(int row = 0; row < allCells.length; row++){
+                    for(int col = this.selectedStart[1]; col < end + 1; col++){
+                        if(allCells[row][col].getBackground() == Color.BLACK){
+                            reservedBoats.add(Integer.valueOf(BoatIDs[row]));//TODO this should be integer in the final version
+                            break;
+                        }
+                    }
+                }
+                ReserveringPopup reserveringPopup = new ReserveringPopup(reservationRepositoryHandler, this, vanTijd, totTijd, dateSelected, reservedBoats);
                 reserveringPopup.pack();
                 reserveringPopup.setLocationRelativeTo(null);
                 reserveringPopup.setVisible(true);
@@ -135,22 +145,33 @@ public class CalendarDisplay extends JPanel {
         }
     }
 
-    public void reserveBoat() {
-        //TODO this should happen after doing stuff in the popup window
-        if(this.selectedStart[0] != null){
-            int endTime;
-            if(this.selectedEnd[0] == null){
-                endTime = this.selectedStart[1];
-            }else{
-                endTime = this.selectedEnd[1];
-            }
-            for(int i = this.selectedStart[1]; i < endTime + 1; i++){
-                this.Calendar.getCalendarGrid().get(BoatIDs[this.selectedStart[0]])[i].reserve();
-                allCells[this.selectedStart[0]][i].setBackground(Color.BLACK);
-            }
-            this.selectedStart = new Integer[]{null, null};
-            this.selectedEnd = new Integer[]{null, null};
+    public void reserveBoat(ArrayList<Integer> selectedBoats) {
+        //first, establish an end time based on whether or not more than 1 cell is selected
+        int endTime;
+        if(this.selectedEnd[0] == null){
+            endTime = this.selectedStart[1];
+        }else{
+            endTime = this.selectedEnd[1];
         }
+        //for every selected boat, make cells in time selection black
+        for(int i = 0; i < selectedBoats.size(); i++){
+            int row = Arrays.asList(BoatIDs).indexOf(String.valueOf(selectedBoats.get(i))); //TODO should just be integer
+
+            for(int j = this.selectedStart[1]; j < endTime + 1; j++){
+                this.Calendar.getCalendarGrid().get(BoatIDs[row])[j].reserve();
+                allCells[row][j].setBackground(Color.BLACK);
+            }
+        }
+        //make green & red cells white again
+        if(allCells[this.selectedStart[0]][this.selectedStart[1]].getBackground() != Color.BLACK){
+            allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(Color.WHITE);
+        }
+        if(allCells[this.selectedEnd[0]][this.selectedEnd[1]].getBackground() != Color.BLACK){
+            allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(Color.WHITE);
+        }
+        //reset markers for selected cells
+        this.selectedStart = new Integer[]{null, null};
+        this.selectedEnd = new Integer[]{null, null};
     }
 
     private void selectTimeCell(int row, int column) {

@@ -145,5 +145,186 @@
         2
       ]
     }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 1,
+        "email": "1"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-09",
+      "begintijd": "15:15",
+      "eindtijd": "16:00",
+      "boatIDs": []
+    }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 1,
+        "email": "1"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-09",
+      "begintijd": "15:30",
+      "eindtijd": "16:15",
+      "boatIDs": []
+    }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 11,
+        "email": "1"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-09",
+      "begintijd": "15:30",
+      "eindtijd": "16:15",
+      "boatIDs": []
+    }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 11,
+        "email": "1"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-09",
+      "begintijd": "15:00",
+      "eindtijd": "15:45",
+      "boatIDs": [
+        2
+      ]
+    }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 1,
+        "email": "1"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-09",
+      "begintijd": "15:30",
+      "eindtijd": "15:45",
+      "boatIDs": [
+        2
+      ]
+    }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 1,
+        "email": "1"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-09",
+      "begintijd": "15:00",
+      "eindtijd": "15:45",
+      "boatIDs": [
+        2
+      ]
+    }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 1,
+        "email": "1"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-09",
+      "begintijd": "15:00",
+      "eindtijd": "15:45",
+      "boatIDs": [
+        2
+      ]
+    }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 1,
+        "email": "1"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-09",
+      "begintijd": "15:00",
+      "eindtijd": "15:45",
+      "boatIDs": [
+        1
+      ]
+    }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 1,
+        "email": "1"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-09",
+      "begintijd": "15:00",
+      "eindtijd": "15:45",
+      "boatIDs": [
+        1
+      ]
+    }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 1,
+        "email": "1"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-09",
+      "begintijd": "14:30",
+      "eindtijd": "15:00",
+      "boatIDs": [
+        1
+      ]
+    }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 1,
+        "email": "1"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-09",
+      "begintijd": "17:00",
+      "eindtijd": "17:30",
+      "boatIDs": [
+        1
+      ]
+    }
   }
 ]
