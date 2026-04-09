@@ -113,5 +113,37 @@
         57
       ]
     }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 1,
+        "email": "1"
+      },
+      "betaald": true,
+      "kamerFacturatie": true,
+      "datum": "2026-04-09",
+      "begintijd": "14:45",
+      "eindtijd": "15:15",
+      "boatIDs": []
+    }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 1,
+        "email": "1"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-09",
+      "begintijd": "14:45",
+      "eindtijd": "15:30",
+      "boatIDs": [
+        2
+      ]
+    }
   }
 ]

@@ -125,11 +125,15 @@ public class ReserveringPopup extends JDialog {
     private boolean isFormValid() {
         if (nameField.getText().isEmpty()) {
             System.out.println("Must enter name");
+            System.out.println(addedBoatsLabel);
             return false;
         } else if (phoneNumberField.getText().isEmpty() && emailField.getText().isEmpty()) {
             System.out.println("Must enter phone number or email");
             return false;
+        } else if (addedBoatsLabel.getText().isEmpty()){
+            System.out.println("please reserve a boat");
         }
+
         return true;
     }
 }
