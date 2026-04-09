@@ -2,13 +2,13 @@ package presentatie.Calendar;
 
 public class CalendarCell {
 
-    private final String BoatID;
+    private final Integer BoatID;
     private boolean Available;
     private final String timeBox;
 
-    public CalendarCell(String boatID, String timeBox) {
+    public CalendarCell(Integer boatID, String timeBox, boolean Available) {
         this.BoatID = boatID;
-        this.Available = true; //TODO make this false based on reservations data
+        this.Available = Available;
         this.timeBox = timeBox;
     }
 
@@ -16,7 +16,7 @@ public class CalendarCell {
         return "Boat ID: " + this.BoatID + " availibility: " + this.Available + " time: " + this.timeBox;
     }
 
-    public String getBoatID(){
+    public Integer getBoatID(){
         return this.BoatID;
     }
 

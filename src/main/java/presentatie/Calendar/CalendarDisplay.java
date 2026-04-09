@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class CalendarDisplay extends JPanel {
     private Calendar Calendar;
     private JPanel DisplayPanel = new JPanel();
-    private String[] BoatIDs = {"Boat1", "Boat2", "Boat3"}; //TODO placeholder data; maybe let user input selection of them
+    private Integer[] BoatIDs = {1, 2, 3}; //TODO placeholder data; maybe let user input selection of them
     private JButton[][] allCells;
     private Integer[] selectedStart = {null, null};
     private Integer[] selectedEnd = {null, null};
@@ -39,7 +39,7 @@ public class CalendarDisplay extends JPanel {
 
         this.allCells = new JButton[BoatIDs.length][50];
 
-        HashMap<String, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
+        HashMap<Integer, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
         for (int i = 0; i < CalGrid.size(); i++) {
             final int row = i;
             JButton buttonRow[] = new JButton[50];
@@ -49,6 +49,10 @@ public class CalendarDisplay extends JPanel {
                 //TODO determine button size here based on final app
                 buttonRow[j].setMargin(new Insets(8, 8, 8, 8));
                 buttonRow[j].setBackground(CalGrid.get(BoatIDs[row])[column].getAvailable() ? Color.WHITE : Color.BLACK);
+                //buttonRow[j].setBorderPainted(false);//TODO get the buttons to change color
+                //buttonRow[j].setOpaque(false);
+                //buttonRow[j].putClientProperty("JButton.backgroundColor", Color.RED);
+                //buttonRow[j].setForeground(Color.RED);
                 buttonRow[j].addActionListener(e -> {
                     selectTimeCell(row, column);
                 });
@@ -72,7 +76,7 @@ public class CalendarDisplay extends JPanel {
                 BoxLayout boxLayoutManagerRow = new BoxLayout(cellRow, BoxLayout.X_AXIS);
                 cellRow.setLayout(boxLayoutManagerRow);
                 if (i == 0) {
-                    cellRow.add(new JLabel(BoatIDs[j]));
+                    cellRow.add(new JLabel(String.valueOf(BoatIDs[j]))); //TODO make this name of boat probably
                 }
                 int zeroPoint = 4 * i;
                 int numPanels = 4;
