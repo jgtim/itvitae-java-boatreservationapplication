@@ -83,5 +83,3 @@ public class Calendar {
         return partialReservationList;
     }
 }
-
-
