@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class CalendarDisplay extends JPanel {
     private Calendar Calendar;
     private JPanel DisplayPanel = new JPanel();
-    private String[] BoatIDs = {"1", "2", "3"}; //TODO placeholder data; maybe let user input selection of them
+    private Integer[] BoatIDs = {1, 2, 3}; //TODO placeholder data; maybe let user input selection of them
     private JButton[][] allCells;
     private Integer[] selectedStart = {null, null};
     private Integer[] selectedEnd = {null, null};
@@ -41,7 +41,7 @@ public class CalendarDisplay extends JPanel {
 
         this.allCells = new JButton[BoatIDs.length][50];
 
-        HashMap<String, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
+        HashMap<Integer, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
         for (int i = 0; i < CalGrid.size(); i++) {
             final int row = i;
             JButton buttonRow[] = new JButton[50];
@@ -73,7 +73,7 @@ public class CalendarDisplay extends JPanel {
                 BoxLayout boxLayoutManagerRow = new BoxLayout(cellRow, BoxLayout.X_AXIS);
                 cellRow.setLayout(boxLayoutManagerRow);
                 if (i == 0) {
-                    cellRow.add(new JLabel(BoatIDs[j]));
+                    cellRow.add(new JLabel(String.valueOf(BoatIDs[j]))); //TODO make this name of boat probably
                 }
                 int zeroPoint = 4 * i;
                 int numPanels = 4;
@@ -112,7 +112,7 @@ public class CalendarDisplay extends JPanel {
                 for(int row = 0; row < allCells.length; row++){
                     for(int col = this.selectedStart[1]; col < end + 1; col++){
                         if(allCells[row][col].getBackground() == Color.BLACK){
-                            reservedBoats.add(Integer.valueOf(BoatIDs[row]));//TODO this should be integer in the final version
+                            reservedBoats.add(BoatIDs[row]);
                             break;
                         }
                     }
@@ -155,7 +155,7 @@ public class CalendarDisplay extends JPanel {
         }
         //for every selected boat, make cells in time selection black
         for(int i = 0; i < selectedBoats.size(); i++){
-            int row = Arrays.asList(BoatIDs).indexOf(String.valueOf(selectedBoats.get(i))); //TODO should just be integer
+            int row = Arrays.asList(BoatIDs).indexOf(selectedBoats.get(i));
 
             for(int j = this.selectedStart[1]; j < endTime + 1; j++){
                 this.Calendar.getCalendarGrid().get(BoatIDs[row])[j].reserve();
@@ -166,7 +166,7 @@ public class CalendarDisplay extends JPanel {
         if(allCells[this.selectedStart[0]][this.selectedStart[1]].getBackground() != Color.BLACK){
             allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(Color.WHITE);
         }
-        if(allCells[this.selectedEnd[0]][this.selectedEnd[1]].getBackground() != Color.BLACK){
+        if(this.selectedEnd[0] != null && allCells[this.selectedEnd[0]][this.selectedEnd[1]].getBackground() != Color.BLACK){
             allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(Color.WHITE);
         }
         //reset markers for selected cells
