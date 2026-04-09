@@ -34,6 +34,8 @@ public class BoatTab extends JPanel {
 //            boatList.add(new Boat(BoatType.SILENT_ELECTRIC, "Elektrische Boot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
 //            boatList.add(new Boat(BoatType.PREMIUM_ELECTRIC, "Elektrische Boot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
 //        }
+
+        //Load the boat data from the Excel file
         var boatDataHandler = new BoatDataExcel();
         ArrayList<Boat> boatList = boatDataHandler.read();
 
