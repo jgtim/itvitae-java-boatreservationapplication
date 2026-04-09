@@ -1,62 +1,89 @@
 package service;
 
-// Public Class Boat. Needs to be connected to database later and already linked to Boat Tab
+import domain.BoatType;
+import domain.LakeArea;
+
+// Public Class Boat. Needs to be connected to database later
+// Is already linked to BoatTab
+
+// Maybe we can change to Record later
 public class Boat {
-    private final String name;
+    private final BoatType boatType;
+    private final String boatTypeMember;
+
+    private final LakeArea lakeArea;
     private final int capacity;
-    private final String type;
 
-    // 'may be final'. Owner Molveno Boat Rentals MAY need to be able to edit later: added features
-    private String features;
+    private final boolean isElectric;
+    private final boolean hasLifeJacket;
 
-    // 'may be final'. Owner Molveno Boat Rentals needs to be able to personally adapt this later through database.
-    private double price15;
-    private double price30;
+    private final double price15;
+    private final double price30;
 
-    // Full Constructor: used when we know the specific details from database
-    public Boat(String name, int capacity, double p15, double p30, String type, String features) {
-        this.name = name;
+    private final int id;
+
+    // Full Constructor: using specific details from database
+    public Boat(BoatType boatType, String boatTypeMember,
+                LakeArea lakeArea,
+                int capacity,
+                boolean isElectric, boolean hasLifeJacket,
+                double p15, double p30,
+                int id) {
+
+        this.boatType = boatType;
+        this.boatTypeMember = boatTypeMember;
+        this.lakeArea = lakeArea;
+
         this.capacity = capacity;
+
+        this.isElectric = isElectric;
+        this.hasLifeJacket = hasLifeJacket;
+
         this.price15 = p15;
         this.price30 = p30;
-        this.type = type;
-        this.features = features;
+
+        this.id = id;
     }
 
     // Default Constructor: calls the Full Constructor with standard values; for testing
     public Boat() {
-        this("Nieuwe Boot", 4, 15.0, 25.0, "Sloep", "Zonnedek");
+        this(BoatType.STANDARD_ROWBOAT, "Roeiboot 1", LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, 1);
     }
 
-
-
-
     // --- GETTERS ---
-    public String getName() {
-        return name;
+    public BoatType getBoatType() {
+        return boatType;
+    }
+
+    public String getBoatTypeMember() {
+        return boatTypeMember;
+    }
+
+    public LakeArea getLakeArea() {
+        return lakeArea;
     }
 
     public int getCapacity() {
         return capacity;
     }
 
+    public boolean isElectric() {
+        return isElectric;
+    }
+
+    public boolean hasLifeJacket() {
+        return hasLifeJacket;
+    }
+
     public double getPrice15() {
         return price15;
     }
 
-    public double getPrice30() {
-        return price30;
+    public double getPrice30() { return price30; }
+
+    public int getId(){
+        return id;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public String getFeatures() {
-        return features;
-    }
+    // --- SETTERS NEEDED? ONLY WAY TO CHANGE PRICE (and maybe features) ARE THROUGH DATABASE BY OWNER MOLVENO
 }
-
-
-
-// --- SETTERS NEEDED? ONLY WAY TO CHANGE PRICE (and maybe features) ARE THROUGH DATABASE BY OWNER MOLVENO
