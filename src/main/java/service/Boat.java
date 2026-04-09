@@ -47,7 +47,7 @@ public class Boat {
 
     // Default Constructor: calls the Full Constructor with standard values; for testing
     public Boat() {
-        this(BoatType.STANDARD_ROWBOAT, "Rowboat 1", LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, 1);
+        this(BoatType.STANDARD_ROWBOAT, "Roeiboot 1", LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, 1);
     }
 
     // --- GETTERS ---

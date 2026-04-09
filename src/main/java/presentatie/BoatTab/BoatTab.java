@@ -26,12 +26,12 @@ public class BoatTab extends JPanel {
         // Creating List of all individual Boats | Testing search function of scrollable pane on left side
         ArrayList<Boat> boatList = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
-            boatList.add(new Boat(BoatType.STANDARD_ROWBOAT, "Rowboat " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-            boatList.add(new Boat(BoatType.FAMILY_ROWBOAT, "Rowboat " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+            boatList.add(new Boat(BoatType.STANDARD_ROWBOAT, "Roeiboot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+            boatList.add(new Boat(BoatType.FAMILY_ROWBOAT, "Roeiboot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
             boatList.add(new Boat(BoatType.KAYAK, "Kayak " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-            boatList.add(new Boat(BoatType.PEDAL, "Pedal Boat " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-            boatList.add(new Boat(BoatType.SILENT_ELECTRIC, "Electric Boat " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-            boatList.add(new Boat(BoatType.PREMIUM_ELECTRIC, "Electric Boat " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+            boatList.add(new Boat(BoatType.PEDAL, "Waterfiets " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+            boatList.add(new Boat(BoatType.SILENT_ELECTRIC, "Elektrische Boot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+            boatList.add(new Boat(BoatType.PREMIUM_ELECTRIC, "Elektrische Boot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
         }
 
         // RIGHT SIDE -------------------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ public class BoatTab extends JPanel {
         boatDetails.setBackground(MolvenoColor.LIGHT.getColor());
 
         // Header Button (NORTH on JPanel boatDetails)
-        JButton detailHeaderBtn = new JButton("Find and select your boat on the left hand side.");
+        JButton detailHeaderBtn = new JButton("Zoek en selecteer een boot aan de linkerzijde.");
         detailHeaderBtn.setContentAreaFilled(false);
         detailHeaderBtn.setBorderPainted(false);
         detailHeaderBtn.setFocusPainted(false);
@@ -76,7 +76,7 @@ public class BoatTab extends JPanel {
 
         photoPanel.setBorder(BorderFactory.createMatteBorder(50, 50, 50, 50, MolvenoColor.LIGHT.getColor()));
 
-        JLabel photoLabel = new JLabel("PHOTO");
+        JLabel photoLabel = new JLabel("FOTO");
         photoPanel.add(photoLabel);
         detailPanel.add(photoPanel);
 
@@ -126,7 +126,7 @@ public class BoatTab extends JPanel {
         Font searchBarFont = MolvenoFont.PARAGRAPH.getFont();
         TitledBorder searchBarBorder = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(MolvenoColor.DARK.getColor()),
-                "Find your boat: ",
+                "Zoek je boot: ",
                 TitledBorder.LEFT,
                 TitledBorder.TOP,
                 searchBarFont,
@@ -134,7 +134,7 @@ public class BoatTab extends JPanel {
 
         // Using Titled Border and adjusting rest of Look and Feel
         boatSearchBar.setBorder(searchBarBorder);
-        boatSearchBar.setPreferredSize(new Dimension(250, 60));
+        boatSearchBar.setPreferredSize(new Dimension(260, 60));
         boatSearchBar.setFont(MolvenoFont.PARAGRAPH.getFont());
         boatSearchBar.setForeground(MolvenoColor.DARK.getColor());
 
@@ -187,7 +187,7 @@ public class BoatTab extends JPanel {
 
         // Create JPanel wrapper for combining boatSearchBarWrapper (NORTH) and boatScrollPane (CENTER)
         JPanel sidebarWrapper = new JPanel(new BorderLayout());
-        sidebarWrapper.setPreferredSize(new Dimension(250, 0));
+        sidebarWrapper.setPreferredSize(new Dimension(260, 0));
         sidebarWrapper.add(boatSearchBarWrapper, BorderLayout.NORTH);
         sidebarWrapper.add(boatScrollPane, BorderLayout.CENTER);
 
@@ -236,7 +236,7 @@ public class BoatTab extends JPanel {
         targetPanel.removeAll();
 
         // Creating single button on top to return to Boat Types
-        JButton typesButton = new JButton("<<< Go Back");
+        JButton typesButton = new JButton("<<< Ga terug");
         typesButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         typesButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         typesButton.setFont(MolvenoFont.BUTTONLABEL.getFont());
@@ -263,16 +263,16 @@ public class BoatTab extends JPanel {
                 // Creating String boatInfo in html formatting to display Boat object boatInfo
                 String boatInfo = "<html>" +
                         "<b>Type:</b> " + b.getBoatType().getDisplayBoatType() + "<br>" +
-                        "<b>Name:</b> " + b.getBoatTypeMember() + "<br><br>" +
-                        "<b>Lake Area:</b> " + b.getLakeArea().getDisplayLakeArea() + "<br><br>" +
+                        "<b>Naam:</b> " + b.getBoatTypeMember() + "<br><br>" +
+                        "<b>Meer Locatie:</b> " + b.getLakeArea().getDisplayLakeArea() + "<br><br>" +
 
-                        "<b>Capacity:</b> " + b.getCapacity() + "<br><br>" +
+                        "<b>Capaciteit:</b> " + b.getCapacity() + "<br><br>" +
 
-                        "<b>Electric motor:</b> " + (b.isElectric() ? "Yes" : "No") + "<br>" +
-                        "<b>Life jacket on board:</b> " + (b.hasLifeJacket() ? "Yes" : "No") + "<br><br>" +
+                        "<b>Elektrische motor:</b> " + (b.isElectric() ? "Ja" : "Nee") + "<br>" +
+                        "<b>Reddingsvest aan boord:</b> " + (b.hasLifeJacket() ? "Ja" : "Nee") + "<br><br>" +
 
-                        "<b>Price per 15 minutes:</b> " + b.getPrice15() + " euros <br>" +
-                        "<b>Price per 30 minutes:</b> " + b.getPrice30() + " euros <br><br>" +
+                        "<b>Prijs per 15 minuten:</b> " + b.getPrice15() + " euro <br>" +
+                        "<b>Prijs per 30 minuten:</b> " + b.getPrice30() + " euro <br><br>" +
 
                         "<b>Boot ID:</b> " + b.getId() +
                         "<html>";

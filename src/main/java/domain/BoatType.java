@@ -2,12 +2,12 @@ package domain;
 
 public enum BoatType {
     // All supplied Boat Types with String data on how to display it in GUI
-    STANDARD_ROWBOAT("Standard Rowboat"),
-    FAMILY_ROWBOAT("Family Rowboat"),
-    KAYAK("1 Person Kayak"),
-    PEDAL("Pedal Boat"),
-    SILENT_ELECTRIC("Silent Electric Boat"),
-    PREMIUM_ELECTRIC("Premium Electric Boat");
+    STANDARD_ROWBOAT("Standaard Roeiboot"),
+    FAMILY_ROWBOAT("Familie Roeiboot"),
+    KAYAK("1 Persoons Kayak"),
+    PEDAL("Waterfiets"),
+    SILENT_ELECTRIC("Stille Elektrische Boot"),
+    PREMIUM_ELECTRIC("Premium Elektrische Boot");
 
     private final String displayBoatType;
 
