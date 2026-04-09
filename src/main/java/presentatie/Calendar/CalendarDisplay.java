@@ -9,6 +9,8 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class CalendarDisplay extends JPanel {
@@ -128,8 +130,17 @@ public class CalendarDisplay extends JPanel {
                 }
                 //end time is 1 time point after the cell selected as the end point
                 String totTijd = timePoints[end + 1];
-
-                ReserveringPopup reserveringPopup = new ReserveringPopup(reservationRepositoryHandler, this, vanTijd, totTijd, dateSelected);
+                //find list of boats that are already reserved in this range of time
+                ArrayList<Integer> reservedBoats = new ArrayList<Integer>();
+                for(int row = 0; row < allCells.length; row++){
+                    for(int col = this.selectedStart[1]; col < end + 1; col++){
+                        if(allCells[row][col].getBackground() == MolvenoColor.DARK.getColor()){
+                            reservedBoats.add(BoatIDs[row]);
+                            break;
+                        }
+                    }
+                }
+                ReserveringPopup reserveringPopup = new ReserveringPopup(reservationRepositoryHandler, this, vanTijd, totTijd, dateSelected, reservedBoats);
                 reserveringPopup.pack();
                 reserveringPopup.setLocationRelativeTo(null);
                 reserveringPopup.setVisible(true);
@@ -158,24 +169,33 @@ public class CalendarDisplay extends JPanel {
         }
     }
 
-    //this function marks selected cells as reserved
-    public void reserveBoat() {
-        //TODO start & end point should be based on selected boats in the popup
-        //this if statement just makes sure something has actually been selected
-        if(this.selectedStart[0] != null){
-            int endTime;
-            if(this.selectedEnd[0] == null){
-                endTime = this.selectedStart[1];
-            }else{
-                endTime = this.selectedEnd[1];
-            }
-            for(int i = this.selectedStart[1]; i < endTime + 1; i++){
-                this.Calendar.getCalendarGrid().get(BoatIDs[this.selectedStart[0]])[i].reserve();
-                allCells[this.selectedStart[0]][i].setBackground(MolvenoColor.DARK.getColor());
-            }
-            this.selectedStart = new Integer[]{null, null};
-            this.selectedEnd = new Integer[]{null, null};
+    public void reserveBoat(ArrayList<Integer> selectedBoats) {
+        //first, establish an end time based on whether or not more than 1 cell is selected
+        int endTime;
+        if(this.selectedEnd[0] == null){
+            endTime = this.selectedStart[1];
+        }else{
+            endTime = this.selectedEnd[1];
         }
+        //for every selected boat, make cells in time selection black
+        for(int i = 0; i < selectedBoats.size(); i++){
+            int row = Arrays.asList(BoatIDs).indexOf(selectedBoats.get(i));
+
+            for(int j = this.selectedStart[1]; j < endTime + 1; j++){
+                this.Calendar.getCalendarGrid().get(BoatIDs[row])[j].reserve();
+                allCells[row][j].setBackground(MolvenoColor.DARK.getColor());
+            }
+        }
+        //make green & red cells white again
+        if(allCells[this.selectedStart[0]][this.selectedStart[1]].getBackground() != MolvenoColor.DARK.getColor()){
+            allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(MolvenoColor.LIGHT.getColor());
+        }
+        if(this.selectedEnd[0] != null && allCells[this.selectedEnd[0]][this.selectedEnd[1]].getBackground() != MolvenoColor.DARK.getColor()){
+            allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(MolvenoColor.LIGHT.getColor());
+        }
+        //reset markers for selected cells
+        this.selectedStart = new Integer[]{null, null};
+        this.selectedEnd = new Integer[]{null, null};
     }
 
 

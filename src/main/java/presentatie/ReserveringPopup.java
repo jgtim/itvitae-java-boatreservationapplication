@@ -31,17 +31,21 @@ public class ReserveringPopup extends JDialog {
     private JPanel newboatPanel;
     private JTextField boatIdInputField;
     private JLabel addedBoatsLabel;
+    private JPanel errorPane;
+    private JLabel errorLabel;
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
     private ArrayList<Integer> boatIDs = new ArrayList<Integer>();
     private ReservationRepositoryHandler reservationRepositoryHandler;
+    private ArrayList<Integer> reservedBoats;
 
-    public ReserveringPopup(ReservationRepositoryHandler handler, CalendarDisplay display, String van, String tot, LocalDate datum) { //LocalDate date
+    public ReserveringPopup(ReservationRepositoryHandler handler, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<Integer> reservedBoats) { //LocalDate date
         this.DisplayTab = display;
         this.begintijd = van;
         this.eindtijd = tot;
         this.datum = datum;
+        this.reservedBoats = reservedBoats; //boats that are already reserved at the given time
         vanLabel.setText(van);
         totLabel.setText(tot);
         dateField.setText(datum.toString());
@@ -79,10 +83,22 @@ public class ReserveringPopup extends JDialog {
         addBoatButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int newBoatID = Integer.parseInt(boatIdInputField.getText());
-                boatIDs.add(newBoatID);
-                addedBoatsLabel.setText("Added: " + boatIDs.toString());
-                boatIdInputField.setText("");
+                try{
+                    int newBoatID = Integer.parseInt(boatIdInputField.getText());
+                    if(!reservedBoats.contains(newBoatID)){
+                        boatIDs.add(newBoatID);
+                        addedBoatsLabel.setText("Added: " + boatIDs.toString());
+                        boatIdInputField.setText("");
+                        errorLabel.setText(" ");
+                    }else{
+                        errorLabel.setText("Die boot is al gereserveerd");
+                    }//TODO don't add if there is no boat with the given ID
+
+                } catch (NumberFormatException ex) {
+                    //throw new RuntimeException(ex);
+                    errorLabel.setText("vul een getal in");
+                }
+
             }
         });
     }
@@ -95,7 +111,7 @@ public class ReserveringPopup extends JDialog {
         ReservationDto newReservation = getReservationDto();
 
         reservationRepositoryHandler.addReservation(newReservation);
-        this.DisplayTab.reserveBoat();
+        this.DisplayTab.reserveBoat(boatIDs);
         dispose();
     }
 
@@ -124,12 +140,16 @@ public class ReserveringPopup extends JDialog {
 
     private boolean isFormValid() {
         if (nameField.getText().isEmpty()) {
-            System.out.println("Must enter name");
+            errorLabel.setText("geen naam ingevuld");
             return false;
         } else if (phoneNumberField.getText().isEmpty() && emailField.getText().isEmpty()) {
-            System.out.println("Must enter phone number or email");
+            errorLabel.setText("vul telefoonnummer en/of email in");
+            return false;
+        } else if (boatIDs.isEmpty()){
+            errorLabel.setText("Er zijn geen boten gereserveerd");
             return false;
         }
+
         return true;
     }
 }
