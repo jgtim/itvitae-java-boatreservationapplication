@@ -1,5 +1,6 @@
 package presentatie.BoatTab;
 
+import data.BoatDataExcel;
 import domain.BoatType;
 import domain.LakeArea;
 import domain.MolvenoColor;
@@ -24,15 +25,17 @@ public class BoatTab extends JPanel {
         ArrayList<BoatType> boatTypeList = new ArrayList<>();
 
         // Creating List of all individual Boats | Testing search function of scrollable pane on left side
-        ArrayList<Boat> boatList = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) {
-            boatList.add(new Boat(BoatType.STANDARD_ROWBOAT, "Roeiboot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-            boatList.add(new Boat(BoatType.FAMILY_ROWBOAT, "Roeiboot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-            boatList.add(new Boat(BoatType.KAYAK, "Kayak " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-            boatList.add(new Boat(BoatType.PEDAL, "Waterfiets " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-            boatList.add(new Boat(BoatType.SILENT_ELECTRIC, "Elektrische Boot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-            boatList.add(new Boat(BoatType.PREMIUM_ELECTRIC, "Elektrische Boot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-        }
+//        ArrayList<Boat> boatList = new ArrayList<>();
+//        for (int i = 1; i <= 10; i++) {
+//            boatList.add(new Boat(BoatType.STANDARD_ROWBOAT, "Roeiboot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+//            boatList.add(new Boat(BoatType.FAMILY_ROWBOAT, "Roeiboot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+//            boatList.add(new Boat(BoatType.KAYAK, "Kayak " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+//            boatList.add(new Boat(BoatType.PEDAL, "Waterfiets " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+//            boatList.add(new Boat(BoatType.SILENT_ELECTRIC, "Elektrische Boot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+//            boatList.add(new Boat(BoatType.PREMIUM_ELECTRIC, "Elektrische Boot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
+//        }
+        var boatDataHandler = new BoatDataExcel();
+        ArrayList<Boat> boatList = boatDataHandler.read();
 
         // RIGHT SIDE -------------------------------------------------------------------------------------------------
         // JPanel boat details (on right side of tab)
