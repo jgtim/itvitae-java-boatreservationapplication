@@ -5,8 +5,8 @@ import service.ReservationDto;
 import java.util.ArrayList;
 
 public interface ReservationService {
-    /**
-     * @return ArrayList&ltReservationDto&gt
-     */
-    ArrayList<ReservationDto> getReservationList();
+    public int getNewReserveringsNummer();
+    public ArrayList<ReservationDto> getReservationList();
+    public ReservationDto getReservationWithReservationNumber(int reserveringsNummer);
+    void addReservation(ReservationDto newReservation);
 }

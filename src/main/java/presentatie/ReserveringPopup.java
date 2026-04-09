@@ -1,8 +1,9 @@
 package presentatie;
 
-import data.ReservationRepositoryHandler;
+import domain.ReservationRecord;
 import presentatie.Calendar.CalendarDisplay;
 import service.ReservationDto;
+import service.ReservationService.ReservationService;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -17,7 +18,7 @@ public class ReserveringPopup extends JDialog {
     private JTextField nameField;
     private JTextField phoneNumberField;
     private JCheckBox kamerFacturatieCheckBox;
-    private JPanel tijdInformatie;
+    private JPanel agendaTijdInformatie;
     private JCheckBox betaaldCheckBox;
     private JPanel confirmationButtonsPanel;
     private JTextField emailField;
@@ -35,9 +36,10 @@ public class ReserveringPopup extends JDialog {
     private String begintijd;
     private String eindtijd;
     private ArrayList<Integer> boatIDs = new ArrayList<Integer>();
-    private ReservationRepositoryHandler reservationRepositoryHandler;
+    private ReservationService reservationService;
 
-    public ReserveringPopup(ReservationRepositoryHandler handler, CalendarDisplay display, String van, String tot, LocalDate datum) { //LocalDate date
+    // Constructor voor gebruik in agendatab om een reservering aan te maken
+    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum) { //LocalDate date
         this.DisplayTab = display;
         this.begintijd = van;
         this.eindtijd = tot;
@@ -45,22 +47,14 @@ public class ReserveringPopup extends JDialog {
         vanLabel.setText(van);
         totLabel.setText(tot);
         dateField.setText(datum.toString());
-        reservationRepositoryHandler = handler;
+        this.reservationService = reservationService;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
+        buttonOK.addActionListener(e -> onOK());
 
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        buttonCancel.addActionListener(e -> onCancel());
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -87,6 +81,49 @@ public class ReserveringPopup extends JDialog {
         });
     }
 
+    // Constructor voor gebruik in reserveringen tab om een reservering in te zien of te wijzigen
+    public ReserveringPopup(ReservationDto reservationDto) {
+        setContentPane(contentPane);
+        setModal(true);
+//        getRootPane().setDefaultButton(buttonOK);
+
+        ReservationRecord reservationRecord = reservationDto.getReservationRecord();
+
+        // Populate the fields of the popup with the selected reservation
+        dateField.setText(reservationRecord.datum());
+        vanLabel.setText(reservationRecord.begintijd());
+        totLabel.setText(reservationRecord.eindtijd());
+        addedBoatsLabel.setText("Added: " + reservationRecord.boatIDs().toString());
+        nameField.setText(reservationRecord.customerRecord().naam());
+        nameField.setEditable(false);
+        phoneNumberField.setText(reservationRecord.customerRecord().telefoonNummer().toString());
+        phoneNumberField.setEditable(false);
+        emailField.setText(reservationRecord.customerRecord().email());
+        emailField.setEditable(false);
+        kamerFacturatieCheckBox.setSelected(reservationRecord.kamerFacturatie());
+        kamerFacturatieCheckBox.setEnabled(false);
+        betaaldCheckBox.setSelected(reservationRecord.betaald());
+        betaaldCheckBox.setEnabled(false);
+
+        buttonOK.setText("Wijzig");
+        buttonOK.addActionListener(e -> setEditMode());
+
+        buttonCancel.addActionListener(e -> onCancel());
+
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+    }
+
+    private void setEditMode() {
+        buttonOK.setText("Bevestig");
+
+    }
+
     private void onOK() {
         if (!isFormValid()) {
             return;
@@ -94,13 +131,14 @@ public class ReserveringPopup extends JDialog {
 
         ReservationDto newReservation = getReservationDto();
 
-        reservationRepositoryHandler.addReservation(newReservation);
+        reservationService.addReservation(newReservation);
         this.DisplayTab.reserveBoat();
         dispose();
     }
 
     private ReservationDto getReservationDto() {
         ReservationDto newReservation = new ReservationDto(
+                reservationService.getNewReserveringsNummer(),
                 nameField.getText(),
                 (phoneNumberField.getText().isEmpty()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
                 (emailField.getText().isEmpty()) ? null : emailField.getText(),

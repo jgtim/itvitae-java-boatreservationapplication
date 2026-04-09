@@ -7,13 +7,14 @@ import domain.TabIndex;
 import presentatie.BoatTab.BoatTab;
 import presentatie.Calendar.Calendar;
 import presentatie.Calendar.CalendarDisplay;
+import service.ReservationService.ReservationService;
 
 
 import javax.swing.*;
 
 public class Tabs extends JFrame {
 
-    Tabs() {
+    Tabs(ReservationService reservationService) {
         // UIManager Class manipulation
 
         // --- Setting Look and Feel:
@@ -46,8 +47,8 @@ public class Tabs extends JFrame {
         bootCatalogue.add(new JLabel("Welkom bij de Boot Catalogus"));
 
         ReservationRepositoryHandler reservationRepositoryHandler = new ReservationJsonHandler();
-        JPanel agenda = new CalendarDisplay(reservationRepositoryHandler);
-        ReservationsTab reservations = new ReservationsTab(reservationRepositoryHandler);
+        JPanel agenda = new CalendarDisplay(reservationService);
+        ReservationsTab reservations = new ReservationsTab(reservationService);
 
         // Adding JPanels to JTabbedPane
 
