@@ -232,5 +232,23 @@
         1
       ]
     }
+  },
+  {
+    "reservationRecord": {
+      "customerRecord": {
+        "naam": "1",
+        "telefoonNummer": 1,
+        "email": "1"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-09",
+      "begintijd": "16:00",
+      "eindtijd": "16:30",
+      "boatIDs": [
+        1,
+        2
+      ]
+    }
   }
 ]

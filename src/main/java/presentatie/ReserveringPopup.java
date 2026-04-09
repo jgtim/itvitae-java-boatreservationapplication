@@ -31,6 +31,8 @@ public class ReserveringPopup extends JDialog {
     private JPanel newboatPanel;
     private JTextField boatIdInputField;
     private JLabel addedBoatsLabel;
+    private JPanel errorPane;
+    private JLabel errorLabel;
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
@@ -87,13 +89,14 @@ public class ReserveringPopup extends JDialog {
                         boatIDs.add(newBoatID);
                         addedBoatsLabel.setText("Added: " + boatIDs.toString());
                         boatIdInputField.setText("");
+                        errorLabel.setText(" ");
                     }else{
-                        System.out.println("that boat is already reserved");
+                        errorLabel.setText("Die boot is al gereserveerd");
                     }//TODO don't add if there is no boat with the given ID
 
                 } catch (NumberFormatException ex) {
                     //throw new RuntimeException(ex);
-                    System.out.println("please input a valid number");//TODO make popups here & above
+                    errorLabel.setText("vul een getal in");
                 }
 
             }
@@ -137,14 +140,13 @@ public class ReserveringPopup extends JDialog {
 
     private boolean isFormValid() {
         if (nameField.getText().isEmpty()) {
-            System.out.println("Must enter name");
-            System.out.println(boatIDs.size());
+            errorLabel.setText("geen naam ingevuld");
             return false;
         } else if (phoneNumberField.getText().isEmpty() && emailField.getText().isEmpty()) {
-            System.out.println("Must enter phone number or email");
+            errorLabel.setText("vul telefoonnummer en/of email in");
             return false;
         } else if (boatIDs.isEmpty()){
-            System.out.println("please reserve a boat");
+            errorLabel.setText("Er zijn geen boten gereserveerd");
             return false;
         }
 
