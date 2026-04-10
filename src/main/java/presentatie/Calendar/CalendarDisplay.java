@@ -256,8 +256,10 @@ public class CalendarDisplay extends JPanel {
     private void selectTimeCell(int row, int column) {
         //scenario 1: no selection has been made yet
         if(this.selectedStart[0] == null && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
-            allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
-            this.selectedStart = new Integer[]{row, column};
+            if(allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+                allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
+                this.selectedStart = new Integer[]{row, column};
+            }
         //scenario 2: new boat selected
         }else if(this.selectedStart[0] != row && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
             allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
