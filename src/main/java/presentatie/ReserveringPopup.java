@@ -1,5 +1,7 @@
 package presentatie;
 
+import data.BoatDataExcel;
+import domain.BoatRecord;
 import domain.ReservationRecord;
 import presentatie.Calendar.CalendarDisplay;
 import service.ReservationDto;
@@ -47,9 +49,11 @@ public class ReserveringPopup extends JDialog {
     private ArrayList<Integer> boatIDs = new ArrayList<Integer>();
     private ReservationService reservationService;
     private ArrayList<Integer> reservedBoats;
-    private float price = 0.00F;
+    private double price = 0.00;
     private int times30;
     private boolean add15;
+    private List<Integer> validIDs;
+    ArrayList<BoatRecord> allBoats;
 
     public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<Integer> reservedBoats) { //LocalDate date
         this.DisplayTab = display;
@@ -70,6 +74,14 @@ public class ReserveringPopup extends JDialog {
         }
         times30 = tijdsduur / 2;
         dateField.setText(datum.toString());
+        var boatDataHandler = new BoatDataExcel();
+        ArrayList<BoatRecord> allBoats = boatDataHandler.read();
+
+        this.validIDs = Arrays.asList(
+                allBoats.stream()
+                        .map(BoatRecord::id)
+                        .toArray(Integer[]::new)
+        );
         this.reservationService = reservationService;
         setContentPane(contentPane);
         setModal(true);
@@ -98,21 +110,24 @@ public class ReserveringPopup extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 try{
                     int newBoatID = Integer.parseInt(boatIdInputField.getText());
-                    if(!reservedBoats.contains(newBoatID)){
+                    if(!validIDs.contains(newBoatID)){
+                        errorLabel.setText("Die boot bestaat niet");
+                    }else if(reservedBoats.contains(newBoatID)){
+                        errorLabel.setText("Die boot is al gereserveerd");
+                    }else {
                         boatIDs.add(newBoatID);
                         addedBoatsLabel.setText("Toegevoegd: " + boatIDs.toString());
                         boatIdInputField.setText("");
                         errorLabel.setText(" ");
-                        float boatPrice15 = 0.50F;//TODO get this from boat data
-                        float boatPrice30 = 0.75F;
-                        price += times30 * boatPrice30;
+                        //float boatPrice15 = 0.50F;//TODO get this from boat data
+                        double boatPrice15 = allBoats.get(validIDs.indexOf(newBoatID)).price15();
+                        double boatPrice30 = allBoats.get(validIDs.indexOf(newBoatID)).price30();
+                        price += (times30 * boatPrice30);
                         if(add15){
                             price += boatPrice15;
                         }
                         System.out.println("PRICE: " + price);
                         priceField.setText("€" + String.format("%.2f", price));
-                    }else{
-                        errorLabel.setText("Die boot is al gereserveerd");
                     }//TODO don't add if there is no boat with the given ID
 
                 } catch (NumberFormatException ex) {
