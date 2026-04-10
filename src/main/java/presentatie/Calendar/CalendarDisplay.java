@@ -50,7 +50,7 @@ public class CalendarDisplay extends JPanel {
         dateSelected = datePicker.getDate();
 
         // Giving the Integer[] BoatIDs to the Calendar constructor
-        this.Calendar = new Calendar(dateSelected, this.BoatIDs);
+        this.Calendar = new Calendar(reservationService, dateSelected, this.BoatIDs);
 
         this.allCells = new JButton[BoatIDs.length][50];
 
