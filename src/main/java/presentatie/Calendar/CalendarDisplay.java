@@ -1,9 +1,12 @@
 package presentatie.Calendar;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import data.BoatDataExcel;
 import data.ReservationRepositoryHandler;
+import domain.BoatRecord;
 import domain.MolvenoColor;
 import presentatie.ReserveringPopup;
+import service.Boat;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -28,6 +31,13 @@ public class CalendarDisplay extends JPanel {
     private LocalDate dateSelected;
 
     public CalendarDisplay(ReservationRepositoryHandler reservationRepositoryHandler) {
+        // Getting Boat Records from BoatDataExcel
+        var boatDataHandler = new BoatDataExcel();
+        ArrayList<Boat> allBoats = boatDataHandler.read();
+
+        this.BoatIDs = allBoats.stream()
+                .map(Boat::getId) // Assuming getBoatId() exists in service.Boat
+                .toArray(Integer[]::new);
 
         BoxLayout boxLayoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
         setLayout(boxLayoutManager);
