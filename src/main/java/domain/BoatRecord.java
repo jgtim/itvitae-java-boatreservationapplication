@@ -1,13 +1,13 @@
 package domain;
 
 public record BoatRecord(
-        int ID,
-        String type,
-        int capacity,
+        BoatType boatType,
+        String boatName,
         LakeArea lakeArea,
-        boolean electric,
+        int capacity,
+        boolean isElectric,
         boolean hasLifeJackets,
-        String comments,
-        int pricePer15,
-        int pricePer30) {
+        double price15,
+        double price30,
+        int id) {
 }

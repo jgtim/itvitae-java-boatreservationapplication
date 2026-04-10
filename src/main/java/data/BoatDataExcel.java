@@ -1,11 +1,11 @@
 package data;
 
+import domain.BoatRecord;
 import domain.BoatType;
 import domain.LakeArea;
 import org.dhatim.fastexcel.reader.ReadableWorkbook;
 import org.dhatim.fastexcel.reader.Row;
 import org.dhatim.fastexcel.reader.Sheet;
-import service.Boat;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,10 +26,10 @@ public class BoatDataExcel implements BoatDataHandler {
      * @return Arraylist containing boat objects.
      */
     @Override
-    public ArrayList<Boat> read() {
-        var boatList = new ArrayList<Boat>();
+    public ArrayList<BoatRecord> read() {
+        var boatList = new ArrayList<BoatRecord>();
 
-        //Open the excel file using fastexcel reader
+        //Open the Excel file using fastexcel reader
         try (InputStream is = new FileInputStream(FILEPATH); ReadableWorkbook wb = new ReadableWorkbook(is)) {
 
             //Read the sheet with the boat data into rows
@@ -85,7 +85,7 @@ public class BoatDataExcel implements BoatDataHandler {
                             String boatName = boatType != null? boatType.getDisplayBoatType() + " " + i : "Onbekende Boot" + i;
 
                             //Add the boat to the list
-                            boatList.add(new Boat(boatType, boatName, lakeArea, capacity, isElectric, hasLifeJackets, price15, price30, boatId));
+                            boatList.add(new BoatRecord(boatType, boatName, lakeArea, capacity, isElectric, hasLifeJackets, price15, price30, boatId));
 
                             boatId++; //Increment boat id
                         }

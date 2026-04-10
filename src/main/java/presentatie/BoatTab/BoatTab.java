@@ -1,11 +1,7 @@
 package presentatie.BoatTab;
 
 import data.BoatDataExcel;
-import domain.BoatType;
-import domain.LakeArea;
-import domain.MolvenoColor;
-import domain.MolvenoFont;
-import service.Boat;
+import domain.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -21,8 +17,8 @@ public class BoatTab extends JPanel {
         // Setting BoatTab layout as BorderLayout
         setLayout(new BorderLayout());
 
-        // Creating ArrayList to work with Boat class data
-        ArrayList<BoatType> boatTypeList = new ArrayList<>();
+//        // Creating ArrayList to work with Boat class data
+//        ArrayList<BoatType> boatTypeList = new ArrayList<>();
 
         // Creating List of all individual Boats | Testing search function of scrollable pane on left side
 //        ArrayList<Boat> boatList = new ArrayList<>();
@@ -37,7 +33,7 @@ public class BoatTab extends JPanel {
 
         //Load the boat data from the Excel file
         var boatDataHandler = new BoatDataExcel();
-        ArrayList<Boat> boatList = boatDataHandler.read();
+        ArrayList<BoatRecord> boatList = boatDataHandler.read();
 
         // RIGHT SIDE -------------------------------------------------------------------------------------------------
         // JPanel boat details (on right side of tab)
@@ -202,7 +198,7 @@ public class BoatTab extends JPanel {
 
     // METHODS ---------------------------------------------------------------------------------------------------------
     // Method for populating Boat Type Buttons in the left side Scroll Pane (top card)
-    private void populateBoatTypeButtons(JPanel targetPanel, CardLayout cardLayout, JPanel deck, JPanel memberPanel, JButton header, JLabel details, ArrayList<Boat> fullBoatList) {
+    private void populateBoatTypeButtons(JPanel targetPanel, CardLayout cardLayout, JPanel deck, JPanel memberPanel, JButton header, JLabel details, ArrayList<BoatRecord> fullBoatList) {
         targetPanel.removeAll();
 
         for (BoatType type : BoatType.values()) {
@@ -216,9 +212,9 @@ public class BoatTab extends JPanel {
             // When we click on a type:
             typeBtn.addActionListener(e -> {
                 // Filter a list of boats of ONLY the type clicked
-                ArrayList<Boat> filteredBoats = new ArrayList<>();
-                for (Boat b : fullBoatList) {
-                    if (b.getBoatType().equals(type)) {
+                ArrayList<BoatRecord> filteredBoats = new ArrayList<>();
+                for (BoatRecord b : fullBoatList) {
+                    if (b.boatType().equals(type)) {
                         filteredBoats.add(b);
                     }
                 }
@@ -237,7 +233,7 @@ public class BoatTab extends JPanel {
 
 
     // Method for populating Boat Member Buttons in the left side Scroll Pane (bottom card)
-    private void populateBoatMemberButtons(ArrayList<Boat> boatList, JPanel targetPanel, JButton header, JLabel details, CardLayout cardLayout, JPanel deck) {
+    private void populateBoatMemberButtons(ArrayList<BoatRecord> boatList, JPanel targetPanel, JButton header, JLabel details, CardLayout cardLayout, JPanel deck) {
         targetPanel.removeAll();
 
         // Creating single button on top to return to Boat Types
@@ -253,9 +249,9 @@ public class BoatTab extends JPanel {
         targetPanel.add(typesButton);
         targetPanel.add(Box.createVerticalStrut(15)); // Extra space after back button
 
-        for (Boat b : boatList) {
+        for (BoatRecord b : boatList) {
             // for every boat in list of boats, create and style a JButton
-            JButton boatBtn = new JButton(b.getBoatTypeMember());
+            JButton boatBtn = new JButton(b.boatName());
             boatBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
             boatBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
             boatBtn.setFont(MolvenoFont.BUTTONLABEL.getFont());
@@ -264,22 +260,22 @@ public class BoatTab extends JPanel {
 
             // Creating interaction between Boat Buttons in JScrollPane and JButton detailHeader
             boatBtn.addActionListener(e -> {
-                header.setText(b.getBoatTypeMember());
+                header.setText(b.boatName());
                 // Creating String boatInfo in html formatting to display Boat object boatInfo
                 String boatInfo = "<html>" +
-                        "<b>Type:</b> " + b.getBoatType().getDisplayBoatType() + "<br>" +
-                        "<b>Naam:</b> " + b.getBoatTypeMember() + "<br><br>" +
-                        "<b>Meer Locatie:</b> " + b.getLakeArea().getDisplayLakeArea() + "<br><br>" +
+                        "<b>Type:</b> " + b.boatType().getDisplayBoatType() + "<br>" +
+                        "<b>Naam:</b> " + b.boatName() + "<br><br>" +
+                        "<b>Meer Locatie:</b> " + b.lakeArea().getDisplayLakeArea() + "<br><br>" +
 
-                        "<b>Capaciteit:</b> " + b.getCapacity() + "<br><br>" +
+                        "<b>Capaciteit:</b> " + b.capacity() + "<br><br>" +
 
                         "<b>Elektrische motor:</b> " + (b.isElectric() ? "Ja" : "Nee") + "<br>" +
-                        "<b>Reddingsvest aan boord:</b> " + (b.hasLifeJacket() ? "Ja" : "Nee") + "<br><br>" +
+                        "<b>Reddingsvest aan boord:</b> " + (b.hasLifeJackets() ? "Ja" : "Nee") + "<br><br>" +
 
-                        "<b>Prijs per 15 minuten:</b> " + b.getPrice15() + " euro <br>" +
-                        "<b>Prijs per 30 minuten:</b> " + b.getPrice30() + " euro <br><br>" +
+                        "<b>Prijs per 15 minuten:</b> " + b.price15() + " euro <br>" +
+                        "<b>Prijs per 30 minuten:</b> " + b.price30() + " euro <br><br>" +
 
-                        "<b>Boot ID:</b> " + b.getId() +
+                        "<b>Boot ID:</b> " + b.id() +
                         "<html>";
                 // Setting html formatted String boatInfo to JLabel detailLabel
                 details.setText(boatInfo);
