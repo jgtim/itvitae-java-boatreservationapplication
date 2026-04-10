@@ -6,7 +6,7 @@ import data.ReservationRepositoryHandler;
 import domain.BoatRecord;
 import domain.MolvenoColor;
 import presentatie.ReserveringPopup;
-import service.Boat;
+import service.ReservationService.ReservationService;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -30,13 +30,13 @@ public class CalendarDisplay extends JPanel {
             "20:30", "20:45", "21:00", "21:15", "21:30"};
     private LocalDate dateSelected;
 
-    public CalendarDisplay(ReservationRepositoryHandler reservationRepositoryHandler) {
+    public CalendarDisplay(ReservationService reservationService) {
         // Getting Boat Records from BoatDataExcel
         var boatDataHandler = new BoatDataExcel();
-        ArrayList<Boat> allBoats = boatDataHandler.read();
+        ArrayList<BoatRecord> allBoats = boatDataHandler.read();
 
         this.BoatIDs = allBoats.stream()
-                .map(Boat::getId)
+                .map(BoatRecord::id)
                 .toArray(Integer[]::new);
 
         BoxLayout boxLayoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -67,6 +67,7 @@ public class CalendarDisplay extends JPanel {
                 // IMPORTANT -------------------------------------------------------------------------------------------
                 // Because of use of JButtons, our own colors get overridden with system standard
                 // When we disable this, we have to manually add lots of tweaks.
+                // BETTER CHOICE: Change JButtons to JPanels with MouseListener. Much easier for styling.
 
                 buttonRow[j].setContentAreaFilled(false); // Disable automatic filling
                 buttonRow[j].setOpaque(true); // Making sure our colors get selected
@@ -187,7 +188,7 @@ public class CalendarDisplay extends JPanel {
                         }
                     }
                 }
-                ReserveringPopup reserveringPopup = new ReserveringPopup(reservationRepositoryHandler, this, vanTijd, totTijd, dateSelected, reservedBoats);
+                ReserveringPopup reserveringPopup = new ReserveringPopup(reservationService, this, vanTijd, totTijd, dateSelected, reservedBoats);
                 reserveringPopup.pack();
                 reserveringPopup.setLocationRelativeTo(null);
                 reserveringPopup.setVisible(true);
