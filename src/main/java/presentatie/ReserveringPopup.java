@@ -10,6 +10,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ReserveringPopup extends JDialog {
     private JPanel contentPane;
@@ -38,12 +40,16 @@ public class ReserveringPopup extends JDialog {
     private JPanel tijdInformatie;
     private JComboBox comboBoxVan;
     private JComboBox comboBoxTot;
+    private JLabel priceField;
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
     private ArrayList<Integer> boatIDs = new ArrayList<Integer>();
     private ReservationService reservationService;
     private ArrayList<Integer> reservedBoats;
+    private float price = 0.00F;
+    private int times30;
+    private boolean add15;
 
     public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<Integer> reservedBoats) { //LocalDate date
         this.DisplayTab = display;
@@ -53,6 +59,16 @@ public class ReserveringPopup extends JDialog {
         this.reservedBoats = reservedBoats; //boats that are already reserved at the given time
         vanLabel.setText(van);
         totLabel.setText(tot);
+        List<String> timeList = Arrays.asList(this.DisplayTab.getCalendar().timeBoxes);
+        int tijdsduur = Arrays.copyOfRange(this.DisplayTab.getCalendar().timeBoxes, timeList.indexOf(van), timeList.indexOf(tot)).length;
+        if((tijdsduur & 1) != 0){ //check if odd
+            tijdsduur -= 1;
+            add15 = true;
+        }
+        else{
+            add15 = true;
+        }
+        times30 = tijdsduur / 2;
         dateField.setText(datum.toString());
         this.reservationService = reservationService;
         setContentPane(contentPane);
@@ -84,9 +100,17 @@ public class ReserveringPopup extends JDialog {
                     int newBoatID = Integer.parseInt(boatIdInputField.getText());
                     if(!reservedBoats.contains(newBoatID)){
                         boatIDs.add(newBoatID);
-                        addedBoatsLabel.setText("Added: " + boatIDs.toString());
+                        addedBoatsLabel.setText("Toegevoegd: " + boatIDs.toString());
                         boatIdInputField.setText("");
                         errorLabel.setText(" ");
+                        float boatPrice15 = 0.50F;//TODO get this from boat data
+                        float boatPrice30 = 0.75F;
+                        price += times30 * boatPrice30;
+                        if(add15){
+                            price += boatPrice15;
+                        }
+                        System.out.println("PRICE: " + price);
+                        priceField.setText("€" + String.format("%.2f", price));
                     }else{
                         errorLabel.setText("Die boot is al gereserveerd");
                     }//TODO don't add if there is no boat with the given ID
@@ -111,7 +135,6 @@ public class ReserveringPopup extends JDialog {
                 "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45",
                 "21:00", "21:15", "21:30"
         };
-
         setContentPane(contentPane);
         setModal(true);
 //        getRootPane().setDefaultButton(buttonOK);
@@ -126,7 +149,7 @@ public class ReserveringPopup extends JDialog {
         dateField.setText(reservationRecord.datum());
         vanLabel.setText(reservationRecord.begintijd());
         totLabel.setText(reservationRecord.eindtijd());
-        addedBoatsLabel.setText("Added: " + reservationRecord.boatIDs().toString());
+        addedBoatsLabel.setText("Toegevoegd: " + reservationRecord.boatIDs().toString());
         nameField.setText(reservationRecord.customerRecord().naam());
         nameField.setEditable(false);
         phoneNumberField.setText(reservationRecord.customerRecord().telefoonNummer().toString());
