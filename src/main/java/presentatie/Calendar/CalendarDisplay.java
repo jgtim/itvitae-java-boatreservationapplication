@@ -19,7 +19,7 @@ import java.util.HashMap;
 public class CalendarDisplay extends JPanel {
     private Calendar Calendar;
     private JPanel DisplayPanel = new JPanel();
-    private Integer[] BoatIDs = {1, 2, 3}; //TODO placeholder data; maybe let user input selection of them
+    private Integer[] BoatIDs; //TODO placeholder data; maybe let user input selection of them
     private JButton[][] allCells;
     private Integer[] selectedStart = {null, null};
     private Integer[] selectedEnd = {null, null};
@@ -36,7 +36,7 @@ public class CalendarDisplay extends JPanel {
         ArrayList<Boat> allBoats = boatDataHandler.read();
 
         this.BoatIDs = allBoats.stream()
-                .map(Boat::getId) // Assuming getBoatId() exists in service.Boat
+                .map(Boat::getId)
                 .toArray(Integer[]::new);
 
         BoxLayout boxLayoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -90,6 +90,31 @@ public class CalendarDisplay extends JPanel {
         JPanel fullCalendar = new JPanel();
         BoxLayout CalBoxLayout = new BoxLayout(fullCalendar, BoxLayout.X_AXIS);
         fullCalendar.setLayout(CalBoxLayout);
+
+        // Here we are creating a separate JPanel for the column of BoatIds
+        // Will be removing the if (i==0) block down below
+        JPanel idColumn = new JPanel();
+        idColumn.setLayout(new BoxLayout(idColumn, BoxLayout.Y_AXIS));
+        idColumn.setBorder(new LineBorder(MolvenoColor.DARK.getColor()));
+        // Setting the fixed size of this column
+        idColumn.setMinimumSize(new Dimension(80, 0));
+        idColumn.setPreferredSize(new Dimension(80, 600));
+
+        // Adding a Header to the top of the column
+        JLabel header = new  JLabel("Boot ID's:", SwingConstants.CENTER);
+        header.setAlignmentX(Component.CENTER_ALIGNMENT);
+        idColumn.add(header);
+
+        for (int i = 0; i < allCells.length; i++) {
+            JLabel idLabel = new JLabel("ID: " + BoatIDs[i]);
+            idLabel.setHorizontalAlignment(JLabel.CENTER);
+            idLabel.setPreferredSize(new Dimension(80, 20));
+            idLabel.setMaximumSize(new Dimension(80, 20));
+            idLabel.setMinimumSize(new Dimension(80, 20));
+            idColumn.add(idLabel);
+        }
+        fullCalendar.add(idColumn);
+
         //here the panel containing the calendar is split into 13 pieces; 1 for each hour
         for (int i = 0; i < 13; i++) {
             JPanel CalendarSegment = new JPanel();
@@ -104,9 +129,10 @@ public class CalendarDisplay extends JPanel {
                 JPanel cellRow = new JPanel();
                 BoxLayout boxLayoutManagerRow = new BoxLayout(cellRow, BoxLayout.X_AXIS);
                 cellRow.setLayout(boxLayoutManagerRow);
-                if (i == 0) {
-                    cellRow.add(new JLabel(String.valueOf(BoatIDs[j]))); //TODO make this name of boat probably
-                }
+                // COMMENTED THIS OUT: replaced with idColumn logic above
+//                if (i == 0) {
+//                    cellRow.add(new JLabel(String.valueOf(BoatIDs[j]))); //TODO make this name of boat probably
+//                }
                 int zeroPoint = 4 * i;
                 int numPanels = 4;
                 if (i == 12) {
