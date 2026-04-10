@@ -10,6 +10,7 @@ import presentatie.ReserveringPopup;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.time.LocalDate;
@@ -51,6 +52,7 @@ public class CalendarDisplay extends JPanel {
         JPanel datePickerPanel = new JPanel();
         datePickerPanel.setLayout(new BoxLayout(datePickerPanel, BoxLayout.X_AXIS));
         datePickerPanel.setBackground(MolvenoColor.LIGHT.getColor());
+        datePickerPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
 
         JLabel dateLabel = new JLabel("Selecteer een datum: ");
         dateLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
@@ -117,16 +119,16 @@ public class CalendarDisplay extends JPanel {
         JPanel idColumn = new JPanel();
         idColumn.setBackground(MolvenoColor.LIGHT.getColor());
         idColumn.setLayout(new BoxLayout(idColumn, BoxLayout.Y_AXIS));
-        idColumn.setBorder(new LineBorder(MolvenoColor.DARK.getColor()));
+
         // Setting the fixed size of this column
         idColumn.setMinimumSize(new Dimension(80, 0));
         idColumn.setPreferredSize(new Dimension(80, 600));
 
         // Adding a Header to the top of the column
-        JLabel header = new  JLabel("Boot ID's:", SwingConstants.CENTER);
+        JLabel header = new  JLabel("Boot ID's:", SwingConstants.LEFT);
         header.setFont(MolvenoFont.PARAGRAPH.getFont());
         header.setForeground(MolvenoColor.DARK.getColor());
-        header.setAlignmentX(Component.CENTER_ALIGNMENT);
+        header.setAlignmentX(Component.LEFT_ALIGNMENT);
         idColumn.add(header);
 
         for (int i = 0; i < allCells.length; i++) {
@@ -190,6 +192,7 @@ public class CalendarDisplay extends JPanel {
         // Here we make a JScrollPane to wrap the fullCalendar in
         JScrollPane scrollPane = new JScrollPane(fullCalendar);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setPreferredSize(new Dimension(1000, 600));
@@ -200,11 +203,16 @@ public class CalendarDisplay extends JPanel {
         JPanel buttonrow = new JPanel();
         BoxLayout boxLayoutManagerRow = new BoxLayout(buttonrow, BoxLayout.X_AXIS);
         buttonrow.setLayout(boxLayoutManagerRow);
+        buttonrow.setBackground(MolvenoColor.LIGHT.getColor());
+        buttonrow.setBorder(new EmptyBorder(10, 0, 10, 0));
 
         JButton selectButton = new JButton("Reserveer");
         selectButton.setFont(MolvenoFont.PARAGRAPH.getFont());
         selectButton.setForeground(MolvenoColor.DARK.getColor());
         selectButton.setBackground(MolvenoColor.LIGHT.getColor());
+        selectButton.setFocusPainted(false);
+        selectButton.setBorder(new EmptyBorder(10, 10, 10, 10));
+
         selectButton.addActionListener(e -> {
             if (this.selectedStart[0] != null) {
                 datePicker.setTextFieldToValidStateIfNeeded();
@@ -242,6 +250,9 @@ public class CalendarDisplay extends JPanel {
         cancelButton.setFont(MolvenoFont.PARAGRAPH.getFont());
         cancelButton.setForeground(MolvenoColor.DARK.getColor());
         cancelButton.setBackground(MolvenoColor.LIGHT.getColor());
+        cancelButton.setFocusPainted(false);
+        cancelButton.setBorder(new EmptyBorder(10, 10, 10, 10));
+
         cancelButton.addActionListener(e -> {
             cancelSelection();
         });
