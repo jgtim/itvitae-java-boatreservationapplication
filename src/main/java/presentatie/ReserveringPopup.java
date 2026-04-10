@@ -6,6 +6,7 @@ import service.ReservationDto;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,6 +33,9 @@ public class ReserveringPopup extends JDialog {
     private JPanel newboatPanel;
     private JTextField boatIdInputField;
     private JLabel addedBoatsLabel;
+    private JPanel tijdInformatie;
+    private JComboBox comboBoxVan;
+    private JComboBox comboBoxTot;
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
@@ -83,9 +87,23 @@ public class ReserveringPopup extends JDialog {
 
     // Constructor voor gebruik in reserveringen tab om een reservering in te zien of te wijzigen
     public ReserveringPopup(ReservationDto reservationDto) {
+        String[] OPEN_TIMES = {
+                "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45",
+                "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45",
+                "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45",
+                "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45",
+                "17:00", "17:15", "17:30", "17:45", "18:00", "18:15", "18:30", "18:45",
+                "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45",
+                "21:00", "21:15", "21:30"
+        };
+
         setContentPane(contentPane);
         setModal(true);
 //        getRootPane().setDefaultButton(buttonOK);
+
+
+        comboBoxVan.setModel(new DefaultComboBoxModel<>(OPEN_TIMES));
+        comboBoxTot.setModel(new DefaultComboBoxModel<>(OPEN_TIMES));
 
         ReservationRecord reservationRecord = reservationDto.getReservationRecord();
 
@@ -104,6 +122,8 @@ public class ReserveringPopup extends JDialog {
         kamerFacturatieCheckBox.setEnabled(false);
         betaaldCheckBox.setSelected(reservationRecord.betaald());
         betaaldCheckBox.setEnabled(false);
+        boatIdInputField.setEditable(false);
+        addBoatButton.setEnabled(false);
 
         buttonOK.setText("Wijzig");
         buttonOK.addActionListener(e -> setEditMode());
@@ -121,7 +141,10 @@ public class ReserveringPopup extends JDialog {
 
     private void setEditMode() {
         buttonOK.setText("Bevestig");
-
+        comboBoxVan.setSelectedItem(vanLabel.getText());
+        comboBoxTot.setSelectedItem(totLabel.getText());
+        CardLayout cl = (CardLayout) tijdInformatie.getLayout();
+        cl.next(tijdInformatie);
     }
 
     private void onOK() {
