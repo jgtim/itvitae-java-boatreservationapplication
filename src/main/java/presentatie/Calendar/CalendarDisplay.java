@@ -67,7 +67,6 @@ public class CalendarDisplay extends JPanel {
                 // IMPORTANT -------------------------------------------------------------------------------------------
                 // Because of use of JButtons, our own colors get overridden with system standard
                 // When we disable this, we have to manually add lots of tweaks.
-                // BETTER CHOICE: Change JButtons to JPanels with MouseListener. Much easier for styling.
 
                 buttonRow[j].setContentAreaFilled(false); // Disable automatic filling
                 buttonRow[j].setOpaque(true); // Making sure our colors get selected
@@ -122,6 +121,16 @@ public class CalendarDisplay extends JPanel {
             fullCalendar.add(CalendarSegment);
         }
         add(fullCalendar);
+
+        // Here we make a JScrollPane to wrap the fullCalendar in
+        JScrollPane scrollPane = new JScrollPane(fullCalendar);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setPreferredSize(new Dimension(1000, 600));
+
+        add(scrollPane);
+
         //this panel contains the "reserve" and "cancel" buttons
         JPanel buttonrow = new JPanel();
         BoxLayout boxLayoutManagerRow = new BoxLayout(buttonrow, BoxLayout.X_AXIS);
