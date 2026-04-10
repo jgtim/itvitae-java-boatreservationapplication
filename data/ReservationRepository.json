@@ -160,5 +160,64 @@
         2
       ]
     }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 17,
+      "customerRecord": {
+        "naam": "test3",
+        "telefoonNummer": 12345,
+        "email": "test3@example.colm"
+      },
+      "betaald": false,
+      "kamerFacturatie": true,
+      "datum": "2026-04-10",
+      "begintijd": "15:15",
+      "eindtijd": "18:00",
+      "boatIDs": [
+        14,
+        67,
+        87
+      ]
+    }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 18,
+      "customerRecord": {
+        "naam": "werewr",
+        "telefoonNummer": 32456,
+        "email": "sdfaergea"
+      },
+      "betaald": true,
+      "kamerFacturatie": false,
+      "datum": "2026-04-10",
+      "begintijd": "15:30",
+      "eindtijd": "17:45",
+      "boatIDs": [
+        19
+      ]
+    }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 19,
+      "customerRecord": {
+        "naam": "Stef",
+        "telefoonNummer": 213266,
+        "email": "eageagaew@gmail.com"
+      },
+      "betaald": true,
+      "kamerFacturatie": false,
+      "datum": "2026-04-10",
+      "begintijd": "13:30",
+      "eindtijd": "16:15",
+      "boatIDs": [
+        12,
+        43,
+        26,
+        73
+      ]
+    }
   }
 ]

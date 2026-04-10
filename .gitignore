@@ -1,4 +1,7 @@
-data/ReservationRepository.json
+# Commented this one out for now
+# data/ReservationRepository.json
+
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
