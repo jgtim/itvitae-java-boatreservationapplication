@@ -268,7 +268,7 @@ public class CalendarDisplay extends JPanel {
         }
     }
 
-    public void reserveBoat(ArrayList<Integer> selectedBoats) {
+    public void reserveBoat(ArrayList<String> selectedBoats) {
         //first, establish an end time based on whether or not more than 1 cell is selected
         int endTime;
         if(this.selectedEnd[0] == null){

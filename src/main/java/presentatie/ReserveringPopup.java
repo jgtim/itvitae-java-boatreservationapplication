@@ -41,7 +41,7 @@ public class ReserveringPopup extends JDialog {
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
-    private ArrayList<Integer> boatIDs = new ArrayList<Integer>();
+    private ArrayList<String> boatIDs = new ArrayList<String>();
     private ReservationService reservationService;
     private ArrayList<String> reservedBoats;
 
@@ -81,7 +81,7 @@ public class ReserveringPopup extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    int newBoatID = Integer.parseInt(boatIdInputField.getText());
+                    String newBoatID = boatIdInputField.getText();
                     if(!reservedBoats.contains(newBoatID)){
                         boatIDs.add(newBoatID);
                         addedBoatsLabel.setText("Added: " + boatIDs.toString());

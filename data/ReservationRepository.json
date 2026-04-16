@@ -219,5 +219,23 @@
         73
       ]
     }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 20,
+      "customerRecord": {
+        "naam": "Bram",
+        "telefoonNummer": 6,
+        "email": "br"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-16",
+      "begintijd": "11:00",
+      "eindtijd": "13:00",
+      "boatIDs": [
+        1
+      ]
+    }
   }
 ]
