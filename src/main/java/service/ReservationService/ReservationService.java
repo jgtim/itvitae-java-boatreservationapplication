@@ -9,4 +9,5 @@ public interface ReservationService {
     public ArrayList<ReservationRecord> getReservations();
     public ReservationRecord getReservationWithReservationNumber(int reserveringsNummer);
     void addReservation(ReservationRecord newReservation);
+    void deleteReservation(ReservationRecord Reservation);
 }
