@@ -17,20 +17,6 @@ public class BoatTab extends JPanel {
         // Setting BoatTab layout as BorderLayout
         setLayout(new BorderLayout());
 
-//        // Creating ArrayList to work with Boat class data
-//        ArrayList<BoatType> boatTypeList = new ArrayList<>();
-
-        // Creating List of all individual Boats | Testing search function of scrollable pane on left side
-//        ArrayList<Boat> boatList = new ArrayList<>();
-//        for (int i = 1; i <= 10; i++) {
-//            boatList.add(new Boat(BoatType.STANDARD_ROWBOAT, "Roeiboot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-//            boatList.add(new Boat(BoatType.FAMILY_ROWBOAT, "Roeiboot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-//            boatList.add(new Boat(BoatType.KAYAK, "Kayak " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-//            boatList.add(new Boat(BoatType.PEDAL, "Waterfiets " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-//            boatList.add(new Boat(BoatType.SILENT_ELECTRIC, "Elektrische Boot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-//            boatList.add(new Boat(BoatType.PREMIUM_ELECTRIC, "Elektrische Boot " + i, LakeArea.CENTRAL_LAKE, 2 ,false, true, 12.5, 22.5, i));
-//        }
-
         // RIGHT SIDE -------------------------------------------------------------------------------------------------
         // JPanel boat details (on right side of tab)
         JPanel boatDetails = new JPanel(new BorderLayout(10, 10));
