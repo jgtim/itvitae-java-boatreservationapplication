@@ -26,9 +26,26 @@
     "kamerFacturatie": true,
     "datum": "2026-04-10",
     "begintijd": "11:45",
-    "eindtijd": "17:00",
+    "eindtijd": "18:45",
     "boatIDs": [
       7
+    ]
+  },
+  {
+    "reserveringsNummer": 3,
+    "customerRecord": {
+      "naam": "Piet Boot",
+      "telefoonNummer": 12345678,
+      "email": "pietboot@gmail.com"
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-15",
+    "begintijd": "13:30",
+    "eindtijd": "17:00",
+    "boatIDs": [
+      3,
+      9
     ]
   }
 ]

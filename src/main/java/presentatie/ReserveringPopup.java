@@ -1,6 +1,7 @@
 package presentatie;
 
 import domain.CustomerRecord;
+import domain.ReservationPopupMode;
 import domain.ReservationRecord;
 import presentatie.Calendar.CalendarDisplay;
 import service.ReservationService.ReservationService;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReserveringPopup extends JDialog {
     private JPanel contentPane;
@@ -38,14 +40,19 @@ public class ReserveringPopup extends JDialog {
     private JPanel tijdInformatie;
     private JComboBox comboBoxVan;
     private JComboBox comboBoxTot;
+    private JButton removeBoatButton;
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
     private ArrayList<Integer> boatIDs = new ArrayList<Integer>();
     private ReservationService reservationService;
     private ArrayList<Integer> reservedBoats;
+    private ReservationPopupMode currentMode;
+    private ReservationRecord currentReservation;
 
+    // Constructor voor aanmaken van reserveringen
     public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<Integer> reservedBoats) { //LocalDate date
+        currentMode = ReservationPopupMode.CREATING;
         this.DisplayTab = display;
         this.begintijd = van;
         this.eindtijd = tot;
@@ -77,31 +84,16 @@ public class ReserveringPopup extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        addBoatButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try{
-                    int newBoatID = Integer.parseInt(boatIdInputField.getText());
-                    if(!reservedBoats.contains(newBoatID)){
-                        boatIDs.add(newBoatID);
-                        addedBoatsLabel.setText("Added: " + boatIDs.toString());
-                        boatIdInputField.setText("");
-                        errorLabel.setText(" ");
-                    }else{
-                        errorLabel.setText("Die boot is al gereserveerd");
-                    }//TODO don't add if there is no boat with the given ID
-
-                } catch (NumberFormatException ex) {
-                    //throw new RuntimeException(ex);
-                    errorLabel.setText("vul een getal in");
-                }
-
-            }
-        });
+        addBoatButton.addActionListener(e -> {addBoat();});
+        removeBoatButton.addActionListener(e -> {removeBoat();});
     }
 
     // Constructor voor gebruik in reserveringen tab om een reservering in te zien of te wijzigen
-    public ReserveringPopup(ReservationRecord reservationRecord) {
+    public ReserveringPopup(ReservationService reservationService, ReservationRecord reservationRecord) {
+        this.reservationService = reservationService;
+        currentMode = ReservationPopupMode.VIEWING;
+        currentReservation = reservationRecord;
+        boatIDs = (ArrayList<Integer>) reservationRecord.boatIDs().clone();
         String[] OPEN_TIMES = {
                 "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45",
                 "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45",
@@ -137,9 +129,13 @@ public class ReserveringPopup extends JDialog {
         betaaldCheckBox.setEnabled(false);
         boatIdInputField.setEditable(false);
         addBoatButton.setEnabled(false);
+        removeBoatButton.setEnabled(false);
+
+        addBoatButton.addActionListener(e -> {addBoat();});
+        removeBoatButton.addActionListener(e -> {removeBoat();});
 
         buttonOK.setText("Wijzig");
-        buttonOK.addActionListener(e -> setEditMode());
+        buttonOK.addActionListener(e -> onOK());
 
         buttonCancel.addActionListener(e -> onCancel());
 
@@ -153,23 +149,87 @@ public class ReserveringPopup extends JDialog {
     }
 
     private void setEditMode() {
+        currentMode = ReservationPopupMode.EDITING;
         buttonOK.setText("Bevestig");
         comboBoxVan.setSelectedItem(vanLabel.getText());
         comboBoxTot.setSelectedItem(totLabel.getText());
         CardLayout cl = (CardLayout) tijdInformatie.getLayout();
         cl.next(tijdInformatie);
+        boatIdInputField.setEditable(true);
+        addBoatButton.setEnabled(true);
+        removeBoatButton.setEnabled(true);
+    }
+
+    private void setViewMode() {
+        if (currentMode == ReservationPopupMode.EDITING) {
+            CardLayout cl = (CardLayout) tijdInformatie.getLayout();
+            cl.next(tijdInformatie);
+        }
+    }
+
+    private void confirmEdit() {
+        ReservationRecord newReservation = currentReservation.toBuilder()
+                .begintijd(comboBoxVan.getSelectedItem().toString())
+                .eindtijd(comboBoxTot.getSelectedItem().toString())
+                .build();
+        System.out.println(newReservation);
+        reservationService.updateReservation(newReservation);
+    }
+
+    private void addBoat() {
+        try{
+            int newBoatID = Integer.parseInt(boatIdInputField.getText());
+            if(!reservedBoats.contains(newBoatID)){
+                boatIDs.add(newBoatID);
+                addedBoatsLabel.setText("Added: " + boatIDs.toString());
+                boatIdInputField.setText("");
+                errorLabel.setText(" ");
+            }else{
+                errorLabel.setText("Die boot is al gereserveerd");
+            }//TODO don't add if there is no boat with the given ID
+
+        } catch (NumberFormatException ex) {
+            //throw new RuntimeException(ex);
+            errorLabel.setText("vul een getal in");
+        }
+    }
+
+    private void removeBoat() {
+        try{
+            int boatID = Integer.parseInt(boatIdInputField.getText());
+            if (boatIDs.contains(boatID)) {
+                boatIDs.remove((Object) boatID);
+                addedBoatsLabel.setText("Added: " + boatIDs.toString());
+                boatIdInputField.setText("");
+                errorLabel.setText(" ");
+            } else {
+                errorLabel.setText("Die boot is niet gereserveerd");
+            }
+        } catch (NumberFormatException ex) {
+            errorLabel.setText("vul een getal in");
+        }
     }
 
     private void onOK() {
-        if (!isFormValid()) {
-            return;
+        if (currentMode == ReservationPopupMode.CREATING) {
+            if (!isFormValid()) {
+                return;
+            }
+            addReservation();
+            dispose();
+        } else if (currentMode == ReservationPopupMode.VIEWING) {
+            setEditMode();
+        } else if (currentMode == ReservationPopupMode.EDITING) {
+            confirmEdit();
+            dispose();
         }
+    }
 
+    private void addReservation() {
         ReservationRecord newReservation = getReservationRecord();
 
         reservationService.addReservation(newReservation);
         this.DisplayTab.reserveBoat(boatIDs);
-        dispose();
     }
 
     private ReservationRecord getReservationRecord() {
