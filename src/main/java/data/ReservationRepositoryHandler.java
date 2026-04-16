@@ -1,12 +1,10 @@
 package data;
 
-import service.ReservationDto;
+import domain.ReservationRecord;
 
 import java.util.ArrayList;
 
 public interface ReservationRepositoryHandler {
-    public ArrayList<ReservationDto> getReservationList();
-    public void addReservation(ReservationDto reservationDto);
-
-    public void deleteReservation(ReservationDto reservationDto);
+    ArrayList<ReservationRecord> getReservationRecords();
+    public void saveReservationRecords(ArrayList<ReservationRecord> reservationRecords);
 }

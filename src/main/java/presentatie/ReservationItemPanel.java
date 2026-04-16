@@ -1,12 +1,9 @@
 package presentatie;
 
 import domain.ReservationRecord;
-import service.ReservationDto;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ReservationItemPanel extends JPanel {
 
@@ -32,8 +29,7 @@ public class ReservationItemPanel extends JPanel {
         cardLayoutParent = parent;
     }
 
-    void changeReservation(ReservationDto reservationDto) {
-        ReservationRecord reservationRecord =  reservationDto.getReservationRecord();
+    void changeReservation(ReservationRecord reservationRecord) {
         naamLabel.setText(reservationRecord.customerRecord().naam());
         emailLabel.setText(reservationRecord.customerRecord().email());
         telefoonnummerLabel.setText(reservationRecord.customerRecord().email());

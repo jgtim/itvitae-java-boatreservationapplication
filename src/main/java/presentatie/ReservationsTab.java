@@ -1,7 +1,6 @@
 package presentatie;
 
 import domain.ReservationRecord;
-import service.ReservationDto;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
@@ -13,8 +12,6 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 public class ReservationsTab extends JPanel {
@@ -111,11 +108,10 @@ public class ReservationsTab extends JPanel {
 
     private void reloadTable() {
         tableModel.setRowCount(0);
-        ArrayList<ReservationDto> reservationDtos = reservationService.getReservationList();
+        ArrayList<ReservationRecord> reservationRecords = reservationService.getReservations();
 
-        if (reservationDtos != null) {
-            for (ReservationDto reservationDto : reservationDtos) {
-                ReservationRecord reservationRecord = reservationDto.getReservationRecord();
+        if (reservationRecords != null) {
+            for (ReservationRecord reservationRecord : reservationRecords) {
                 Object[] reservationFields = {
                         reservationRecord.reserveringsNummer(),
                         reservationRecord.customerRecord().naam(),
