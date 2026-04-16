@@ -7,6 +7,7 @@ import domain.TabIndex;
 import presentatie.BoatTab.BoatTab;
 import presentatie.Calendar.Calendar;
 import presentatie.Calendar.CalendarDisplay;
+import service.BoatService.BoatService;
 import service.ReservationService.ReservationService;
 
 
@@ -14,7 +15,7 @@ import javax.swing.*;
 
 public class Tabs extends JFrame {
 
-    Tabs(ReservationService reservationService) {
+    Tabs(ReservationService reservationService, BoatService boatService) {
         // UIManager Class manipulation
 
         // --- Setting Look and Feel:
@@ -53,7 +54,7 @@ public class Tabs extends JFrame {
         // Adding JPanels to JTabbedPane
 
         tabPane.add("Agenda", agenda);
-        tabPane.add("Catalogus", new BoatTab());
+        tabPane.add("Catalogus", new BoatTab(boatService));
         tabPane.add("Reserveringen", reservations);
 
         // Add a listener for when the tab changes
