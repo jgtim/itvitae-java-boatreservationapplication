@@ -270,5 +270,22 @@
         4
       ]
     }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 23,
+      "customerRecord": {
+        "naam": "Johan1",
+        "telefoonNummer": 99898
+      },
+      "betaald": false,
+      "kamerFacturatie": true,
+      "datum": "2026-04-16",
+      "begintijd": "10:00",
+      "eindtijd": "11:00",
+      "boatIDs": [
+        1
+      ]
+    }
   }
 ]

@@ -7,6 +7,7 @@ public record BoatRecord(
         int capacity,
         boolean isElectric,
         boolean hasLifeJackets,
+        boolean isBroken,
         double price15,
         double price30) {
 }
