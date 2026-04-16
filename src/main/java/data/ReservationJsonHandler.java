@@ -1,10 +1,10 @@
 package data;
 
+import Exceptions.RepositoryNotLoadedException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import service.ReservationDto;
-
+import domain.ReservationRecord;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Reader;
@@ -15,38 +15,23 @@ import java.util.ArrayList;
 
 public class ReservationJsonHandler implements ReservationRepositoryHandler{
     private final Path FILE_PATH = Paths.get("data/ReservationRepository.json");
-    private ArrayList<ReservationDto> reservationDtos;
 
-    public ReservationJsonHandler() {
-        loadRepository();
-
-    }
-
-    private void loadRepository() {
+    @Override
+    public ArrayList<ReservationRecord> getReservationRecords() {
         try(Reader fileReader = new FileReader(FILE_PATH.toString())) {
-            Type userListType = new TypeToken<ArrayList<ReservationDto>>(){}.getType();
-            reservationDtos = new Gson().fromJson(fileReader, userListType);
+            Type userListType = new TypeToken<ArrayList<ReservationRecord>>(){}.getType();
+            return new Gson().fromJson(fileReader, userListType);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RepositoryNotLoadedException("Repository didn't load");
         }
     }
 
     @Override
-    public ArrayList<ReservationDto> getReservationList() {
-        return reservationDtos;
-    }
-
-    @Override
-    public void addReservation(ReservationDto reservationDto) {
-        reservationDtos.add(reservationDto);
-        saveReservationList();
-    }
-
-    private void saveReservationList() {
+    public void saveReservationRecords(ArrayList<ReservationRecord> reservationRecords) {
         Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
 
         try(FileWriter fileWriter = new FileWriter(FILE_PATH.toString())) {
-            gsonPretty.toJson(reservationDtos, fileWriter);
+            gsonPretty.toJson(reservationRecords, fileWriter);
         } catch (Exception e) {
             e.printStackTrace();
         }
