@@ -40,7 +40,7 @@ public class Tabs extends JFrame {
         JTabbedPane tabPane = new JTabbedPane();
 
         // Creating JPanels (tabbladen)
-        JPanel agenda = new CalendarDisplay(reservationService);
+        JPanel agenda = new CalendarDisplay(reservationService, boatService);
         JPanel bootCatalogue = new BoatTab(boatService);
         ReservationsTab reservations = new ReservationsTab(reservationService);
 
