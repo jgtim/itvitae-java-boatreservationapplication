@@ -30,7 +30,6 @@ public class ReserveringPopup extends JDialog {
     private JLabel dateLabel;
     private JLabel dateField;
     private JButton addBoatButton;
-    private JPanel newboatPanel;
     private JTextField boatIdInputField;
     private JLabel addedBoatsLabel;
     private JPanel errorPane;
@@ -38,6 +37,12 @@ public class ReserveringPopup extends JDialog {
     private JPanel tijdInformatie;
     private JComboBox comboBoxVan;
     private JComboBox comboBoxTot;
+    private JTable table1;
+    private JTable table2;
+    private JPanel addBoatPane;
+    private JTextField textField1;
+    private JButton button1;
+    private JButton button2;
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
