@@ -2,11 +2,11 @@ package presentatie.Calendar;
 
 public class CalendarCell {
 
-    private final Integer BoatID;
+    private final String BoatID;
     private boolean Available;
     private final String timeBox;
 
-    public CalendarCell(Integer boatID, String timeBox, boolean Available) {
+    public CalendarCell(String boatID, String timeBox, boolean Available) {
         this.BoatID = boatID;
         this.Available = Available;
         this.timeBox = timeBox;
@@ -16,7 +16,7 @@ public class CalendarCell {
         return "Boat ID: " + this.BoatID + " availibility: " + this.Available + " time: " + this.timeBox;
     }
 
-    public Integer getBoatID(){
+    public String getBoatID(){
         return this.BoatID;
     }
 

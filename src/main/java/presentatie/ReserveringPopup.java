@@ -43,9 +43,9 @@ public class ReserveringPopup extends JDialog {
     private String eindtijd;
     private ArrayList<Integer> boatIDs = new ArrayList<Integer>();
     private ReservationService reservationService;
-    private ArrayList<Integer> reservedBoats;
+    private ArrayList<String> reservedBoats;
 
-    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<Integer> reservedBoats) { //LocalDate date
+    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<String> reservedBoats) { //LocalDate date
         this.DisplayTab = display;
         this.begintijd = van;
         this.eindtijd = tot;
