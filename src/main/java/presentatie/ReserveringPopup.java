@@ -6,6 +6,7 @@ import service.ReservationDto;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
@@ -101,7 +102,7 @@ public class ReserveringPopup extends JDialog {
     }
 
     // Constructor voor gebruik in reserveringen tab om een reservering in te zien of te wijzigen
-    public ReserveringPopup(ReservationDto reservationDto, ReservationService reservationService) {
+    public ReserveringPopup(ReservationDto reservationDto, ReservationService reservationService, JTable table, int rownum) {
         this.reservationService = reservationService;
 
         String[] OPEN_TIMES = {
@@ -144,9 +145,9 @@ public class ReserveringPopup extends JDialog {
 
         buttonOK.setText("Wijzig");
         buttonOK.addActionListener(e -> setEditMode());
-        //TODO switch back
+        //TODO switch back & add delete button
         //buttonCancel.addActionListener(e -> onCancel());
-        buttonCancel.addActionListener(e -> onDelete(reservationDto));
+        buttonCancel.addActionListener(e -> onDelete(reservationDto, table, rownum));
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -200,8 +201,9 @@ public class ReserveringPopup extends JDialog {
         dispose();
     }
 
-    private void onDelete(ReservationDto ReservationDto){
+    private void onDelete(ReservationDto ReservationDto, JTable table, int rownum){
         reservationService.deleteReservation(ReservationDto);
+        ((DefaultTableModel)table.getModel()).removeRow(rownum);
         dispose();
     }
 

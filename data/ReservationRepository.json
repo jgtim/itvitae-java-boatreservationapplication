@@ -138,26 +138,6 @@
   },
   {
     "reservationRecord": {
-      "reserveringsNummer": 17,
-      "customerRecord": {
-        "naam": "test3",
-        "telefoonNummer": 12345,
-        "email": "test3@example.colm"
-      },
-      "betaald": false,
-      "kamerFacturatie": true,
-      "datum": "2026-04-10",
-      "begintijd": "15:15",
-      "eindtijd": "18:00",
-      "boatIDs": [
-        14,
-        67,
-        87
-      ]
-    }
-  },
-  {
-    "reservationRecord": {
       "reserveringsNummer": 18,
       "customerRecord": {
         "naam": "werewr",

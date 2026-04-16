@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class ReservationsTab extends JPanel {
     private JPanel mainPanel;
-    private JTable table1;
+    JTable table1;
     private JPanel card2;
     private ReservationItemPanel reservationItemPanel;
     private JPanel cardLayout;
@@ -83,7 +83,7 @@ public class ReservationsTab extends JPanel {
 //                    reservationItemPanel.changeReservation(reservationService.getReservationWithReservationNumber(reservationNumber));
 //                    CardLayout cl = (CardLayout) cardLayout.getLayout();
 //                    cl.next(cardLayout);
-                    var reserveringPopup = new ReserveringPopup(reservationService.getReservationWithReservationNumber(reservationNumber), reservationService);
+                    var reserveringPopup = new ReserveringPopup(reservationService.getReservationWithReservationNumber(reservationNumber), reservationService, table1, table1.rowAtPoint(e.getPoint()));
                     reserveringPopup.pack();
                     reserveringPopup.setLocationRelativeTo(null);
                     reserveringPopup.setVisible(true);
