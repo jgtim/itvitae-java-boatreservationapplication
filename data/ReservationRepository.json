@@ -44,24 +44,6 @@
   },
   {
     "reservationRecord": {
-      "reserveringsNummer": 11,
-      "customerRecord": {
-        "naam": "test",
-        "telefoonNummer": 12345,
-        "email": "test"
-      },
-      "betaald": true,
-      "kamerFacturatie": true,
-      "datum": "2026-04-09",
-      "begintijd": "14:15",
-      "eindtijd": "16:15",
-      "boatIDs": [
-        12
-      ]
-    }
-  },
-  {
-    "reservationRecord": {
       "reserveringsNummer": 12,
       "customerRecord": {
         "naam": "test",
