@@ -163,8 +163,13 @@ public class ReserveringPopup extends JDialog {
 
     private void setViewMode() {
         if (currentMode == ReservationPopupMode.EDITING) {
+            currentMode = ReservationPopupMode.VIEWING;
             CardLayout cl = (CardLayout) tijdInformatie.getLayout();
             cl.next(tijdInformatie);
+            buttonOK.setText("Wijzig");
+            boatIdInputField.setEditable(false);
+            addBoatButton.setEnabled(false);
+            removeBoatButton.setEnabled(false);
         }
     }
 
@@ -176,6 +181,8 @@ public class ReserveringPopup extends JDialog {
                 .build();
         System.out.println(updatedReservation);
         reservationService.updateReservation(updatedReservation);
+        vanLabel.setText((String) comboBoxVan.getSelectedItem());
+        totLabel.setText((String) comboBoxTot.getSelectedItem());
     }
 
     private void addBoat() {
@@ -198,7 +205,7 @@ public class ReserveringPopup extends JDialog {
 
     private void removeBoat() {
         try{
-            int boatID = Integer.parseInt(boatIdInputField.getText());
+            String boatID = boatIdInputField.getText();
             if (boatIDs.contains(boatID)) {
                 boatIDs.remove((Object) boatID);
                 addedBoatsLabel.setText("Added: " + boatIDs.toString());
@@ -223,7 +230,7 @@ public class ReserveringPopup extends JDialog {
             setEditMode();
         } else if (currentMode == ReservationPopupMode.EDITING) {
             confirmEdit();
-            dispose();
+            setViewMode();
         }
     }
 

@@ -77,6 +77,8 @@ public class ReservationsTab extends JPanel {
                 if (e.getClickCount() == 2) {
                     int viewRow = table1.rowAtPoint(e.getPoint());
                     int reservationNumber = (Integer) table1.getModel().getValueAt(viewRow, 0);
+
+                    // Creates a Reservation PopUp and overrides the close function so it also reloads the reservationtab table
                     var reserveringPopup = new ReserveringPopup(reservationService, reservationService.getReservationWithReservationNumber(reservationNumber)) {
                         @Override
                         public void dispose() {

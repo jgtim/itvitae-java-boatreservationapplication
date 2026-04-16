@@ -42,11 +42,14 @@
     "betaald": false,
     "kamerFacturatie": true,
     "datum": "2026-04-15",
-    "begintijd": "13:30",
-    "eindtijd": "17:00",
+    "begintijd": "12:15",
+    "eindtijd": "18:30",
     "boatIDs": [
       "3",
-      "9"
+      "9",
+      "53",
+      "10",
+      "11"
     ]
   },
   {
@@ -59,10 +62,12 @@
     "betaald": true,
     "kamerFacturatie": false,
     "datum": "2026-04-16",
-    "begintijd": "9:30",
-    "eindtijd": "12:45",
+    "begintijd": "09:15",
+    "eindtijd": "14:00",
     "boatIDs": [
-      "3"
+      "3",
+      "6",
+      "8"
     ]
   },
   {
