@@ -8,6 +8,7 @@ import presentatie.Calendar.CalendarDisplay;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
@@ -42,6 +43,8 @@ public class ReserveringPopup extends JDialog {
     private JPanel tijdInformatie;
     private JComboBox comboBoxVan;
     private JComboBox comboBoxTot;
+    private JPanel deletePane;
+    private JButton buttonDelete;
     private JLabel priceField;
     private LocalDate datum;
     private String begintijd;
@@ -56,7 +59,8 @@ public class ReserveringPopup extends JDialog {
     private ArrayList<String> reservedBoats;
 
     public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<String> reservedBoats) { //LocalDate date
-        this.DisplayTab = display;
+        deletePane.remove(buttonDelete);
+        getReserveringPopup().DisplayTab = display;
         this.begintijd = van;
         this.eindtijd = tot;
         this.datum = datum;
@@ -142,8 +146,14 @@ public class ReserveringPopup extends JDialog {
         });
     }
 
+    private ReserveringPopup getReserveringPopup() {
+        return this;
+    }
+
     // Constructor voor gebruik in reserveringen tab om een reservering in te zien of te wijzigen
-    public ReserveringPopup(ReservationRecord reservationRecord) {
+    public ReserveringPopup(ReservationRecord reservationRecord, ReservationService reservationService, JTable table, int rownum) {
+        this.reservationService = reservationService;
+
         String[] OPEN_TIMES = {
                 "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45",
                 "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45",
@@ -185,6 +195,7 @@ public class ReserveringPopup extends JDialog {
         buttonCancel.addActionListener(e -> onCancel());
         this.price = reservationRecord.prijs();
         priceField.setText("€" + String.format("%.2f", price));
+        buttonDelete.addActionListener(e -> onDelete(reservationRecord, table, rownum));
 
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -236,6 +247,12 @@ public class ReserveringPopup extends JDialog {
 
     private void onCancel() {
         // add your code here if necessary
+        dispose();
+    }
+
+    private void onDelete(ReservationRecord ReservationRecord, JTable table, int rownum){
+        reservationService.deleteReservation(ReservationRecord);
+        ((DefaultTableModel)table.getModel()).removeRow(rownum);
         dispose();
     }
 
