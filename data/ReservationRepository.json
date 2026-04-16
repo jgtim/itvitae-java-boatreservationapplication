@@ -219,5 +219,56 @@
         73
       ]
     }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 20,
+      "customerRecord": {
+        "naam": "Johan",
+        "telefoonNummer": 645463637
+      },
+      "betaald": true,
+      "kamerFacturatie": false,
+      "datum": "2026-04-16",
+      "begintijd": "11:30",
+      "eindtijd": "13:30",
+      "boatIDs": [
+        5
+      ]
+    }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 21,
+      "customerRecord": {
+        "naam": "Johan2",
+        "telefoonNummer": 886765432
+      },
+      "betaald": true,
+      "kamerFacturatie": false,
+      "datum": "2026-04-16",
+      "begintijd": "13:30",
+      "eindtijd": "15:45",
+      "boatIDs": [
+        5
+      ]
+    }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 22,
+      "customerRecord": {
+        "naam": "Johan3",
+        "telefoonNummer": 876575342
+      },
+      "betaald": false,
+      "kamerFacturatie": true,
+      "datum": "2026-04-16",
+      "begintijd": "13:45",
+      "eindtijd": "15:00",
+      "boatIDs": [
+        4
+      ]
+    }
   }
 ]
