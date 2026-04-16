@@ -84,7 +84,16 @@ public class BoatDataExcel implements BoatDataHandler {
                             String boatName = boatType != null? boatType.getDisplayBoatType() + " " + i : "Onbekende Boot" + i;
 
                             //Add the boat to the list
-                            boatList.add(new BoatRecord(boatType, boatName, lakeArea, capacity, isElectric, hasLifeJackets, price15, price30));
+                            boatList.add(new BoatRecord(
+                                    boatType,
+                                    boatName,
+                                    lakeArea,
+                                    capacity,
+                                    isElectric,
+                                    hasLifeJackets,
+                                    false,
+                                    price15,
+                                    price30));
                         }
                     }
                 }

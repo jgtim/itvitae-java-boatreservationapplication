@@ -1,18 +1,1 @@
-[
-  {
-    "reserveringsNummer": 1,
-    "customerRecord": {
-      "naam": "John Boat",
-      "telefoonNummer": 12345678,
-      "email": "johnboat@gmail.com"
-    },
-    "betaald": false,
-    "kamerFacturatie": true,
-    "datum": "2026-04-10",
-    "begintijd": "10:30",
-    "eindtijd": "14:30",
-    "boatIDs": [
-      56
-    ]
-  }
-]
+[]
