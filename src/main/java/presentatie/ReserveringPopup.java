@@ -40,6 +40,7 @@ public class ReserveringPopup extends JDialog {
     private JComboBox comboBoxVan;
     private JComboBox comboBoxTot;
     private JPanel deletePane;
+    private JButton buttonDelete;
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
@@ -48,6 +49,7 @@ public class ReserveringPopup extends JDialog {
     private ArrayList<Integer> reservedBoats;
 
     public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<Integer> reservedBoats) { //LocalDate date
+        deletePane.remove(buttonDelete);
         this.DisplayTab = display;
         this.begintijd = van;
         this.eindtijd = tot;
@@ -147,7 +149,8 @@ public class ReserveringPopup extends JDialog {
         buttonOK.setText("Wijzig");
         buttonCancel.setText("Verwijder Reservering");
         buttonOK.addActionListener(e -> setEditMode());
-        buttonCancel.addActionListener(e -> onDelete(reservationDto, table, rownum));
+        buttonCancel.addActionListener(e ->onCancel());
+        buttonDelete.addActionListener(e -> onDelete(reservationDto, table, rownum));
 
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);

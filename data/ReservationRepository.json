@@ -80,26 +80,6 @@
   },
   {
     "reservationRecord": {
-      "reserveringsNummer": 15,
-      "customerRecord": {
-        "naam": "steesfes",
-        "telefoonNummer": 32446,
-        "email": "dsgragr"
-      },
-      "betaald": true,
-      "kamerFacturatie": false,
-      "datum": "2026-04-10",
-      "begintijd": "14:30",
-      "eindtijd": "15:30",
-      "boatIDs": [
-        4,
-        5,
-        2
-      ]
-    }
-  },
-  {
-    "reservationRecord": {
       "reserveringsNummer": 16,
       "customerRecord": {
         "naam": "steesfes",
