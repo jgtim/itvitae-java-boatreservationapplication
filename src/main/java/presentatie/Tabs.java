@@ -7,7 +7,6 @@ import presentatie.Calendar.CalendarDisplay;
 import service.BoatService.BoatService;
 import service.ReservationService.ReservationService;
 
-
 import javax.swing.*;
 
 public class Tabs extends JFrame {
@@ -46,7 +45,6 @@ public class Tabs extends JFrame {
         ReservationsTab reservations = new ReservationsTab(reservationService);
 
         // Adding JPanels to JTabbedPane
-
         tabPane.add("Agenda", agenda);
         tabPane.add("Catalogus", bootCatalogue);
         tabPane.add("Reserveringen", reservations);
