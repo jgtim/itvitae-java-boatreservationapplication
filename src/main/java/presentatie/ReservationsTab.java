@@ -19,15 +19,14 @@ import java.util.ArrayList;
 public class ReservationsTab extends JPanel {
     private JPanel mainPanel;
     private JTable table1;
-    private JPanel card2;
-    private ReservationItemPanel reservationItemPanel;
     private JPanel cardLayout;
     private JTextField searchField;
+    private JPanel searchPanel;
+    private JPanel tablePanel;
     private DefaultTableModel tableModel;
     private ReservationService reservationService;
 
     public ReservationsTab(ReservationService reservationService) {
-        reservationItemPanel.setCardLayoutParent(cardLayout);
         this.reservationService = reservationService;
         add(mainPanel);
 
@@ -78,10 +77,6 @@ public class ReservationsTab extends JPanel {
                 if (e.getClickCount() == 2) {
                     int viewRow = table1.rowAtPoint(e.getPoint());
                     int reservationNumber = (Integer) table1.getModel().getValueAt(viewRow, 0);
-//                    System.out.println(reservationNumber);
-//                    reservationItemPanel.changeReservation(reservationService.getReservationWithReservationNumber(reservationNumber));
-//                    CardLayout cl = (CardLayout) cardLayout.getLayout();
-//                    cl.next(cardLayout);
                     var reserveringPopup = new ReserveringPopup(reservationService, reservationService.getReservationWithReservationNumber(reservationNumber)) {
                         @Override
                         public void dispose() {
