@@ -257,7 +257,6 @@ public class BoatTab extends JPanel {
                         "<b>Prijs per 15 minuten:</b> " + b.price15() + " euro <br>" +
                         "<b>Prijs per 30 minuten:</b> " + b.price30() + " euro <br><br>" +
 
-                        "<b>Boot ID:</b> " + b.id() +
                         "<html>";
                 // Setting html formatted String boatInfo to JLabel detailLabel
                 details.setText(boatInfo);
