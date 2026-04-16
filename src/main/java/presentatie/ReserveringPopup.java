@@ -94,6 +94,7 @@ public class ReserveringPopup extends JDialog {
         currentMode = ReservationPopupMode.VIEWING;
         currentReservation = reservationRecord;
         boatIDs = (ArrayList<Integer>) reservationRecord.boatIDs().clone();
+        reservedBoats = boatIDs;
         String[] OPEN_TIMES = {
                 "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45",
                 "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45",
@@ -168,12 +169,13 @@ public class ReserveringPopup extends JDialog {
     }
 
     private void confirmEdit() {
-        ReservationRecord newReservation = currentReservation.toBuilder()
+        ReservationRecord updatedReservation = currentReservation.toBuilder()
                 .begintijd(comboBoxVan.getSelectedItem().toString())
                 .eindtijd(comboBoxTot.getSelectedItem().toString())
+                .boatIDs(boatIDs)
                 .build();
-        System.out.println(newReservation);
-        reservationService.updateReservation(newReservation);
+        System.out.println(updatedReservation);
+        reservationService.updateReservation(updatedReservation);
     }
 
     private void addBoat() {

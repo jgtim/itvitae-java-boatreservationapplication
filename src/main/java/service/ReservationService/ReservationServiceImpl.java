@@ -58,5 +58,7 @@ public class ReservationServiceImpl implements ReservationService {
                     reservationRecords.set(i, updatedReservation);
                 }
         }
+        saveReservationsToRepository();
     }
+
 }

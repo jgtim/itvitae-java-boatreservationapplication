@@ -26,9 +26,10 @@
     "kamerFacturatie": true,
     "datum": "2026-04-10",
     "begintijd": "11:45",
-    "eindtijd": "18:45",
+    "eindtijd": "19:30",
     "boatIDs": [
-      7
+      7,
+      8
     ]
   },
   {
