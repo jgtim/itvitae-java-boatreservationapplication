@@ -42,6 +42,12 @@ public class ReservationJsonHandler implements ReservationRepositoryHandler{
         saveReservationList();
     }
 
+    @Override
+    public void deleteReservation(ReservationDto reservationDto){
+        reservationDtos.remove(reservationDto);
+        saveReservationList();
+    }
+
     private void saveReservationList() {
         Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create();
 

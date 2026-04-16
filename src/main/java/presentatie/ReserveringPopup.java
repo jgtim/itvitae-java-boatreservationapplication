@@ -101,7 +101,9 @@ public class ReserveringPopup extends JDialog {
     }
 
     // Constructor voor gebruik in reserveringen tab om een reservering in te zien of te wijzigen
-    public ReserveringPopup(ReservationDto reservationDto) {
+    public ReserveringPopup(ReservationDto reservationDto, ReservationService reservationService) {
+        this.reservationService = reservationService;
+
         String[] OPEN_TIMES = {
                 "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45",
                 "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45",
@@ -142,9 +144,9 @@ public class ReserveringPopup extends JDialog {
 
         buttonOK.setText("Wijzig");
         buttonOK.addActionListener(e -> setEditMode());
-
-        buttonCancel.addActionListener(e -> onCancel());
-
+        //TODO switch back
+        //buttonCancel.addActionListener(e -> onCancel());
+        buttonCancel.addActionListener(e -> onDelete(reservationDto));
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -195,6 +197,11 @@ public class ReserveringPopup extends JDialog {
 
     private void onCancel() {
         // add your code here if necessary
+        dispose();
+    }
+
+    private void onDelete(ReservationDto ReservationDto){
+        reservationService.deleteReservation(ReservationDto);
         dispose();
     }
 

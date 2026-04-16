@@ -98,31 +98,6 @@
   },
   {
     "reservationRecord": {
-      "reserveringsNummer": 14,
-      "customerRecord": {
-        "naam": "Jimmy Kano",
-        "telefoonNummer": 12345678,
-        "email": "jimmykano@rivier.nl"
-      },
-      "betaald": false,
-      "kamerFacturatie": true,
-      "datum": "2026-04-10",
-      "begintijd": "12:00",
-      "eindtijd": "14:00",
-      "boatIDs": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8
-      ]
-    }
-  },
-  {
-    "reservationRecord": {
       "reserveringsNummer": 15,
       "customerRecord": {
         "naam": "steesfes",
@@ -196,27 +171,6 @@
       "eindtijd": "17:45",
       "boatIDs": [
         19
-      ]
-    }
-  },
-  {
-    "reservationRecord": {
-      "reserveringsNummer": 19,
-      "customerRecord": {
-        "naam": "Stef",
-        "telefoonNummer": 213266,
-        "email": "eageagaew@gmail.com"
-      },
-      "betaald": true,
-      "kamerFacturatie": false,
-      "datum": "2026-04-10",
-      "begintijd": "13:30",
-      "eindtijd": "16:15",
-      "boatIDs": [
-        12,
-        43,
-        26,
-        73
       ]
     }
   }

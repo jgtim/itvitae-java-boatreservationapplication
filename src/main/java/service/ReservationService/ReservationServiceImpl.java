@@ -28,6 +28,11 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepositoryHandler.addReservation(newReservation);
     }
 
+    @Override
+    public void deleteReservation(ReservationDto Reservation){
+        reservationRepositoryHandler.deleteReservation(Reservation);
+    }
+
     public ArrayList<ReservationDto> getReservationList() {
         return reservationRepositoryHandler.getReservationList();
     }

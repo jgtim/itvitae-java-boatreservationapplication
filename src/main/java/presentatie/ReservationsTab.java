@@ -83,7 +83,7 @@ public class ReservationsTab extends JPanel {
 //                    reservationItemPanel.changeReservation(reservationService.getReservationWithReservationNumber(reservationNumber));
 //                    CardLayout cl = (CardLayout) cardLayout.getLayout();
 //                    cl.next(cardLayout);
-                    var reserveringPopup = new ReserveringPopup(reservationService.getReservationWithReservationNumber(reservationNumber));
+                    var reserveringPopup = new ReserveringPopup(reservationService.getReservationWithReservationNumber(reservationNumber), reservationService);
                     reserveringPopup.pack();
                     reserveringPopup.setLocationRelativeTo(null);
                     reserveringPopup.setVisible(true);
