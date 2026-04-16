@@ -9,5 +9,6 @@ public record BoatRecord(
         boolean hasLifeJackets,
         boolean isBroken,
         double price15,
-        double price30) {
+        double price30
+        ){
 }
