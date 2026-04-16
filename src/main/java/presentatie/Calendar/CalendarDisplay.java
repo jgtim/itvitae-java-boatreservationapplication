@@ -233,7 +233,12 @@ public class CalendarDisplay extends JPanel {
                         }
                     }
                 }
-                ReserveringPopup reserveringPopup = new ReserveringPopup(reservationService, this, vanTijd, totTijd, dateSelected, reservedBoats, boatIDs);
+
+                //Get the boat that is selected
+                String selectedBoat = boatIDs[this.selectedStart[0]];
+
+                ReserveringPopup reserveringPopup = new ReserveringPopup(reservationService, this,
+                        vanTijd, totTijd, dateSelected, reservedBoats, boatIDs, selectedBoat);
                 reserveringPopup.pack();
                 reserveringPopup.setLocationRelativeTo(null);
                 reserveringPopup.setVisible(true);

@@ -46,7 +46,8 @@ public class ReserveringPopup extends JDialog {
     private ReservationService reservationService;
     private ArrayList<String> reservedBoats;
 
-    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<String> reservedBoats, String[] allBoats) { //LocalDate date
+    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot,
+                            LocalDate datum, ArrayList<String> reservedBoats, String[] allBoats, String selectedBoat) {
         this.DisplayTab = display;
         this.begintijd = van;
         this.eindtijd = tot;
@@ -59,6 +60,10 @@ public class ReserveringPopup extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+
+        //Add the boat that is selected on the calendar
+        boatIDs.add(selectedBoat);
+        addedBoatsLabel.setText("Added: " + boatIDs.toString());
 
         buttonOK.addActionListener(e -> onOK());
 
