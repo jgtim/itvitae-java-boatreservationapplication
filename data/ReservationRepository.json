@@ -12,7 +12,7 @@
     "begintijd": "10:30",
     "eindtijd": "14:30",
     "boatIDs": [
-      56
+      "56"
     ]
   },
   {
@@ -28,8 +28,8 @@
     "begintijd": "11:45",
     "eindtijd": "19:30",
     "boatIDs": [
-      7,
-      8
+      "7",
+      "8"
     ]
   },
   {
@@ -45,8 +45,40 @@
     "begintijd": "13:30",
     "eindtijd": "17:00",
     "boatIDs": [
-      3,
-      9
+      "3",
+      "9"
+    ]
+  },
+  {
+    "reserveringsNummer": 4,
+    "customerRecord": {
+      "naam": "sgaegraeg",
+      "telefoonNummer": 324673242,
+      "email": "serhersh"
+    },
+    "betaald": true,
+    "kamerFacturatie": false,
+    "datum": "2026-04-16",
+    "begintijd": "9:30",
+    "eindtijd": "12:45",
+    "boatIDs": [
+      "3"
+    ]
+  },
+  {
+    "reserveringsNummer": 5,
+    "customerRecord": {
+      "naam": "weafaewf",
+      "telefoonNummer": 2314124,
+      "email": "yerherherh"
+    },
+    "betaald": true,
+    "kamerFacturatie": false,
+    "datum": "2026-04-16",
+    "begintijd": "15:30",
+    "eindtijd": "17:45",
+    "boatIDs": [
+      "Standaard Roeiboot 1"
     ]
   }
 ]

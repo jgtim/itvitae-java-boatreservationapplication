@@ -37,7 +37,6 @@ public class BoatDataExcel implements BoatDataHandler {
             List<Row> rows = sheet.read();
 
             int r = 1;
-            int boatId = 1;
 
             //Loop through all rows in the sheet, each row contains 1 type of boat
             for (Row row : rows) {
@@ -85,9 +84,7 @@ public class BoatDataExcel implements BoatDataHandler {
                             String boatName = boatType != null? boatType.getDisplayBoatType() + " " + i : "Onbekende Boot" + i;
 
                             //Add the boat to the list
-                            boatList.add(new BoatRecord(boatType, boatName, lakeArea, capacity, isElectric, hasLifeJackets, price15, price30, boatId));
-
-                            boatId++; //Increment boat id
+                            boatList.add(new BoatRecord(boatType, boatName, lakeArea, capacity, isElectric, hasLifeJackets, price15, price30));
                         }
                     }
                 }

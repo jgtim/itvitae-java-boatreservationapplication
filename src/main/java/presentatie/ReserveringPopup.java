@@ -2,6 +2,7 @@ package presentatie;
 
 import domain.CustomerRecord;
 import domain.ReservationPopupMode;
+import domain.ReservationPopupMode;
 import domain.ReservationRecord;
 import presentatie.Calendar.CalendarDisplay;
 import service.ReservationService.ReservationService;
@@ -11,7 +12,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ReserveringPopup extends JDialog {
     private JPanel contentPane;
@@ -44,14 +44,14 @@ public class ReserveringPopup extends JDialog {
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
-    private ArrayList<Integer> boatIDs = new ArrayList<Integer>();
+    private ArrayList<String> boatIDs = new ArrayList<String>();
     private ReservationService reservationService;
-    private ArrayList<Integer> reservedBoats;
+    private ArrayList<String> reservedBoats;
     private ReservationPopupMode currentMode;
     private ReservationRecord currentReservation;
 
     // Constructor voor aanmaken van reserveringen
-    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<Integer> reservedBoats) { //LocalDate date
+    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<String> reservedBoats) { //LocalDate date
         currentMode = ReservationPopupMode.CREATING;
         this.DisplayTab = display;
         this.begintijd = van;
@@ -93,7 +93,7 @@ public class ReserveringPopup extends JDialog {
         this.reservationService = reservationService;
         currentMode = ReservationPopupMode.VIEWING;
         currentReservation = reservationRecord;
-        boatIDs = (ArrayList<Integer>) reservationRecord.boatIDs().clone();
+        boatIDs = (ArrayList<String>) reservationRecord.boatIDs().clone();
         reservedBoats = boatIDs;
         String[] OPEN_TIMES = {
                 "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45",
@@ -180,7 +180,7 @@ public class ReserveringPopup extends JDialog {
 
     private void addBoat() {
         try{
-            int newBoatID = Integer.parseInt(boatIdInputField.getText());
+            String newBoatID = boatIdInputField.getText();
             if(!reservedBoats.contains(newBoatID)){
                 boatIDs.add(newBoatID);
                 addedBoatsLabel.setText("Added: " + boatIDs.toString());
