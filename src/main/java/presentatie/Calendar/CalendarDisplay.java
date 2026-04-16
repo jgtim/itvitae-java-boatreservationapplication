@@ -12,6 +12,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +24,7 @@ public class CalendarDisplay extends JPanel {
 
     private Calendar Calendar;
     private JPanel DisplayPanel = new JPanel();
-    private String[] BoatIDs; //TODO placeholder data; maybe let user input selection of them
+    private String[] BoatIDs;
     private JButton[][] allCells;
     private Integer[] selectedStart = {null, null};
     private Integer[] selectedEnd = {null, null};
@@ -90,7 +92,6 @@ public class CalendarDisplay extends JPanel {
                 buttonRow[j].setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
                 buttonRow[j].setMinimumSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
                 buttonRow[j].setMaximumSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
-                // TODO determine button size here based on final app
                 buttonRow[j].setMargin(new Insets(8, 8, 8, 8));
 
                 // setting the background color after checking if already reserved
@@ -102,6 +103,17 @@ public class CalendarDisplay extends JPanel {
                 }
                 buttonRow[j].addActionListener(e -> {
                     selectTimeCell(row, column);
+                });
+                int finalJ = j;
+                buttonRow[j].addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (e.getClickCount() == 2) {
+                            if(buttonRow[finalJ].getBackground() == MolvenoColor.DARK.getColor()){
+                                System.out.println("CLICK");
+                            }
+                        }
+                    }
                 });
             }
             allCells[i] = buttonRow;
@@ -309,7 +321,9 @@ public class CalendarDisplay extends JPanel {
     */
     private void selectTimeCell(int row, int column) {
         //scenario 1: no selection has been made yet
-        if(this.selectedStart[0] == null && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+        if(allCells[row][column].getBackground() == MolvenoColor.DARK.getColor()){
+
+        } else if(this.selectedStart[0] == null && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
             if(allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
                 allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
                 this.selectedStart = new Integer[]{row, column};

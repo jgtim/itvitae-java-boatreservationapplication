@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "reserveringsNummer": 1,
+    "customerRecord": {
+      "naam": "w",
+      "telefoonNummer": 11
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-04-16",
+    "begintijd": "12:15",
+    "eindtijd": "13:00",
+    "boatIDs": [
+      "Standaard Roeiboot 5"
+    ],
+    "prijs": 35.0
+  }
+]
