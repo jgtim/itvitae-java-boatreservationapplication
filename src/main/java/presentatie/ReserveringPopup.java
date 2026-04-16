@@ -2,9 +2,9 @@ package presentatie;
 
 import data.BoatDataExcel;
 import domain.BoatRecord;
+import domain.CustomerRecord;
 import domain.ReservationRecord;
 import presentatie.Calendar.CalendarDisplay;
-import service.ReservationDto;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
@@ -46,16 +46,16 @@ public class ReserveringPopup extends JDialog {
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
-    private ArrayList<Integer> boatIDs = new ArrayList<Integer>();
+    private ArrayList<String> boatIDs = new ArrayList<String>();
     private ReservationService reservationService;
-    private ArrayList<Integer> reservedBoats;
     private double price = 0.00;
     private int times30;
     private boolean add15;
-    private List<Integer> validIDs;
+    private List<String> validIDs;
     private ArrayList<BoatRecord> allBoats;
+    private ArrayList<String> reservedBoats;
 
-    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<Integer> reservedBoats) { //LocalDate date
+    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<String> reservedBoats) { //LocalDate date
         this.DisplayTab = display;
         this.begintijd = van;
         this.eindtijd = tot;
@@ -82,8 +82,8 @@ public class ReserveringPopup extends JDialog {
 
         this.validIDs = Arrays.asList(
                 allBoats.stream()
-                        .map(BoatRecord::id)
-                        .toArray(Integer[]::new)
+                        .map(BoatRecord::boatName)
+                        .toArray(String[]::new)
         );
         this.reservationService = reservationService;
         setContentPane(contentPane);
@@ -112,7 +112,7 @@ public class ReserveringPopup extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    int newBoatID = Integer.parseInt(boatIdInputField.getText());
+                    String newBoatID = boatIdInputField.getText();
                     if(!validIDs.contains(newBoatID)){
                         errorLabel.setText("Die boot bestaat niet");
                     }else if(reservedBoats.contains(newBoatID)){
@@ -143,7 +143,7 @@ public class ReserveringPopup extends JDialog {
     }
 
     // Constructor voor gebruik in reserveringen tab om een reservering in te zien of te wijzigen
-    public ReserveringPopup(ReservationDto reservationDto) {
+    public ReserveringPopup(ReservationRecord reservationRecord) {
         String[] OPEN_TIMES = {
                 "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45",
                 "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45",
@@ -160,8 +160,6 @@ public class ReserveringPopup extends JDialog {
 
         comboBoxVan.setModel(new DefaultComboBoxModel<>(OPEN_TIMES));
         comboBoxTot.setModel(new DefaultComboBoxModel<>(OPEN_TIMES));
-
-        ReservationRecord reservationRecord = reservationDto.getReservationRecord();
 
         // Populate the fields of the popup with the selected reservation
         dateField.setText(reservationRecord.datum());
@@ -210,19 +208,21 @@ public class ReserveringPopup extends JDialog {
             return;
         }
 
-        ReservationDto newReservation = getReservationDto();
+        ReservationRecord newReservation = getReservationRecord();
 
         reservationService.addReservation(newReservation);
         this.DisplayTab.reserveBoat(boatIDs);
         dispose();
     }
 
-    private ReservationDto getReservationDto() {
-        ReservationDto newReservation = new ReservationDto(
-                reservationService.getNewReserveringsNummer(),
-                nameField.getText(),
-                (phoneNumberField.getText().isEmpty()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
-                (emailField.getText().isEmpty()) ? null : emailField.getText(),
+    private ReservationRecord getReservationRecord() {
+        return new ReservationRecord(
+                reservationService.getNewReservationNumber(),
+                new CustomerRecord(
+                        nameField.getText(),
+                        (phoneNumberField.getText().isEmpty()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
+                        (emailField.getText().isEmpty()) ? null : emailField.getText()
+                ),
                 kamerFacturatieCheckBox.isSelected(),
                 betaaldCheckBox.isSelected(),
                 datum.toString(),
@@ -232,9 +232,6 @@ public class ReserveringPopup extends JDialog {
                 price
 
         );
-
-
-        return newReservation;
     }
 
     private void onCancel() {

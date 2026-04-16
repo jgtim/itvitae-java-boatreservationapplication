@@ -1,43 +1,53 @@
 package service.ReservationService;
 
 import Exceptions.ReservationNotFoundException;
-import data.ReservationJsonHandler;
 import data.ReservationRepositoryHandler;
-import service.ReservationDto;
+import domain.ReservationRecord;
 
 import java.util.ArrayList;
 
 public class ReservationServiceImpl implements ReservationService {
+    ArrayList<ReservationRecord> reservationRecords = new ArrayList<ReservationRecord>();
+
     ReservationRepositoryHandler reservationRepositoryHandler;
 
     public ReservationServiceImpl(ReservationRepositoryHandler reservationRepositoryHandler) {
         this.reservationRepositoryHandler = reservationRepositoryHandler;
+        loadReservationsFromRepository();
     }
 
-    public int getNewReserveringsNummer() {
+    public int getNewReservationNumber() {
         int newNumber = 1;
-        ArrayList<ReservationDto> reservationsList = reservationRepositoryHandler.getReservationList();
-        if (!reservationsList.isEmpty()) {
-            newNumber = reservationsList.getLast().getReservationRecord().reserveringsNummer() + 1;
+        if (!reservationRecords.isEmpty()) {
+            newNumber = reservationRecords.getLast().reserveringsNummer() + 1;
         }
         return newNumber;
     }
 
     @Override
-    public void addReservation(ReservationDto newReservation) {
-        reservationRepositoryHandler.addReservation(newReservation);
+    public void addReservation(ReservationRecord newReservation) {
+        reservationRecords.add(newReservation);
+        saveReservationsToRepository();
     }
 
-    public ArrayList<ReservationDto> getReservationList() {
-        return reservationRepositoryHandler.getReservationList();
+    public ArrayList<ReservationRecord> getReservations() {
+        return reservationRecords;
     }
 
-    public ReservationDto getReservationWithReservationNumber(int reserveringsNummer) {
-        for (ReservationDto reservationDto : reservationRepositoryHandler.getReservationList()) {
-            if (reserveringsNummer == reservationDto.getReservationRecord().reserveringsNummer()) {
-                return reservationDto;
+    public ReservationRecord getReservationWithReservationNumber(int reserveringsNummer) {
+        for (ReservationRecord reservationRecord: reservationRecords) {
+            if (reserveringsNummer == reservationRecord.reserveringsNummer()) {
+                return reservationRecord;
             }
         }
         throw new ReservationNotFoundException("reserveringsNummer not found: " + reserveringsNummer);
+    }
+
+    private void loadReservationsFromRepository() {
+        reservationRecords = reservationRepositoryHandler.getReservationRecords();
+    }
+
+    private void saveReservationsToRepository() {
+        reservationRepositoryHandler.saveReservationRecords(reservationRecords);
     }
 }

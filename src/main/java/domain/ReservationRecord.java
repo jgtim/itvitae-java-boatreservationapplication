@@ -2,7 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 
-public record ReservationRecord(int reserveringsNummer, CustomerRecord customerRecord, boolean betaald, boolean kamerFacturatie, String datum, String begintijd, String eindtijd, ArrayList<Integer> boatIDs,
+public record ReservationRecord(int reserveringsNummer, CustomerRecord customerRecord, boolean betaald, boolean kamerFacturatie, String datum, String begintijd, String eindtijd, ArrayList<String> boatIDs,
                                 double prijs) {
 
 
