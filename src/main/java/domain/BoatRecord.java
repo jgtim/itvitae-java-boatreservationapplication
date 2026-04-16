@@ -8,6 +8,5 @@ public record BoatRecord(
         boolean isElectric,
         boolean hasLifeJackets,
         double price15,
-        double price30,
-        int id) {
+        double price30) {
 }

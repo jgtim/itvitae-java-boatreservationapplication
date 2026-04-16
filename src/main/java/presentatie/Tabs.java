@@ -1,21 +1,17 @@
 package presentatie;
 
-import data.ReservationJsonHandler;
-import data.ReservationRepositoryHandler;
-import domain.MolvenoColor;
 import domain.MolvenoFont;
 import domain.TabIndex;
 import presentatie.BoatTab.BoatTab;
-import presentatie.Calendar.Calendar;
 import presentatie.Calendar.CalendarDisplay;
+import service.BoatService.BoatService;
 import service.ReservationService.ReservationService;
-
 
 import javax.swing.*;
 
 public class Tabs extends JFrame {
 
-    Tabs(ReservationService reservationService) {
+    Tabs(ReservationService reservationService, BoatService boatService) {
         // UIManager Class manipulation
 
         // --- Setting Look and Feel:
@@ -44,17 +40,13 @@ public class Tabs extends JFrame {
         JTabbedPane tabPane = new JTabbedPane();
 
         // Creating JPanels (tabbladen)
-        JPanel bootCatalogue = new JPanel();
-        bootCatalogue.add(new JLabel("Welkom bij de Boot Catalogus"));
-
-        ReservationRepositoryHandler reservationRepositoryHandler = new ReservationJsonHandler();
-        JPanel agenda = new CalendarDisplay(reservationService);
+        JPanel agenda = new CalendarDisplay(reservationService, boatService);
+        JPanel bootCatalogue = new BoatTab(boatService);
         ReservationsTab reservations = new ReservationsTab(reservationService);
 
         // Adding JPanels to JTabbedPane
-
         tabPane.add("Agenda", agenda);
-        tabPane.add("Catalogus", new BoatTab());
+        tabPane.add("Catalogus", bootCatalogue);
         tabPane.add("Reserveringen", reservations);
 
         // Add a listener for when the tab changes

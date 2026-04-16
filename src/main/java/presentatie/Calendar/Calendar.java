@@ -9,10 +9,10 @@ import java.util.*;
 
 public class Calendar {
     private LocalDate CalendarDate;
-    private HashMap<Integer, CalendarCell[]> CalendarGrid;
+    private HashMap<String, CalendarCell[]> CalendarGrid;
     // private Integer[] BoatIDs = {1, 2, 3}; //TODO placeholder data
     // Linked this field to CalendarDisplay class
-    private Integer[] BoatIDs;
+    private String[] BoatIDs;
     private String[] timeBoxes = {"9:00", "9:15", "9:30", "9:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15",
             "11:30", "11:45", "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15",
             "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15",
@@ -21,10 +21,10 @@ public class Calendar {
     private ReservationService reservationService;
 
     // Made constructor accept Integer[] BoatIDs
-    public Calendar(ReservationService reservationService, LocalDate currentDate, Integer[] BoatIDs){
+    public Calendar(ReservationService reservationService, LocalDate currentDate, String[] BoatIDs){
         this.reservationService = reservationService;
         this.CalendarDate = currentDate;
-        this.CalendarGrid = new HashMap<Integer, CalendarCell[]>();
+        this.CalendarGrid = new HashMap<String, CalendarCell[]>();
         this.BoatIDs = BoatIDs; // Added it here
         List<String> timeList = Arrays.asList(timeBoxes);
         ArrayList<ReservationRecord> reservationList = getReservationsForDate(this.CalendarDate);
@@ -57,7 +57,7 @@ public class Calendar {
 //        }
 //    }
 
-    public HashMap<Integer, CalendarCell[]> getCalendarGrid(){
+    public HashMap<String, CalendarCell[]> getCalendarGrid(){
         return this.CalendarGrid;
     }
 
@@ -75,7 +75,7 @@ public class Calendar {
         return partialReservationList;
     }
 
-    private ArrayList<ReservationRecord> getReservationsForBoat(ArrayList<ReservationRecord> reservationList, Integer BoatID) {
+    private ArrayList<ReservationRecord> getReservationsForBoat(ArrayList<ReservationRecord> reservationList, String BoatID) {
         ArrayList<ReservationRecord> partialReservationList = new ArrayList<>();
         for(int i = 0; i < reservationList.size(); i++){
             if(reservationList.get(i).boatIDs() != null && reservationList.get(i).boatIDs().contains(BoatID)){

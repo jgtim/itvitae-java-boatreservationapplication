@@ -1,12 +1,11 @@
 package presentatie.Calendar;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import data.BoatDataExcel;
-import data.ReservationRepositoryHandler;
 import domain.BoatRecord;
 import domain.MolvenoColor;
 import domain.MolvenoFont;
 import presentatie.ReserveringPopup;
+import service.BoatService.BoatService;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
@@ -23,7 +22,7 @@ public class CalendarDisplay extends JPanel {
 
     private Calendar Calendar;
     private JPanel DisplayPanel = new JPanel();
-    private Integer[] BoatIDs; //TODO placeholder data; maybe let user input selection of them
+    private String[] BoatIDs; //TODO placeholder data; maybe let user input selection of them
     private JButton[][] allCells;
     private Integer[] selectedStart = {null, null};
     private Integer[] selectedEnd = {null, null};
@@ -34,16 +33,13 @@ public class CalendarDisplay extends JPanel {
             "20:30", "20:45", "21:00", "21:15", "21:30"};
     private LocalDate dateSelected;
 
-    public CalendarDisplay(ReservationService reservationService) {
+    public CalendarDisplay(ReservationService reservationService, BoatService boatService) {
         setBackground(MolvenoColor.LIGHT.getColor());
 
-        // Getting Boat Records from BoatDataExcel
-        var boatDataHandler = new BoatDataExcel();
-        ArrayList<BoatRecord> allBoats = boatDataHandler.read();
-
-        this.BoatIDs = allBoats.stream()
-                .map(BoatRecord::id)
-                .toArray(Integer[]::new);
+        //Get all boat IDs
+        this.BoatIDs = boatService.getBoatList().stream()
+                .map(BoatRecord::boatName)
+                .toArray(String[]::new);
 
         BoxLayout boxLayoutManager = new BoxLayout(this, BoxLayout.Y_AXIS);
         setLayout(boxLayoutManager);
@@ -76,7 +72,7 @@ public class CalendarDisplay extends JPanel {
         this.allCells = new JButton[BoatIDs.length][50];
 
         //the calendar grid ties a boat ID to a list of calendar cell objects, which contain data about that time point for that boat
-        HashMap<Integer, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
+        HashMap<String, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
         //this for loop creates the buttons representing calendar cells
         for (int i = 0; i < CalGrid.size(); i++) {
             final int row = i;
@@ -121,24 +117,24 @@ public class CalendarDisplay extends JPanel {
         idColumn.setLayout(new BoxLayout(idColumn, BoxLayout.Y_AXIS));
 
         // Setting the fixed size of this column
-        idColumn.setMinimumSize(new Dimension(80, 0));
-        idColumn.setPreferredSize(new Dimension(80, 600));
+        idColumn.setMinimumSize(new Dimension(200, 0));
+        idColumn.setPreferredSize(new Dimension(200, 600));
 
         // Adding a Header to the top of the column
-        JLabel header = new  JLabel("Boot ID's:", SwingConstants.LEFT);
+        JLabel header = new  JLabel("Boten:", SwingConstants.LEFT);
         header.setFont(MolvenoFont.PARAGRAPH.getFont());
         header.setForeground(MolvenoColor.DARK.getColor());
         header.setAlignmentX(Component.LEFT_ALIGNMENT);
         idColumn.add(header);
 
         for (int i = 0; i < allCells.length; i++) {
-            JLabel idLabel = new JLabel("ID: " + BoatIDs[i]);
+            JLabel idLabel = new JLabel(BoatIDs[i]);
             idLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
             idLabel.setForeground(MolvenoColor.DARK.getColor());
-            idLabel.setHorizontalAlignment(JLabel.CENTER);
-            idLabel.setPreferredSize(new Dimension(80, 25));
-            idLabel.setMaximumSize(new Dimension(80, 25));
-            idLabel.setMinimumSize(new Dimension(80, 25));
+            idLabel.setHorizontalAlignment(JLabel.LEFT);
+            idLabel.setPreferredSize(new Dimension(200, 25));
+            idLabel.setMaximumSize(new Dimension(200, 25));
+            idLabel.setMinimumSize(new Dimension(200, 25));
             idColumn.add(idLabel);
         }
         fullCalendar.add(idColumn);
@@ -228,7 +224,7 @@ public class CalendarDisplay extends JPanel {
                 //end time is 1 time point after the cell selected as the end point
                 String totTijd = timePoints[end + 1];
                 //find list of boats that are already reserved in this range of time
-                ArrayList<Integer> reservedBoats = new ArrayList<Integer>();
+                ArrayList<String> reservedBoats = new ArrayList<String>();
                 for(int row = 0; row < allCells.length; row++){
                     for(int col = this.selectedStart[1]; col < end + 1; col++){
                         if(allCells[row][col].getBackground() == MolvenoColor.DARK.getColor()){
