@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ReserveringPopup extends JDialog {
     private JPanel contentPane;
@@ -45,7 +46,7 @@ public class ReserveringPopup extends JDialog {
     private ReservationService reservationService;
     private ArrayList<String> reservedBoats;
 
-    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<String> reservedBoats) { //LocalDate date
+    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<String> reservedBoats, String[] allBoats) { //LocalDate date
         this.DisplayTab = display;
         this.begintijd = van;
         this.eindtijd = tot;
@@ -80,22 +81,22 @@ public class ReserveringPopup extends JDialog {
         addBoatButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try{
-                    String newBoatID = boatIdInputField.getText();
-                    if(!reservedBoats.contains(newBoatID)){
-                        boatIDs.add(newBoatID);
-                        addedBoatsLabel.setText("Added: " + boatIDs.toString());
-                        boatIdInputField.setText("");
-                        errorLabel.setText(" ");
-                    }else{
-                        errorLabel.setText("Die boot is al gereserveerd");
-                    }//TODO don't add if there is no boat with the given ID
-
-                } catch (NumberFormatException ex) {
-                    //throw new RuntimeException(ex);
-                    errorLabel.setText("vul een getal in");
+                String newBoatID = boatIdInputField.getText();
+                if(newBoatID.isBlank()) {
+                    errorLabel.setText("Vul een boot in");
                 }
-
+                else if(!Arrays.asList(allBoats).contains(newBoatID)) {
+                    errorLabel.setText("Die boot bestaat niet");
+                }
+                else if(reservedBoats.contains(newBoatID)) {
+                    errorLabel.setText("Die boot is al gereserveerd");
+                }
+                else {
+                    boatIDs.add(newBoatID);
+                    addedBoatsLabel.setText("Added: " + boatIDs.toString());
+                    boatIdInputField.setText("");
+                    errorLabel.setText(" ");
+                }
             }
         });
     }
