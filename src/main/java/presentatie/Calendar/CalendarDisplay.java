@@ -1,12 +1,11 @@
 package presentatie.Calendar;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import data.BoatDataExcel;
-import data.ReservationRepositoryHandler;
 import domain.BoatRecord;
 import domain.MolvenoColor;
 import domain.MolvenoFont;
 import presentatie.ReserveringPopup;
+import service.BoatService.BoatService;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
@@ -34,14 +33,11 @@ public class CalendarDisplay extends JPanel {
             "20:30", "20:45", "21:00", "21:15", "21:30"};
     private LocalDate dateSelected;
 
-    public CalendarDisplay(ReservationService reservationService) {
+    public CalendarDisplay(ReservationService reservationService, BoatService boatService) {
         setBackground(MolvenoColor.LIGHT.getColor());
 
-        // Getting Boat Records from BoatDataExcel
-        var boatDataHandler = new BoatDataExcel();
-        ArrayList<BoatRecord> allBoats = boatDataHandler.read();
-
-        this.BoatIDs = allBoats.stream()
+        //Get all boat IDs
+        this.BoatIDs = boatService.getBoatList().stream()
                 .map(BoatRecord::id)
                 .toArray(Integer[]::new);
 
