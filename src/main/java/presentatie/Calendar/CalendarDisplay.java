@@ -97,7 +97,14 @@ public class CalendarDisplay extends JPanel {
                 buttonRow[j].setMaximumSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
                 // TODO determine button size here based on final app
                 buttonRow[j].setMargin(new Insets(8, 8, 8, 8));
-                buttonRow[j].setBackground(CalGrid.get(BoatIDs[row])[column].getAvailable() ? MolvenoColor.LIGHT.getColor() : MolvenoColor.DARK.getColor());
+
+                // setting the background color after checking if already reserved
+                if (!CalGrid.get(BoatIDs[row])[column].getAvailable()) {
+                    cellBorder(row, column, buttonRow[j]);
+                } else {
+                    buttonRow[j].setBackground(MolvenoColor.LIGHT.getColor());
+                    buttonRow[j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+                }
                 buttonRow[j].addActionListener(e -> {
                     selectTimeCell(row, column);
                 });
@@ -282,7 +289,8 @@ public class CalendarDisplay extends JPanel {
 
             for(int j = this.selectedStart[1]; j < endTime + 1; j++){
                 this.Calendar.getCalendarGrid().get(BoatIDs[row])[j].reserve();
-                allCells[row][j].setBackground(MolvenoColor.DARK.getColor());
+                cellBorder(row, j, allCells[row][j]);
+                // allCells[row][j].setBackground(MolvenoColor.DARK.getColor());
             }
         }
         //make green & red cells white again
@@ -365,6 +373,22 @@ public class CalendarDisplay extends JPanel {
             }
 
         }
+    }
+
+    // Method for drawing borders around reserved timeslot block
+    private void cellBorder(int row, int col, JButton cell) {
+        CalendarCell[] rowData = Calendar.getCalendarGrid().get(BoatIDs[row]);
+
+        boolean prevReserved = (col > 0) && !rowData[col - 1].getAvailable();
+        boolean nextReserved = (col < 49) && !rowData[col + 1].getAvailable();
+
+        int bottom = 4;
+        int top = 4;
+        int left = prevReserved ? 0 : 4;    // setting only the left border of the reservation
+        int right = nextReserved ? 0 : 4;   // setting only the right border of the reservation
+
+        cell.setBackground(MolvenoColor.DARK.getColor()); // painting the background of reserved timeslots
+        cell.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, MolvenoColor.ORANGE.getColor()));   // setting the top and bottom border of the reservation slot
     }
 
     public Calendar getCalendar(){return this.Calendar;}

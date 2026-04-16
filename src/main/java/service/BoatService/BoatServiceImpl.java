@@ -26,4 +26,29 @@ public class BoatServiceImpl implements BoatService {
     public ArrayList<BoatRecord> getBoatList() {
         return boatList;
     }
+
+    public void setBoatBroken(String boatName, boolean isBroken) {
+        for (int i = 0; i < boatList.size(); i++) {
+            BoatRecord oldBoat = boatList.get(i); // storing every created Boat Object in oldBoat
+
+            if (oldBoat.boatName().equals(boatName)) {// if supplied boatName matches one in the boatList, create a new boat Object and remove old one
+                BoatRecord updatedBoat = new BoatRecord(
+                        oldBoat.boatType(),
+                        oldBoat.boatName(),
+                        oldBoat.lakeArea(),
+                        oldBoat.capacity(),
+                        oldBoat.isElectric(),
+                        oldBoat.hasLifeJackets(),
+                        isBroken,
+                        oldBoat.price15(),
+                        oldBoat.price30()
+                );
+                boatList.set(i, updatedBoat);
+
+                // Here we should add a DataHandler to save the updated boat status
+                // Need to create a save() method
+                return;
+            }
+        }
+    }
 }
