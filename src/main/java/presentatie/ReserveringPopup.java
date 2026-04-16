@@ -58,7 +58,8 @@ public class ReserveringPopup extends JDialog {
     private ArrayList<BoatRecord> allBoats;
     private ArrayList<String> reservedBoats;
 
-    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<String> reservedBoats) { //LocalDate date
+    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot,
+                            LocalDate datum, ArrayList<String> reservedBoats, String[] allBoats, String selectedBoat) {
         deletePane.remove(buttonDelete);
         getReserveringPopup().DisplayTab = display;
         this.begintijd = van;
@@ -93,6 +94,10 @@ public class ReserveringPopup extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+
+        //Add the boat that is selected on the calendar
+        boatIDs.add(selectedBoat);
+        addedBoatsLabel.setText("Added: " + boatIDs.toString());
 
         buttonOK.addActionListener(e -> onOK());
 
@@ -163,6 +168,7 @@ public class ReserveringPopup extends JDialog {
                 "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45",
                 "21:00", "21:15", "21:30"
         };
+
         setContentPane(contentPane);
         setModal(true);
 //        getRootPane().setDefaultButton(buttonOK);

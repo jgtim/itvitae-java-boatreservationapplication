@@ -15,7 +15,6 @@ public record ReservationRecord(int reserveringsNummer, CustomerRecord customerR
                 + datum + ", " + begintijd
                 + ", " + eindtijd
                 + ", "
-                + ((boatIDs != null) ? boatIDs.toString().replace(",", "."): boatIDs)
-                + ", " + prijs;
+                + ((boatIDs != null) ? boatIDs.toString().replace(",", "."): boatIDs);
     }
 }
