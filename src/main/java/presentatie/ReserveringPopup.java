@@ -1,8 +1,8 @@
 package presentatie;
 
+import domain.CustomerRecord;
 import domain.ReservationRecord;
 import presentatie.Calendar.CalendarDisplay;
-import service.ReservationDto;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
@@ -101,7 +101,7 @@ public class ReserveringPopup extends JDialog {
     }
 
     // Constructor voor gebruik in reserveringen tab om een reservering in te zien of te wijzigen
-    public ReserveringPopup(ReservationDto reservationDto) {
+    public ReserveringPopup(ReservationRecord reservationRecord) {
         String[] OPEN_TIMES = {
                 "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45",
                 "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45",
@@ -119,8 +119,6 @@ public class ReserveringPopup extends JDialog {
 
         comboBoxVan.setModel(new DefaultComboBoxModel<>(OPEN_TIMES));
         comboBoxTot.setModel(new DefaultComboBoxModel<>(OPEN_TIMES));
-
-        ReservationRecord reservationRecord = reservationDto.getReservationRecord();
 
         // Populate the fields of the popup with the selected reservation
         dateField.setText(reservationRecord.datum());
@@ -167,30 +165,28 @@ public class ReserveringPopup extends JDialog {
             return;
         }
 
-        ReservationDto newReservation = getReservationDto();
+        ReservationRecord newReservation = getReservationRecord();
 
         reservationService.addReservation(newReservation);
         this.DisplayTab.reserveBoat(boatIDs);
         dispose();
     }
 
-    private ReservationDto getReservationDto() {
-        ReservationDto newReservation = new ReservationDto(
-                reservationService.getNewReserveringsNummer(),
-                nameField.getText(),
-                (phoneNumberField.getText().isEmpty()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
-                (emailField.getText().isEmpty()) ? null : emailField.getText(),
+    private ReservationRecord getReservationRecord() {
+        return new ReservationRecord(
+                reservationService.getNewReservationNumber(),
+                new CustomerRecord(
+                        nameField.getText(),
+                        (phoneNumberField.getText().isEmpty()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
+                        (emailField.getText().isEmpty()) ? null : emailField.getText()
+                ),
                 kamerFacturatieCheckBox.isSelected(),
                 betaaldCheckBox.isSelected(),
                 datum.toString(),
                 begintijd,
                 eindtijd,
                 boatIDs
-
         );
-
-
-        return newReservation;
     }
 
     private void onCancel() {
