@@ -53,7 +53,7 @@ public class ReserveringPopup extends JDialog {
     private int times30;
     private boolean add15;
     private List<Integer> validIDs;
-    ArrayList<BoatRecord> allBoats;
+    private ArrayList<BoatRecord> allBoats;
 
     public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<Integer> reservedBoats) { //LocalDate date
         this.DisplayTab = display;
@@ -67,11 +67,14 @@ public class ReserveringPopup extends JDialog {
         int tijdsduur = Arrays.copyOfRange(this.DisplayTab.getCalendar().timeBoxes, timeList.indexOf(van), timeList.indexOf(tot)).length;
         if((tijdsduur & 1) != 0){ //check if odd
             tijdsduur -= 1;
-            add15 = true;
+            this.add15 = true;
+            System.out.println("ODD");
         }
         else{
-            add15 = true;
+            System.out.println("EVEN");
+            this.add15 = false;
         }
+        System.out.println("TIJDSDUUR: " + tijdsduur);
         times30 = tijdsduur / 2;
         dateField.setText(datum.toString());
         var boatDataHandler = new BoatDataExcel();
@@ -119,14 +122,14 @@ public class ReserveringPopup extends JDialog {
                         addedBoatsLabel.setText("Toegevoegd: " + boatIDs.toString());
                         boatIdInputField.setText("");
                         errorLabel.setText(" ");
-                        //float boatPrice15 = 0.50F;//TODO get this from boat data
                         double boatPrice15 = allBoats.get(validIDs.indexOf(newBoatID)).price15();
                         double boatPrice30 = allBoats.get(validIDs.indexOf(newBoatID)).price30();
                         price += (times30 * boatPrice30);
                         if(add15){
                             price += boatPrice15;
                         }
-                        System.out.println("PRICE: " + price);
+                        //System.out.println(tijdsduur);
+                        System.out.println("PRIJS: " + boatPrice30 + "+" + boatPrice15);
                         priceField.setText("€" + String.format("%.2f", price));
                     }//TODO don't add if there is no boat with the given ID
 
@@ -182,6 +185,8 @@ public class ReserveringPopup extends JDialog {
         buttonOK.addActionListener(e -> setEditMode());
 
         buttonCancel.addActionListener(e -> onCancel());
+        this.price = reservationRecord.prijs();
+        priceField.setText("€" + String.format("%.2f", price));
 
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -223,7 +228,8 @@ public class ReserveringPopup extends JDialog {
                 datum.toString(),
                 begintijd,
                 eindtijd,
-                boatIDs
+                boatIDs,
+                price
 
         );
 

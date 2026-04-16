@@ -2,7 +2,8 @@ package domain;
 
 import java.util.ArrayList;
 
-public record ReservationRecord(int reserveringsNummer, CustomerRecord customerRecord, boolean betaald, boolean kamerFacturatie, String datum, String begintijd, String eindtijd, ArrayList<Integer> boatIDs) {
+public record ReservationRecord(int reserveringsNummer, CustomerRecord customerRecord, boolean betaald, boolean kamerFacturatie, String datum, String begintijd, String eindtijd, ArrayList<Integer> boatIDs,
+                                double prijs) {
 
 
     @Override
@@ -14,6 +15,7 @@ public record ReservationRecord(int reserveringsNummer, CustomerRecord customerR
                 + datum + ", " + begintijd
                 + ", " + eindtijd
                 + ", "
-                + ((boatIDs != null) ? boatIDs.toString().replace(",", "."): boatIDs);
+                + ((boatIDs != null) ? boatIDs.toString().replace(",", "."): boatIDs)
+                + ", " + prijs;
     }
 }

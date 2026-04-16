@@ -18,7 +18,8 @@
         56,
         97,
         57
-      ]
+      ],
+      "prijs": 0.0
     }
   },
   {
@@ -39,7 +40,8 @@
         13,
         14,
         15
-      ]
+      ],
+      "prijs": 0.0
     }
   },
   {
@@ -57,7 +59,8 @@
       "eindtijd": "16:15",
       "boatIDs": [
         12
-      ]
+      ],
+      "prijs": 0.0
     }
   },
   {
@@ -75,7 +78,8 @@
       "eindtijd": "13:15",
       "boatIDs": [
         23
-      ]
+      ],
+      "prijs": 0.0
     }
   },
   {
@@ -93,7 +97,8 @@
       "eindtijd": "13:45",
       "boatIDs": [
         25
-      ]
+      ],
+      "prijs": 0.0
     }
   },
   {
@@ -118,7 +123,8 @@
         6,
         7,
         8
-      ]
+      ],
+      "prijs": 0.0
     }
   },
   {
@@ -138,7 +144,8 @@
         4,
         5,
         2
-      ]
+      ],
+      "prijs": 0.0
     }
   },
   {
@@ -158,7 +165,8 @@
         4,
         5,
         2
-      ]
+      ],
+      "prijs": 0.0
     }
   },
   {
@@ -178,7 +186,8 @@
         14,
         67,
         87
-      ]
+      ],
+      "prijs": 0.0
     }
   },
   {
@@ -196,7 +205,8 @@
       "eindtijd": "17:45",
       "boatIDs": [
         19
-      ]
+      ],
+      "prijs": 0.0
     }
   },
   {
@@ -217,7 +227,122 @@
         43,
         26,
         73
-      ]
+      ],
+      "prijs": 0.0
+    }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 20,
+      "customerRecord": {
+        "naam": "Wouter",
+        "telefoonNummer": 555555555
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-14",
+      "begintijd": "13:30",
+      "eindtijd": "14:30",
+      "boatIDs": [
+        3,
+        5
+      ],
+      "prijs": 0.0
+    }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 21,
+      "customerRecord": {
+        "naam": "Mr Azuro",
+        "telefoonNummer": 555555
+      },
+      "betaald": true,
+      "kamerFacturatie": false,
+      "datum": "2026-04-15",
+      "begintijd": "13:00",
+      "eindtijd": "13:45",
+      "boatIDs": [
+        5,
+        7
+      ],
+      "prijs": 0.0
+    }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 22,
+      "customerRecord": {
+        "naam": "Wouter",
+        "telefoonNummer": 5555
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-15",
+      "begintijd": "13:00",
+      "eindtijd": "13:30",
+      "boatIDs": [
+        4,
+        8
+      ],
+      "prijs": 0.0
+    }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 23,
+      "customerRecord": {
+        "naam": "zcxvvhjb",
+        "telefoonNummer": 564621516,
+        "email": "hgj@hihdzg.nl"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-14",
+      "begintijd": "15:30",
+      "eindtijd": "17:15",
+      "boatIDs": [
+        12,
+        6
+      ],
+      "prijs": 0.0
+    }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 24,
+      "customerRecord": {
+        "naam": "fzdt",
+        "telefoonNummer": 954262,
+        "email": "ugug@ojaest.nl"
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-14",
+      "begintijd": "15:15",
+      "eindtijd": "15:30",
+      "boatIDs": [
+        12
+      ],
+      "prijs": 0.0
+    }
+  },
+  {
+    "reservationRecord": {
+      "reserveringsNummer": 25,
+      "customerRecord": {
+        "naam": "cashmoney",
+        "telefoonNummer": 555
+      },
+      "betaald": false,
+      "kamerFacturatie": false,
+      "datum": "2026-04-16",
+      "begintijd": "13:30",
+      "eindtijd": "14:00",
+      "boatIDs": [
+        5
+      ],
+      "prijs": 35.0
     }
   }
 ]
