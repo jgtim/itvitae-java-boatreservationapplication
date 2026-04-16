@@ -26,11 +26,6 @@ public class CalendarDisplay extends JPanel {
     private JButton[][] allCells;
     private Integer[] selectedStart = {null, null};
     private Integer[] selectedEnd = {null, null};
-    private String[] timePoints = {"9:00", "9:15", "9:30", "9:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15",
-            "11:30", "11:45", "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15",
-            "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15",
-            "17:30", "17:45", "18:00", "18:15", "18:30", "18:45", "19:00", "19:15", "19:30", "19:45", "20:00", "20:15",
-            "20:30", "20:45", "21:00", "21:15", "21:30"};
     private LocalDate dateSelected;
 
     public CalendarDisplay(ReservationService reservationService, BoatService boatService) {
@@ -221,7 +216,7 @@ public class CalendarDisplay extends JPanel {
                 datePicker.setTextFieldToValidStateIfNeeded();
                 dateSelected = datePicker.getDate();
                 //start & end times are pulled from the timePoints list, based on the position of the calendar cell in the grid
-                String vanTijd = timePoints[this.selectedStart[1]];
+                String vanTijd = this.Calendar.timeBoxes[this.selectedStart[1]];
                 int end;
                 if(this.selectedEnd[0] == null){
                     end = this.selectedStart[1];
@@ -229,7 +224,7 @@ public class CalendarDisplay extends JPanel {
                     end = this.selectedEnd[1];
                 }
                 //end time is 1 time point after the cell selected as the end point
-                String totTijd = timePoints[end + 1];
+                String totTijd = this.Calendar.timeBoxes[end + 1];
                 //find list of boats that are already reserved in this range of time
                 ArrayList<String> reservedBoats = new ArrayList<String>();
                 for(int row = 0; row < allCells.length; row++){
@@ -275,7 +270,7 @@ public class CalendarDisplay extends JPanel {
         }
     }
 
-    public void reserveBoat(ArrayList<Integer> selectedBoats) {
+    public void reserveBoat(ArrayList<String> selectedBoats) {
         //first, establish an end time based on whether or not more than 1 cell is selected
         int endTime;
         if(this.selectedEnd[0] == null){
@@ -315,8 +310,10 @@ public class CalendarDisplay extends JPanel {
     private void selectTimeCell(int row, int column) {
         //scenario 1: no selection has been made yet
         if(this.selectedStart[0] == null && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
-            allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
-            this.selectedStart = new Integer[]{row, column};
+            if(allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+                allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
+                this.selectedStart = new Integer[]{row, column};
+            }
         //scenario 2: new boat selected
         }else if(this.selectedStart[0] != row && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
             allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
