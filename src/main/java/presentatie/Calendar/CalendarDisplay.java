@@ -252,7 +252,7 @@ public class CalendarDisplay extends JPanel {
                 String selectedBoat = boatIDs[this.selectedStart[0]];
 
                 ReserveringPopup reserveringPopup = new ReserveringPopup(reservationService, this,
-                        vanTijd, totTijd, dateSelected, reservedBoats, boatIDs, selectedBoat);
+                        vanTijd, totTijd, dateSelected, reservedBoats, selectedBoat);
                 reserveringPopup.pack();
                 reserveringPopup.setLocationRelativeTo(null);
                 reserveringPopup.setVisible(true);
