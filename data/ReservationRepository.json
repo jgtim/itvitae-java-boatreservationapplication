@@ -46,5 +46,22 @@
       "Standaard Roeiboot 8"
     ],
     "prijs": 0.0
+  },
+  {
+    "reserveringsNummer": 4,
+    "customerRecord": {
+      "naam": "111",
+      "telefoonNummer": 111
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-04-17",
+    "begintijd": "13:00",
+    "eindtijd": "13:45",
+    "boatIDs": [
+      "Standaard Roeiboot 6",
+      "Standaard Roeiboot 4"
+    ],
+    "prijs": 0.0
   }
 ]

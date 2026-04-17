@@ -4,6 +4,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import domain.BoatRecord;
 import domain.MolvenoColor;
 import domain.MolvenoFont;
+import domain.ReservationRecord;
 import presentatie.ReserveringPopup;
 import service.BoatService.BoatService;
 import service.ReservationService.ReservationService;
@@ -12,6 +13,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,7 +83,26 @@ public class CalendarDisplay extends JPanel {
             for (int j = 0; j < 50; j++) {
                 final int column = j;
                 buttonRow[j] = new JButton();
-
+                buttonRow[j].addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (e.getClickCount() == 2) {
+                            if(buttonRow[column].getBackground() == MolvenoColor.DARK.getColor()){
+                                ReservationRecord reservation = reservationService.getReservationWithReservationNumber(Calendar.getCalendarGrid().get(boatIDs[row])[column].getReservationNumber());
+                                var reserveringPopup = new ReserveringPopup(reservationService, reservation){
+                                    @Override
+                                    public void dispose() {
+                                        super.dispose();
+                                        reLoadCalendarDate(reservationService);
+                                    }
+                                };
+                                reserveringPopup.pack();
+                                reserveringPopup.setLocationRelativeTo(null);
+                                reserveringPopup.setVisible(true);
+                            }
+                        }
+                    }
+                });
                 // IMPORTANT -------------------------------------------------------------------------------------------
                 // Because of use of JButtons, our own colors get overridden with system standard
                 // When we disable this, we have to manually add lots of tweaks.
@@ -95,7 +117,6 @@ public class CalendarDisplay extends JPanel {
                 buttonRow[j].setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
                 buttonRow[j].setMinimumSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
                 buttonRow[j].setMaximumSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
-                // TODO determine button size here based on final app
                 buttonRow[j].setMargin(new Insets(8, 8, 8, 8));
 
                 // setting the background color after checking if already reserved
@@ -173,6 +194,10 @@ public class CalendarDisplay extends JPanel {
                 cellRow.setAlignmentX(Component.LEFT_ALIGNMENT);
                 BoxLayout boxLayoutManagerRow = new BoxLayout(cellRow, BoxLayout.X_AXIS);
                 cellRow.setLayout(boxLayoutManagerRow);
+                // COMMENTED THIS OUT: replaced with idColumn logic above
+//                if (i == 0) {
+//                    cellRow.add(new JLabel(String.valueOf(BoatIDs[j])));
+//                }
                 int zeroPoint = 4 * i;
                 int numPanels = 4;
                 if (i == 12) {
@@ -276,7 +301,7 @@ public class CalendarDisplay extends JPanel {
         }
     }
 
-    public void reserveBoat(ArrayList<String> selectedBoats) {
+    public void reserveBoat(ArrayList<String> selectedBoats, int reservationNumber) {
         //first, establish an end time based on whether or not more than 1 cell is selected
         int endTime;
         if(this.selectedEnd[0] == null){
@@ -289,7 +314,7 @@ public class CalendarDisplay extends JPanel {
             int row = Arrays.asList(boatIDs).indexOf(selectedBoats.get(i));
 
             for(int j = this.selectedStart[1]; j < endTime + 1; j++){
-                this.Calendar.getCalendarGrid().get(boatIDs[row])[j].reserve();
+                this.Calendar.getCalendarGrid().get(boatIDs[row])[j].reserve(reservationNumber);
                 cellBorder(row, j, allCells[row][j]);
                 // allCells[row][j].setBackground(MolvenoColor.DARK.getColor());
             }
@@ -315,7 +340,9 @@ public class CalendarDisplay extends JPanel {
     */
     private void selectTimeCell(int row, int column) {
         //scenario 1: no selection has been made yet
-        if(this.selectedStart[0] == null && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+        if(allCells[row][column].getBackground() == MolvenoColor.DARK.getColor()){
+
+        } else if(this.selectedStart[0] == null && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
             if(allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
                 allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
                 this.selectedStart = new Integer[]{row, column};
