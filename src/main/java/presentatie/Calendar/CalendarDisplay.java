@@ -26,11 +26,6 @@ public class CalendarDisplay extends JPanel {
     private JButton[][] allCells;
     private Integer[] selectedStart = {null, null};
     private Integer[] selectedEnd = {null, null};
-    private String[] timePoints = {"9:00", "9:15", "9:30", "9:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15",
-            "11:30", "11:45", "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15",
-            "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15",
-            "17:30", "17:45", "18:00", "18:15", "18:30", "18:45", "19:00", "19:15", "19:30", "19:45", "20:00", "20:15",
-            "20:30", "20:45", "21:00", "21:15", "21:30"};
     private LocalDate dateSelected;
 
     public CalendarDisplay(ReservationService reservationService, BoatService boatService) {
@@ -97,7 +92,14 @@ public class CalendarDisplay extends JPanel {
                 buttonRow[j].setMaximumSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
                 // TODO determine button size here based on final app
                 buttonRow[j].setMargin(new Insets(8, 8, 8, 8));
-                buttonRow[j].setBackground(CalGrid.get(BoatIDs[row])[column].getAvailable() ? MolvenoColor.LIGHT.getColor() : MolvenoColor.DARK.getColor());
+
+                // setting the background color after checking if already reserved
+                if (!CalGrid.get(BoatIDs[row])[column].getAvailable()) {
+                    cellBorder(row, column, buttonRow[j]);
+                } else {
+                    buttonRow[j].setBackground(MolvenoColor.LIGHT.getColor());
+                    buttonRow[j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+                }
                 buttonRow[j].addActionListener(e -> {
                     selectTimeCell(row, column);
                 });
@@ -214,7 +216,7 @@ public class CalendarDisplay extends JPanel {
                 datePicker.setTextFieldToValidStateIfNeeded();
                 dateSelected = datePicker.getDate();
                 //start & end times are pulled from the timePoints list, based on the position of the calendar cell in the grid
-                String vanTijd = timePoints[this.selectedStart[1]];
+                String vanTijd = this.Calendar.timeBoxes[this.selectedStart[1]];
                 int end;
                 if(this.selectedEnd[0] == null){
                     end = this.selectedStart[1];
@@ -222,7 +224,7 @@ public class CalendarDisplay extends JPanel {
                     end = this.selectedEnd[1];
                 }
                 //end time is 1 time point after the cell selected as the end point
-                String totTijd = timePoints[end + 1];
+                String totTijd = this.Calendar.timeBoxes[end + 1];
                 //find list of boats that are already reserved in this range of time
                 ArrayList<String> reservedBoats = new ArrayList<String>();
                 for(int row = 0; row < allCells.length; row++){
@@ -282,7 +284,8 @@ public class CalendarDisplay extends JPanel {
 
             for(int j = this.selectedStart[1]; j < endTime + 1; j++){
                 this.Calendar.getCalendarGrid().get(BoatIDs[row])[j].reserve();
-                allCells[row][j].setBackground(MolvenoColor.DARK.getColor());
+                cellBorder(row, j, allCells[row][j]);
+                // allCells[row][j].setBackground(MolvenoColor.DARK.getColor());
             }
         }
         //make green & red cells white again
@@ -307,8 +310,10 @@ public class CalendarDisplay extends JPanel {
     private void selectTimeCell(int row, int column) {
         //scenario 1: no selection has been made yet
         if(this.selectedStart[0] == null && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
-            allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
-            this.selectedStart = new Integer[]{row, column};
+            if(allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+                allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
+                this.selectedStart = new Integer[]{row, column};
+            }
         //scenario 2: new boat selected
         }else if(this.selectedStart[0] != row && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
             allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
@@ -365,6 +370,22 @@ public class CalendarDisplay extends JPanel {
             }
 
         }
+    }
+
+    // Method for drawing borders around reserved timeslot block
+    private void cellBorder(int row, int col, JButton cell) {
+        CalendarCell[] rowData = Calendar.getCalendarGrid().get(BoatIDs[row]);
+
+        boolean prevReserved = (col > 0) && !rowData[col - 1].getAvailable();
+        boolean nextReserved = (col < 49) && !rowData[col + 1].getAvailable();
+
+        int bottom = 4;
+        int top = 4;
+        int left = prevReserved ? 0 : 4;    // setting only the left border of the reservation
+        int right = nextReserved ? 0 : 4;   // setting only the right border of the reservation
+
+        cell.setBackground(MolvenoColor.DARK.getColor()); // painting the background of reserved timeslots
+        cell.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, MolvenoColor.ORANGE.getColor()));   // setting the top and bottom border of the reservation slot
     }
 
     public Calendar getCalendar(){return this.Calendar;}

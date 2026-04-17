@@ -13,5 +13,6 @@ public record ReservationRecord(
         String datum,
         String begintijd,
         String eindtijd,
-        ArrayList<String> boatIDs
+        ArrayList<String> boatIDs,
+        double prijs
 ) { }
