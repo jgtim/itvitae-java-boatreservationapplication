@@ -193,6 +193,7 @@ public class ReserveringPopup extends JDialog {
         });
     }
 
+
     private void setEditMode() {
         currentMode = ReservationPopupMode.EDITING;
         buttonOK.setText("Bevestig");
@@ -299,7 +300,8 @@ public class ReserveringPopup extends JDialog {
         ReservationRecord newReservation = getReservationRecord();
 
         reservationService.addReservation(newReservation);
-        this.DisplayTab.reserveBoat(boatIDs);
+        this.DisplayTab.reserveBoat(boatIDs, newReservation.reserveringsNummer());
+        dispose();
     }
 
     private ReservationRecord getReservationRecord() {
@@ -328,6 +330,12 @@ public class ReserveringPopup extends JDialog {
 
     private void onDelete(ReservationRecord ReservationRecord){
         reservationService.deleteReservation(ReservationRecord);
+        dispose();
+    }
+
+    private void onDelete(ReservationRecord ReservationRecord, CalendarDisplay display) {
+        reservationService.deleteReservation(ReservationRecord);
+        //TODO change display
         dispose();
     }
 
