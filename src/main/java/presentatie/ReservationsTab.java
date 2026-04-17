@@ -10,22 +10,23 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 public class ReservationsTab extends JPanel {
     private JPanel mainPanel;
-    JTable table1;
-    private JPanel card2;
-    private ReservationItemPanel reservationItemPanel;
+    private JTable table1;
     private JPanel cardLayout;
     private JTextField searchField;
+    private JPanel searchPanel;
+    private JPanel tablePanel;
     private DefaultTableModel tableModel;
     private ReservationService reservationService;
 
     public ReservationsTab(ReservationService reservationService) {
-        reservationItemPanel.setCardLayoutParent(cardLayout);
         this.reservationService = reservationService;
         add(mainPanel);
 
@@ -76,11 +77,17 @@ public class ReservationsTab extends JPanel {
                 if (e.getClickCount() == 2) {
                     int viewRow = table1.rowAtPoint(e.getPoint());
                     int reservationNumber = (Integer) table1.getModel().getValueAt(viewRow, 0);
-//                    System.out.println(reservationNumber);
-//                    reservationItemPanel.changeReservation(reservationService.getReservationWithReservationNumber(reservationNumber));
-//                    CardLayout cl = (CardLayout) cardLayout.getLayout();
-//                    cl.next(cardLayout);
-                    var reserveringPopup = new ReserveringPopup(reservationService.getReservationWithReservationNumber(reservationNumber), reservationService, table1, table1.rowAtPoint(e.getPoint()));
+
+                    // Creates a Reservation PopUp and overrides the close function so it also reloads the reservationtab table
+
+                    // Creates a Reservation PopUp and overrides the close function so it also reloads the reservationtab table
+                    var reserveringPopup = new ReserveringPopup(reservationService, reservationService.getReservationWithReservationNumber(reservationNumber)) {
+                        @Override
+                        public void dispose() {
+                            super.dispose();
+                            reloadTable();
+                        }
+                    };
                     reserveringPopup.pack();
                     reserveringPopup.setLocationRelativeTo(null);
                     reserveringPopup.setVisible(true);

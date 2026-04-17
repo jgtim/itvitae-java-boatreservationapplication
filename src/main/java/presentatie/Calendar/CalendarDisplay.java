@@ -33,7 +33,6 @@ public class CalendarDisplay extends JPanel {
 
     public CalendarDisplay(ReservationService reservationService, BoatService boatService) {
         setBackground(MolvenoColor.LIGHT.getColor());
-        CalendarDisplay display = this;
 
         //Get all boat IDs
         boatIDs = boatService.getBoatList().stream()
@@ -57,6 +56,12 @@ public class CalendarDisplay extends JPanel {
         datePicker.setMaximumSize(new Dimension(200, 40));
         datePicker.setDateToToday();
 
+        //Add event for when a new date is selected
+        datePicker.addDateChangeListener(event -> {
+            dateSelected = event.getNewDate(); //Set selected date to the new date
+            reLoadCalendarDate(reservationService); //Reload the calendar
+        });
+
         datePickerPanel.add(dateLabel);
         datePickerPanel.add(datePicker);
 
@@ -66,9 +71,8 @@ public class CalendarDisplay extends JPanel {
         // ---
 
         // Giving the Integer[] BoatIDs to the Calendar constructor ---
-        this.Calendar = new Calendar(reservationService, dateSelected, boatIDs);
-
-        this.allCells = new JButton[boatIDs.length][50];
+        Calendar = new Calendar(reservationService, dateSelected, boatIDs);
+        allCells = new JButton[boatIDs.length][50];
 
         //the calendar grid ties a boat ID to a list of calendar cell objects, which contain data about that time point for that boat
         HashMap<String, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
@@ -85,7 +89,13 @@ public class CalendarDisplay extends JPanel {
                         if (e.getClickCount() == 2) {
                             if(buttonRow[column].getBackground() == MolvenoColor.DARK.getColor()){
                                 ReservationRecord reservation = reservationService.getReservationWithReservationNumber(Calendar.getCalendarGrid().get(boatIDs[row])[column].getReservationNumber());
-                                var reserveringPopup = new ReserveringPopup(reservation, reservationService, display);
+                                var reserveringPopup = new ReserveringPopup(reservationService, reservation){
+                                    @Override
+                                    public void dispose() {
+                                        super.dispose();
+                                        reLoadCalendarDate(reservationService);
+                                    }
+                                };
                                 reserveringPopup.pack();
                                 reserveringPopup.setLocationRelativeTo(null);
                                 reserveringPopup.setVisible(true);
@@ -255,7 +265,7 @@ public class CalendarDisplay extends JPanel {
                 //Get the boat that is selected
                 String selectedBoat = boatIDs[this.selectedStart[0]];
 
-                ReserveringPopup reserveringPopup = new ReserveringPopup(reservationService, this,
+                ReserveringPopup reserveringPopup = new ReserveringPopup(reservationService, boatService, this,
                         vanTijd, totTijd, dateSelected, reservedBoats, selectedBoat);
                 reserveringPopup.pack();
                 reserveringPopup.setLocationRelativeTo(null);
@@ -409,6 +419,32 @@ public class CalendarDisplay extends JPanel {
 
         cell.setBackground(MolvenoColor.DARK.getColor()); // painting the background of reserved timeslots
         cell.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, MolvenoColor.ORANGE.getColor()));   // setting the top and bottom border of the reservation slot
+    }
+
+    //Reloads the calendar display to a newly selected date
+    private void reLoadCalendarDate(ReservationService reservationService) {
+        //Cancel any selected cells
+        cancelSelection();
+
+        //Get the calendar information for the selected date
+        Calendar = new Calendar(reservationService, dateSelected, boatIDs);
+        HashMap<String, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
+
+        //Loop trough the calendar grid
+        for (int i = 0; i < CalGrid.size(); i++) {
+            final int row = i;
+            for (int j = 0; j < 50; j++) {
+                final int column = j;
+
+                //Change the button color based on calendar availability at the new date
+                if (!CalGrid.get(boatIDs[row])[column].getAvailable()) {
+                    cellBorder(row, column, allCells[i][j]);
+                } else {
+                    allCells[i][j].setBackground(MolvenoColor.LIGHT.getColor());
+                    allCells[i][j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+                }
+            }
+        }
     }
 
     public Calendar getCalendar(){return this.Calendar;}
