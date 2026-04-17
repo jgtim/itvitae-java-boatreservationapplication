@@ -5,6 +5,7 @@ import domain.BoatRecord;
 import domain.CustomerRecord;
 import domain.ReservationRecord;
 import presentatie.Calendar.CalendarDisplay;
+import service.BoatService.BoatService;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
@@ -58,8 +59,8 @@ public class ReserveringPopup extends JDialog {
     private ArrayList<BoatRecord> allBoats;
     private ArrayList<String> reservedBoats;
 
-    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot,
-                            LocalDate datum, ArrayList<String> reservedBoats, String[] allBoats, String selectedBoat) {
+    public ReserveringPopup(ReservationService reservationService, BoatService boatService, CalendarDisplay display,
+                            String van, String tot, LocalDate datum, ArrayList<String> reservedBoats, String selectedBoat) {
         deletePane.remove(buttonDelete);
         getReserveringPopup().DisplayTab = display;
         this.begintijd = van;
@@ -82,8 +83,7 @@ public class ReserveringPopup extends JDialog {
         System.out.println("TIJDSDUUR: " + tijdsduur);
         times30 = tijdsduur / 2;
         dateField.setText(datum.toString());
-        var boatDataHandler = new BoatDataExcel();
-        ArrayList<BoatRecord> allBoats = boatDataHandler.read();
+        ArrayList<BoatRecord> allBoats = boatService.getBoatList();
 
         this.validIDs = Arrays.asList(
                 allBoats.stream()
