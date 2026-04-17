@@ -1,7 +1,6 @@
 package presentatie;
 
 import domain.ReservationRecord;
-import service.ReservationDto;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
@@ -11,24 +10,23 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 public class ReservationsTab extends JPanel {
     private JPanel mainPanel;
     private JTable table1;
-    private JPanel card2;
-    private ReservationItemPanel reservationItemPanel;
     private JPanel cardLayout;
     private JTextField searchField;
+    private JPanel searchPanel;
+    private JPanel tablePanel;
     private DefaultTableModel tableModel;
     private ReservationService reservationService;
 
     public ReservationsTab(ReservationService reservationService) {
-        reservationItemPanel.setCardLayoutParent(cardLayout);
         this.reservationService = reservationService;
         add(mainPanel);
 
@@ -79,11 +77,17 @@ public class ReservationsTab extends JPanel {
                 if (e.getClickCount() == 2) {
                     int viewRow = table1.rowAtPoint(e.getPoint());
                     int reservationNumber = (Integer) table1.getModel().getValueAt(viewRow, 0);
-//                    System.out.println(reservationNumber);
-//                    reservationItemPanel.changeReservation(reservationService.getReservationWithReservationNumber(reservationNumber));
-//                    CardLayout cl = (CardLayout) cardLayout.getLayout();
-//                    cl.next(cardLayout);
-                    var reserveringPopup = new ReserveringPopup(reservationService.getReservationWithReservationNumber(reservationNumber));
+
+                    // Creates a Reservation PopUp and overrides the close function so it also reloads the reservationtab table
+
+                    // Creates a Reservation PopUp and overrides the close function so it also reloads the reservationtab table
+                    var reserveringPopup = new ReserveringPopup(reservationService, reservationService.getReservationWithReservationNumber(reservationNumber)) {
+                        @Override
+                        public void dispose() {
+                            super.dispose();
+                            reloadTable();
+                        }
+                    };
                     reserveringPopup.pack();
                     reserveringPopup.setLocationRelativeTo(null);
                     reserveringPopup.setVisible(true);
@@ -111,11 +115,10 @@ public class ReservationsTab extends JPanel {
 
     private void reloadTable() {
         tableModel.setRowCount(0);
-        ArrayList<ReservationDto> reservationDtos = reservationService.getReservationList();
+        ArrayList<ReservationRecord> reservationRecords = reservationService.getReservations();
 
-        if (reservationDtos != null) {
-            for (ReservationDto reservationDto : reservationDtos) {
-                ReservationRecord reservationRecord = reservationDto.getReservationRecord();
+        if (reservationRecords != null) {
+            for (ReservationRecord reservationRecord : reservationRecords) {
                 Object[] reservationFields = {
                         reservationRecord.reserveringsNummer(),
                         reservationRecord.customerRecord().naam(),
