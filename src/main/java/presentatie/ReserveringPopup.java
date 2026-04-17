@@ -85,7 +85,7 @@ public class ReserveringPopup extends JDialog {
         times30 = tijdsduur / 2;
         dateField.setText(datum.toString());
         var boatDataHandler = new BoatDataExcel();
-        ArrayList<BoatRecord> allBoats = boatDataHandler.read();
+        allBoats = boatDataHandler.read();
 
         this.validIDs = Arrays.asList(
                 allBoats.stream()
