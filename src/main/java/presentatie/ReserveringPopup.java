@@ -323,7 +323,10 @@ public class ReserveringPopup extends JDialog {
         dispose();
     }
 
-    private void onDelete(ReservationRecord reservationRecord, CalendarDisplay display) {
+    private void onDelete(ReservationRecord ReservationRecord, CalendarDisplay display) {
+        reservationService.deleteReservation(ReservationRecord);
+        //TODO change display
+        dispose();
     }
 
     private boolean isFormValid() {

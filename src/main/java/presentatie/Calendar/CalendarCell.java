@@ -5,11 +5,13 @@ public class CalendarCell {
     private final String BoatID;
     private boolean Available;
     private final String timeBox;
+    public final int reservationNumber;
 
-    public CalendarCell(String boatID, String timeBox, boolean Available) {
+    public CalendarCell(String boatID, String timeBox, boolean Available, int reservationNumber) {
         this.BoatID = boatID;
         this.Available = Available;
         this.timeBox = timeBox;
+        this.reservationNumber = reservationNumber;
     }
 
     public String showData(){

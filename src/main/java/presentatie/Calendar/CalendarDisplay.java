@@ -104,13 +104,13 @@ public class CalendarDisplay extends JPanel {
                 buttonRow[j].addActionListener(e -> {
                     selectTimeCell(row, column);
                 });
-                int finalJ = j;
                 buttonRow[j].addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (e.getClickCount() == 2) {
-                            if(buttonRow[finalJ].getBackground() == MolvenoColor.DARK.getColor()){
-                                System.out.println("CLICK");
+                            if(buttonRow[column].getBackground() == MolvenoColor.DARK.getColor()){
+
+                                var reserveringPopup = new ReserveringPopup(reservationService.getReservationWithReservationNumber(Calendar.getCalendarGrid().get(boatIDs[row])[column]), this);
                             }
                         }
                     }
@@ -182,7 +182,7 @@ public class CalendarDisplay extends JPanel {
                 cellRow.setLayout(boxLayoutManagerRow);
                 // COMMENTED THIS OUT: replaced with idColumn logic above
 //                if (i == 0) {
-//                    cellRow.add(new JLabel(String.valueOf(BoatIDs[j]))); //TODO make this name of boat probably
+//                    cellRow.add(new JLabel(String.valueOf(BoatIDs[j])));
 //                }
                 int zeroPoint = 4 * i;
                 int numPanels = 4;
