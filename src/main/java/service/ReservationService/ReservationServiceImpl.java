@@ -30,6 +30,12 @@ public class ReservationServiceImpl implements ReservationService {
         saveReservationsToRepository();
     }
 
+    @Override
+    public void deleteReservation(ReservationRecord Reservation){
+        reservationRecords.remove(Reservation);
+        saveReservationsToRepository();
+    }
+
     public ArrayList<ReservationRecord> getReservations() {
         return reservationRecords;
     }

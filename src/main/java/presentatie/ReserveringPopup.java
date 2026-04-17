@@ -4,12 +4,12 @@ import data.BoatDataExcel;
 import domain.BoatRecord;
 import domain.CustomerRecord;
 import domain.ReservationPopupMode;
-import domain.ReservationPopupMode;
 import domain.ReservationRecord;
 import presentatie.Calendar.CalendarDisplay;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
@@ -45,6 +45,8 @@ public class ReserveringPopup extends JDialog {
     private JComboBox comboBoxVan;
     private JComboBox comboBoxTot;
     private JButton removeBoatButton;
+    private JPanel deletePane;
+    private JButton buttonDelete;
     private JLabel priceField;
     private LocalDate datum;
     private String begintijd;
@@ -61,7 +63,10 @@ public class ReserveringPopup extends JDialog {
     private ReservationRecord currentReservation;
 
     // Constructor voor aanmaken van reserveringen
-    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot, LocalDate datum, ArrayList<String> reservedBoats) { //LocalDate date
+    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot,
+                            LocalDate datum, ArrayList<String> reservedBoats, String[] allBoatsString, String selectedBoat) { //LocalDate date
+        deletePane.remove(buttonDelete);
+        getReserveringPopup().DisplayTab = display;
         currentMode = ReservationPopupMode.CREATING;
         this.DisplayTab = display;
         this.begintijd = van;
@@ -87,15 +92,14 @@ public class ReserveringPopup extends JDialog {
         var boatDataHandler = new BoatDataExcel();
         allBoats = boatDataHandler.read();
 
-        this.validIDs = Arrays.asList(
-                allBoats.stream()
-                        .map(BoatRecord::boatName)
-                        .toArray(String[]::new)
-        );
         this.reservationService = reservationService;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+
+        //Add the boat that is selected on the calendar
+        boatIDs.add(selectedBoat);
+        addedBoatsLabel.setText("Added: " + boatIDs.toString());
 
         buttonOK.addActionListener(e -> onOK());
 
@@ -119,6 +123,10 @@ public class ReserveringPopup extends JDialog {
         removeBoatButton.addActionListener(e -> {removeBoat();});
     }
 
+    private ReserveringPopup getReserveringPopup() {
+        return this;
+    }
+
     // Constructor voor gebruik in reserveringen tab om een reservering in te zien of te wijzigen
     public ReserveringPopup(ReservationService reservationService, ReservationRecord reservationRecord) {
         this.reservationService = reservationService;
@@ -135,6 +143,10 @@ public class ReserveringPopup extends JDialog {
                 "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45",
                 "21:00", "21:15", "21:30"
         };
+
+        var boatDataHandler = new BoatDataExcel();
+        allBoats = boatDataHandler.read();
+
         setContentPane(contentPane);
         setModal(true);
 //        getRootPane().setDefaultButton(buttonOK);
@@ -171,6 +183,7 @@ public class ReserveringPopup extends JDialog {
         buttonCancel.addActionListener(e -> onCancel());
         this.price = reservationRecord.prijs();
         priceField.setText("€" + String.format("%.2f", price));
+        buttonDelete.addActionListener(e -> onDelete(reservationRecord));
 
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -218,6 +231,12 @@ public class ReserveringPopup extends JDialog {
     }
 
     private void addBoat() {
+        this.validIDs = Arrays.asList(
+                allBoats.stream()
+                        .map(BoatRecord::boatName)
+                        .toArray(String[]::new)
+        );
+
         try{
             String newBoatID = boatIdInputField.getText();
             if(!validIDs.contains(newBoatID)){
@@ -305,6 +324,11 @@ public class ReserveringPopup extends JDialog {
 
     private void onCancel() {
         // add your code here if necessary
+        dispose();
+    }
+
+    private void onDelete(ReservationRecord ReservationRecord){
+        reservationService.deleteReservation(ReservationRecord);
         dispose();
     }
 
