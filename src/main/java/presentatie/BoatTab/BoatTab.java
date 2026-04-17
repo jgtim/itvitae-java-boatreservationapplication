@@ -2,6 +2,8 @@ package presentatie.BoatTab;
 
 import domain.*;
 import service.BoatService.BoatService;
+import service.BoatService.BoatServiceImpl;
+import service.BoatStatusHandler.BoatStatusHandlerImpl;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,16 +14,36 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class BoatTab extends JPanel {
+    private BoatStatusHandlerImpl boatStatusHandler;
+    private BoatServiceImpl boatService;
+
 
     public BoatTab(BoatService boatService) {
         // Setting BoatTab layout as BorderLayout
         setLayout(new BorderLayout());
+        this.boatService = (BoatServiceImpl) boatService;
 
         // RIGHT SIDE -------------------------------------------------------------------------------------------------
         // JPanel boat details (on right side of tab)
         JPanel boatDetails = new JPanel(new BorderLayout(10, 10));
         boatDetails.setBorder(new EmptyBorder(10, 10, 10, 10));
         boatDetails.setBackground(MolvenoColor.LIGHT.getColor());
+
+        // Button for setting boat isBroken status
+        JButton boatBrokenBtn = new  JButton("Defect melden");
+        boatBrokenBtn.setPreferredSize(new Dimension(200, 40));
+        boatBrokenBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        boatBrokenBtn.setFont(MolvenoFont.BUTTONLABEL.getFont());
+        boatBrokenBtn.setForeground(MolvenoColor.DARK.getColor());
+        boatBrokenBtn.setBackground(MolvenoColor.BEIGE.getColor());
+        boatBrokenBtn.setVisible(false);
+
+        // Wrapper for boatBrokenBtn
+        JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonWrapper.setOpaque(false);
+        buttonWrapper.add(boatBrokenBtn);
+
+        boatDetails.add(buttonWrapper, BorderLayout.SOUTH);
 
         // Header Button (NORTH on JPanel boatDetails)
         JButton detailHeaderBtn = new JButton("Zoek en selecteer een boot aan de linkerzijde.");
@@ -92,7 +114,7 @@ public class BoatTab extends JPanel {
 
         // Calling method to create JButtons in BoatTypePanel and implements search function for Boat Types
         // This method calls another method: one that creates JButtons for Boat Type Members
-        populateBoatTypeButtons(boatTypePanel, cardLayout, boatSidePanel, boatTypeMemberPanel, detailHeaderBtn, detailLabel, boatService.getBoatList());
+        populateBoatTypeButtons(boatTypePanel, cardLayout, boatSidePanel, boatTypeMemberPanel, detailHeaderBtn, detailLabel, boatService.getBoatList(), boatBrokenBtn);
 
         // Here we put the created and functional boatTypePanel with CardLayout in a scrollable JScrollPane
         JScrollPane boatScrollPane = new JScrollPane(boatSidePanel);
@@ -180,7 +202,7 @@ public class BoatTab extends JPanel {
 
     // METHODS ---------------------------------------------------------------------------------------------------------
     // Method for populating Boat Type Buttons in the left side Scroll Pane (top card)
-    private void populateBoatTypeButtons(JPanel targetPanel, CardLayout cardLayout, JPanel deck, JPanel memberPanel, JButton header, JLabel details, ArrayList<BoatRecord> fullBoatList) {
+    private void populateBoatTypeButtons(JPanel targetPanel, CardLayout cardLayout, JPanel deck, JPanel memberPanel, JButton header, JLabel details, ArrayList<BoatRecord> fullBoatList, JButton boatBrokenBtn) {
         targetPanel.removeAll();
 
         for (BoatType type : BoatType.values()) {
@@ -201,7 +223,7 @@ public class BoatTab extends JPanel {
                     }
                 }
                 // Populate Member card with that list:
-                populateBoatMemberButtons(filteredBoats, memberPanel, header, details, cardLayout, deck);
+                populateBoatMemberButtons(filteredBoats, memberPanel, header, details, cardLayout, deck, boatBrokenBtn);
 
                 // Go to the Member card
                 cardLayout.show(deck, "BOAT_MEMBER_SELECT");
@@ -215,7 +237,13 @@ public class BoatTab extends JPanel {
 
 
     // Method for populating Boat Member Buttons in the left side Scroll Pane (bottom card)
-    private void populateBoatMemberButtons(ArrayList<BoatRecord> boatList, JPanel targetPanel, JButton header, JLabel details, CardLayout cardLayout, JPanel deck) {
+    private void populateBoatMemberButtons(ArrayList<BoatRecord> boatList,
+                                           JPanel targetPanel,
+                                           JButton header,
+                                           JLabel details,
+                                           CardLayout cardLayout,
+                                           JPanel deck,
+                                           JButton boatBrokenBtn) {
         targetPanel.removeAll();
 
         // Creating single button on top to return to Boat Types
@@ -242,25 +270,52 @@ public class BoatTab extends JPanel {
 
             // Creating interaction between Boat Buttons in JScrollPane and JButton detailHeader
             boatBtn.addActionListener(e -> {
-                header.setText(b.boatName());
-                // Creating String boatInfo in html formatting to display Boat object boatInfo
-                String boatInfo = "<html>" +
-                        "<b>Type:</b> " + b.boatType().getDisplayBoatType() + "<br>" +
-                        "<b>Naam:</b> " + b.boatName() + "<br><br>" +
-                        "<b>Meer Locatie:</b> " + b.lakeArea().getDisplayLakeArea() + "<br><br>" +
+                        header.setText(b.boatName());
+                        boatBrokenBtn.setVisible(true);
 
-                        "<b>Capaciteit:</b> " + b.capacity() + "<br><br>" +
+                        // Mini method to refresh UI and get latest version of Boat Record
+                        Runnable refreshDisplay = () -> {
+                            BoatRecord current = boatService.getBoatList().stream()
+                                    .filter(r -> r.boatName().equals(b.boatName()))
+                                    .findFirst().get();
 
-                        "<b>Elektrische motor:</b> " + (b.isElectric() ? "Ja" : "Nee") + "<br>" +
-                        "<b>Reddingsvest aan boord:</b> " + (b.hasLifeJackets() ? "Ja" : "Nee") + "<br><br>" +
+                            // Creating String boatInfo in html formatting to display Boat object boatInfo
+                            String boatInfo = "<html>" +
+                                    "<b>Type:</b> " + b.boatType().getDisplayBoatType() + "<br>" +
+                                    "<b>Naam:</b> " + b.boatName() + "<br><br>" +
+                                    "<b>Meer Locatie:</b> " + b.lakeArea().getDisplayLakeArea() + "<br><br>" +
 
-                        "<b>Prijs per 15 minuten:</b> " + b.price15() + " euro <br>" +
-                        "<b>Prijs per 30 minuten:</b> " + b.price30() + " euro <br><br>" +
+                                    "<b>Capaciteit:</b> " + b.capacity() + "<br><br>" +
 
-                        "<html>";
-                // Setting html formatted String boatInfo to JLabel detailLabel
-                details.setText(boatInfo);
-            });
+                                    "<b>Elektrische motor:</b> " + (b.isElectric() ? "Ja" : "Nee") + "<br>" +
+                                    "<b>Reddingsvest aan boord:</b> " + (b.hasLifeJackets() ? "Ja" : "Nee") + "<br><br>" +
+
+                                    "<b>Prijs per 15 minuten:</b> " + b.price15() + " euro <br>" +
+                                    "<b>Prijs per 30 minuten:</b> " + b.price30() + " euro <br><br>" +
+
+                                    "<b>Status: <b>" + (current.isBroken() ? "DEFECT" : "Klaar voor gebruik") +
+
+                                    "<html>";
+                            // Setting html formatted String boatInfo to JLabel detailLabel
+                            details.setText(boatInfo);
+                            boatBrokenBtn.setText(current.isBroken() ? "Defect opgelost" : "Meld defect");
+                        };
+
+                        for (java.awt.event.ActionListener al : boatBrokenBtn.getActionListeners()) {
+                            boatBrokenBtn.removeActionListener(al);
+                        }
+
+                        boatBrokenBtn.addActionListener(event -> {
+                            // Get latest version, toggle boolean, and save
+                            BoatRecord current = boatService.getBoatList().stream()
+                                    .filter(r -> r.boatName().equals(b.boatName()))
+                                    .findFirst().get();
+
+                            boatService.setBoatBroken(current.boatName(), !current.isBroken());
+                            refreshDisplay.run();
+                        });
+                        refreshDisplay.run();
+                    });
 
             // Adding functional Boat Buttons to JPanel boatTypePanel
             targetPanel.add(boatBtn);
