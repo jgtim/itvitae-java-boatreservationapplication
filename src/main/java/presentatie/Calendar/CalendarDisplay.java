@@ -4,6 +4,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import domain.BoatRecord;
 import domain.MolvenoColor;
 import domain.MolvenoFont;
+import domain.ReservationRecord;
 import presentatie.ReserveringPopup;
 import service.BoatService.BoatService;
 import service.ReservationService.ReservationService;
@@ -32,6 +33,7 @@ public class CalendarDisplay extends JPanel {
 
     public CalendarDisplay(ReservationService reservationService, BoatService boatService) {
         setBackground(MolvenoColor.LIGHT.getColor());
+        CalendarDisplay display = this;
 
         //Get all boat IDs
         boatIDs = boatService.getBoatList().stream()
@@ -77,7 +79,20 @@ public class CalendarDisplay extends JPanel {
             for (int j = 0; j < 50; j++) {
                 final int column = j;
                 buttonRow[j] = new JButton();
-
+                buttonRow[j].addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (e.getClickCount() == 2) {
+                            if(buttonRow[column].getBackground() == MolvenoColor.DARK.getColor()){
+                                ReservationRecord reservation = reservationService.getReservationWithReservationNumber(Calendar.getCalendarGrid().get(boatIDs[row])[column].getReservationNumber());
+                                var reserveringPopup = new ReserveringPopup(reservation, reservationService, display);
+                                reserveringPopup.pack();
+                                reserveringPopup.setLocationRelativeTo(null);
+                                reserveringPopup.setVisible(true);
+                            }
+                        }
+                    }
+                });
                 // IMPORTANT -------------------------------------------------------------------------------------------
                 // Because of use of JButtons, our own colors get overridden with system standard
                 // When we disable this, we have to manually add lots of tweaks.
@@ -103,17 +118,6 @@ public class CalendarDisplay extends JPanel {
                 }
                 buttonRow[j].addActionListener(e -> {
                     selectTimeCell(row, column);
-                });
-                buttonRow[j].addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        if (e.getClickCount() == 2) {
-                            if(buttonRow[column].getBackground() == MolvenoColor.DARK.getColor()){
-
-                                var reserveringPopup = new ReserveringPopup(reservationService.getReservationWithReservationNumber(Calendar.getCalendarGrid().get(boatIDs[row])[column]), this);
-                            }
-                        }
-                    }
                 });
             }
             allCells[i] = buttonRow;
@@ -287,7 +291,7 @@ public class CalendarDisplay extends JPanel {
         }
     }
 
-    public void reserveBoat(ArrayList<String> selectedBoats) {
+    public void reserveBoat(ArrayList<String> selectedBoats, int reservationNumber) {
         //first, establish an end time based on whether or not more than 1 cell is selected
         int endTime;
         if(this.selectedEnd[0] == null){
@@ -300,7 +304,7 @@ public class CalendarDisplay extends JPanel {
             int row = Arrays.asList(boatIDs).indexOf(selectedBoats.get(i));
 
             for(int j = this.selectedStart[1]; j < endTime + 1; j++){
-                this.Calendar.getCalendarGrid().get(boatIDs[row])[j].reserve();
+                this.Calendar.getCalendarGrid().get(boatIDs[row])[j].reserve(reservationNumber);
                 cellBorder(row, j, allCells[row][j]);
                 // allCells[row][j].setBackground(MolvenoColor.DARK.getColor());
             }

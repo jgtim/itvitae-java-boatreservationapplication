@@ -289,7 +289,7 @@ public class ReserveringPopup extends JDialog {
         ReservationRecord newReservation = getReservationRecord();
 
         reservationService.addReservation(newReservation);
-        this.DisplayTab.reserveBoat(boatIDs);
+        this.DisplayTab.reserveBoat(boatIDs, newReservation.reserveringsNummer());
         dispose();
     }
 
