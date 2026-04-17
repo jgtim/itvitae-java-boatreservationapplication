@@ -379,7 +379,7 @@ public class CalendarDisplay extends JPanel {
 
     // Method for drawing borders around reserved timeslot block
     private void cellBorder(int row, int col, JButton cell) {
-        CalendarCell[] rowData = Calendar.getCalendarGrid().get(BoatIDs[row]);
+        CalendarCell[] rowData = Calendar.getCalendarGrid().get(boatIDs[row]);
 
         boolean prevReserved = (col > 0) && !rowData[col - 1].getAvailable();
         boolean nextReserved = (col < 49) && !rowData[col + 1].getAvailable();
