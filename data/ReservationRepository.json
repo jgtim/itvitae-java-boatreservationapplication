@@ -12,7 +12,8 @@
     "eindtijd": "12:00",
     "boatIDs": [
       "Familie Roeiboot 1"
-    ]
+    ],
+    "prijs": 0.0
   },
   {
     "reserveringsNummer": 2,
@@ -27,7 +28,8 @@
     "eindtijd": "12:00",
     "boatIDs": [
       "Familie Roeiboot 2"
-    ]
+    ],
+    "prijs": 0.0
   },
   {
     "reserveringsNummer": 3,
@@ -42,6 +44,7 @@
     "eindtijd": "12:30",
     "boatIDs": [
       "Standaard Roeiboot 8"
-    ]
+    ],
+    "prijs": 0.0
   }
 ]

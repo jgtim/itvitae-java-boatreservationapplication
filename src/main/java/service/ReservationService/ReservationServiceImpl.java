@@ -56,4 +56,15 @@ public class ReservationServiceImpl implements ReservationService {
     private void saveReservationsToRepository() {
         reservationRepositoryHandler.saveReservationRecords(reservationRecords);
     }
+
+    public void updateReservation(ReservationRecord updatedReservation) {
+        int reservationNumber = updatedReservation.reserveringsNummer();
+        for (int i = 0; i < reservationRecords.size() ; i++) {
+                if (reservationRecords.get(i).reserveringsNummer() == reservationNumber) {
+                    reservationRecords.set(i, updatedReservation);
+                }
+        }
+        saveReservationsToRepository();
+    }
+
 }
