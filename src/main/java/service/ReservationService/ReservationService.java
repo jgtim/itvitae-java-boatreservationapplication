@@ -1,6 +1,8 @@
 package service.ReservationService;
 
+import domain.BoatType;
 import domain.ReservationRecord;
+import service.BoatService.BoatService;
 
 import java.util.ArrayList;
 
@@ -11,4 +13,5 @@ public interface ReservationService {
     public void updateReservation(ReservationRecord updatedReservation);
     void addReservation(ReservationRecord newReservation);
     void deleteReservation(ReservationRecord Reservation);
+    public int getBoatAmountAvailableDuringTimeByType (BoatType boatType, String startTimeString, String endTimeString, BoatService boatService);
 }

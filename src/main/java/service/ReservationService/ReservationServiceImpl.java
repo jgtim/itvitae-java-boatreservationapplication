@@ -3,7 +3,9 @@ package service.ReservationService;
 import Exceptions.ReservationNotFoundException;
 import data.ReservationRepositoryHandler;
 import domain.BoatRecord;
+import domain.BoatType;
 import domain.ReservationRecord;
+import service.BoatService.BoatService;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -74,15 +76,33 @@ public class ReservationServiceImpl implements ReservationService {
         LocalTime endTimeToCheck = LocalTime.parse(endTimeString);
 
         for (ReservationRecord reservationRecord : reservationRecords) {
-            LocalTime reservationStartTime = LocalTime.parse(reservationRecord.begintijd());
-            LocalTime reservationEndTime = LocalTime.parse(reservationRecord.eindtijd());
+            if (reservationRecord.boatIDs().contains(boatID)) {
+                System.out.println(boatID);
+                LocalTime reservationStartTime = LocalTime.parse(reservationRecord.begintijd());
+                LocalTime reservationEndTime = LocalTime.parse(reservationRecord.eindtijd());
 
-            if (startTimeToCheck.isBefore(reservationEndTime) && endTimeToCheck.isAfter(reservationStartTime)) {
-                return false;
+                if (startTimeToCheck.isBefore(reservationEndTime) && endTimeToCheck.isAfter(reservationStartTime)) {
+                    return false;
+                }
             }
         }
 
         return true;
+    }
+
+    public int getBoatAmountAvailableDuringTimeByType (BoatType boatType, String startTimeString, String endTimeString, BoatService boatService) {
+        int total = boatService.getBoatAmountOfType(boatType);
+        for (ReservationRecord reservationRecord : reservationRecords) {
+            for (String boatID : reservationRecord.boatIDs()) {
+                if (boatType == boatService.getBoatTypeFromID(boatID)) {
+                    System.out.println(boatID);
+                    if (!isBoatAvailableDuringTime(boatID, startTimeString, endTimeString)) {
+                        total -= 1;
+                    }
+                }
+            }
+        }
+        return total;
     }
 
 }

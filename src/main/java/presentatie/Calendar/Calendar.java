@@ -30,7 +30,6 @@ public class Calendar {
         ArrayList<ReservationRecord> reservationList = getReservationsForDate(this.CalendarDate);
         for(int i = 0; i < BoatIDs.length; i++){
             //50 calendar cells with boat ID
-            System.out.println(BoatIDs[i]);
             ArrayList<ReservationRecord> boatReservations = getReservationsForBoat(reservationList, BoatIDs[i]);
             ArrayList<String> reservedTimes = new ArrayList<>();
             for(int r = 0; r < boatReservations.size(); r++){

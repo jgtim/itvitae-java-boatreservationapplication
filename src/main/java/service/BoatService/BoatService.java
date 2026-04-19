@@ -10,4 +10,5 @@ public interface BoatService {
     void setBoatBroken(String boatName, boolean isBroken);
     public int getBoatAmountOfType(BoatType boatType);
     public int getBoatCapacityFromType(BoatType boatType);
+    public BoatType getBoatTypeFromID(String boatID);
 }

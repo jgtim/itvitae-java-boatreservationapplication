@@ -72,4 +72,16 @@ public class BoatServiceImpl implements BoatService {
         }
         return 0;
     }
+
+    @Override
+    public BoatType getBoatTypeFromID(String boatID) {
+        for (BoatRecord boatRecord : boatList) {
+            if (boatRecord.boatName().equals(boatID)) {
+                return boatRecord.boatType();
+            }
+        }
+        return null;
+    }
+
+
 }

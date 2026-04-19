@@ -88,13 +88,10 @@ public class ReserveringPopup extends JDialog {
         if((tijdsduur & 1) != 0){ //check if odd
             tijdsduur -= 1;
             this.add15 = true;
-            System.out.println("ODD");
         }
         else{
-            System.out.println("EVEN");
             this.add15 = false;
         }
-        System.out.println("TIJDSDUUR: " + tijdsduur);
         times30 = tijdsduur / 2;
         dateField.setText(datum.toString());
         var boatDataHandler = new BoatDataExcel();
@@ -145,6 +142,8 @@ public class ReserveringPopup extends JDialog {
         currentReservation = reservationRecord;
         boatIDs = (ArrayList<String>) reservationRecord.boatIDs().clone();
         reservedBoats = boatIDs;
+        begintijd = reservationRecord.begintijd();
+        eindtijd = reservationRecord.eindtijd();
         String[] OPEN_TIMES = {
                 "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45",
                 "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45",
@@ -277,6 +276,7 @@ public class ReserveringPopup extends JDialog {
             //throw new RuntimeException(ex);
             errorLabel.setText("vul een getal in");
         }
+        reloadBoatTables();
     }
 
     private void removeBoat() {
@@ -387,12 +387,37 @@ public class ReserveringPopup extends JDialog {
     private void reloadBoatTables() {
         Object[] row;
         BoatType[] boatTypes = BoatType.class.getEnumConstants();
+        // Load available boats table
+        availableBoatsTableModel.setRowCount(0);
         for (BoatType boatType : boatTypes) {
             row = new Object[3];
             row[0] = boatType;
             row[1] = boatService.getBoatCapacityFromType(boatType);
-            row[2] = boatService.getBoatAmountOfType(boatType);
+            row[2] = reservationService.getBoatAmountAvailableDuringTimeByType(
+                    boatType,
+                    begintijd,
+                    eindtijd,
+                    boatService
+            );
             availableBoatsTableModel.addRow(row);
+        }
+
+        // reload added boats table
+        addedBoatsTableModel.setRowCount(0);
+        for (BoatType boatType : boatTypes) {
+            row = new Object[3];
+            row[0] = boatType;
+            row[1] = boatService.getBoatCapacityFromType(boatType);
+            row[2] = 0;
+            // check how many boats of this type have been added
+            for (String boatID : boatIDs) {
+                if (boatService.getBoatTypeFromID(boatID) == boatType) {
+                    row[2] = (int) row[2] + 1;
+                }
+            }
+            if ((int) row[2] > 0) {
+                addedBoatsTableModel.addRow(row);
+            }
         }
 
     }

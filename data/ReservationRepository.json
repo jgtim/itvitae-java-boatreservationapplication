@@ -46,5 +46,23 @@
       "Standaard Roeiboot 8"
     ],
     "prijs": 0.0
+  },
+  {
+    "reserveringsNummer": 4,
+    "customerRecord": {
+      "naam": "John Boat",
+      "telefoonNummer": 234324,
+      "email": "johnboat@gmail.com"
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-19",
+    "begintijd": "10:15",
+    "eindtijd": "13:00",
+    "boatIDs": [
+      "1 Persoons Kayak 6",
+      "Familie Roeiboot 5"
+    ],
+    "prijs": 152.5
   }
 ]
