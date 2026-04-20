@@ -7,13 +7,16 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class makes a JSON Handler and creates a JSON in the FILE_PATH
+ */
 public class BoatStatusHandlerImpl implements BoatStatusHandler {
     private static final String FILE_PATH = "data/boat_status.json";
     private Gson gson = new Gson();
 
-    /*
-    Saving boat status isBroken method
-    Using Map<boatName, isBroken>
+    /**
+     * This method writes data to the JSON file
+     * @param statuses should be supplied the boatName and isBroken status
      */
     public void saveBoatStatuses(Map<String, Boolean> statuses) {
         try (Writer writer = new FileWriter(FILE_PATH)) {
@@ -23,9 +26,9 @@ public class BoatStatusHandlerImpl implements BoatStatusHandler {
         }
     }
 
-    /*
-    Loading boat statuses loadBoatStatuses method
-    Using Map<boatName, isBroken
+    /**
+     * This method loads the written data from the JSON file about isBroken status
+     * @return return data from JSON
      */
     public Map<String, Boolean> loadStatuses() {
         File file = new File(FILE_PATH);

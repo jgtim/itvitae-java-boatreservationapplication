@@ -70,9 +70,9 @@ public class ReserveringPopup extends JDialog {
     private DefaultTableModel addedBoatsTableModel;
     private BoatService boatService;
 
-    // Constructor voor aanmaken van reserveringen
-    public ReserveringPopup(ReservationService reservationService, CalendarDisplay display, String van, String tot,
-                            LocalDate datum, ArrayList<String> reservedBoats, String[] allBoatsString, String selectedBoat) { //LocalDate date
+    public ReserveringPopup(ReservationService reservationService, BoatService boatService, CalendarDisplay display,
+                            String van, String tot, LocalDate datum, ArrayList<String> reservedBoats, String selectedBoat) {
+        this.boatService = boatService;
         deletePane.remove(buttonDelete);
         getReserveringPopup().DisplayTab = display;
         currentMode = ReservationPopupMode.CREATING;
@@ -94,9 +94,7 @@ public class ReserveringPopup extends JDialog {
         }
         times30 = tijdsduur / 2;
         dateField.setText(datum.toString());
-        var boatDataHandler = new BoatDataExcel();
-        allBoats = boatDataHandler.read();
-        boatService = new BoatServiceImpl(allBoats);
+        ArrayList<BoatRecord> allBoats = boatService.getBoatList();
 
         this.reservationService = reservationService;
         setContentPane(contentPane);
@@ -207,6 +205,7 @@ public class ReserveringPopup extends JDialog {
         reloadBoatTables();
     }
 
+
     private void setEditMode() {
         currentMode = ReservationPopupMode.EDITING;
         buttonOK.setText("Bevestig");
@@ -314,7 +313,8 @@ public class ReserveringPopup extends JDialog {
         ReservationRecord newReservation = getReservationRecord();
 
         reservationService.addReservation(newReservation);
-        this.DisplayTab.reserveBoat(boatIDs);
+        this.DisplayTab.reserveBoat(boatIDs, newReservation.reserveringsNummer());
+        dispose();
     }
 
     private ReservationRecord getReservationRecord() {
@@ -343,6 +343,12 @@ public class ReserveringPopup extends JDialog {
 
     private void onDelete(ReservationRecord ReservationRecord){
         reservationService.deleteReservation(ReservationRecord);
+        dispose();
+    }
+
+    private void onDelete(ReservationRecord ReservationRecord, CalendarDisplay display) {
+        reservationService.deleteReservation(ReservationRecord);
+        //TODO change display
         dispose();
     }
 

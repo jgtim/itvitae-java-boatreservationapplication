@@ -4,6 +4,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import domain.BoatRecord;
 import domain.MolvenoColor;
 import domain.MolvenoFont;
+import domain.ReservationRecord;
 import presentatie.ReserveringPopup;
 import service.BoatService.BoatService;
 import service.ReservationService.ReservationService;
@@ -12,6 +13,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +25,7 @@ public class CalendarDisplay extends JPanel {
 
     private Calendar Calendar;
     private JPanel DisplayPanel = new JPanel();
-    private String[] boatIDs; //TODO placeholder data; maybe let user input selection of them
+    private String[] boatIDs;
     private JButton[][] allCells;
     private Integer[] selectedStart = {null, null};
     private Integer[] selectedEnd = {null, null};
@@ -53,6 +56,12 @@ public class CalendarDisplay extends JPanel {
         datePicker.setMaximumSize(new Dimension(200, 40));
         datePicker.setDateToToday();
 
+        //Add event for when a new date is selected
+        datePicker.addDateChangeListener(event -> {
+            dateSelected = event.getNewDate(); //Set selected date to the new date
+            reLoadCalendarDate(reservationService); //Reload the calendar
+        });
+
         datePickerPanel.add(dateLabel);
         datePickerPanel.add(datePicker);
 
@@ -62,9 +71,8 @@ public class CalendarDisplay extends JPanel {
         // ---
 
         // Giving the Integer[] BoatIDs to the Calendar constructor ---
-        this.Calendar = new Calendar(reservationService, dateSelected, boatIDs);
-
-        this.allCells = new JButton[boatIDs.length][50];
+        Calendar = new Calendar(reservationService, dateSelected, boatIDs);
+        allCells = new JButton[boatIDs.length][50];
 
         //the calendar grid ties a boat ID to a list of calendar cell objects, which contain data about that time point for that boat
         HashMap<String, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
@@ -75,7 +83,26 @@ public class CalendarDisplay extends JPanel {
             for (int j = 0; j < 50; j++) {
                 final int column = j;
                 buttonRow[j] = new JButton();
-
+                buttonRow[j].addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (e.getClickCount() == 2) {
+                            if(buttonRow[column].getBackground() == MolvenoColor.DARK.getColor()){
+                                ReservationRecord reservation = reservationService.getReservationWithReservationNumber(Calendar.getCalendarGrid().get(boatIDs[row])[column].getReservationNumber());
+                                var reserveringPopup = new ReserveringPopup(reservationService, reservation){
+                                    @Override
+                                    public void dispose() {
+                                        super.dispose();
+                                        reLoadCalendarDate(reservationService);
+                                    }
+                                };
+                                reserveringPopup.pack();
+                                reserveringPopup.setLocationRelativeTo(null);
+                                reserveringPopup.setVisible(true);
+                            }
+                        }
+                    }
+                });
                 // IMPORTANT -------------------------------------------------------------------------------------------
                 // Because of use of JButtons, our own colors get overridden with system standard
                 // When we disable this, we have to manually add lots of tweaks.
@@ -90,7 +117,6 @@ public class CalendarDisplay extends JPanel {
                 buttonRow[j].setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
                 buttonRow[j].setMinimumSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
                 buttonRow[j].setMaximumSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
-                // TODO determine button size here based on final app
                 buttonRow[j].setMargin(new Insets(8, 8, 8, 8));
 
                 // setting the background color after checking if already reserved
@@ -170,7 +196,7 @@ public class CalendarDisplay extends JPanel {
                 cellRow.setLayout(boxLayoutManagerRow);
                 // COMMENTED THIS OUT: replaced with idColumn logic above
 //                if (i == 0) {
-//                    cellRow.add(new JLabel(String.valueOf(BoatIDs[j]))); //TODO make this name of boat probably
+//                    cellRow.add(new JLabel(String.valueOf(BoatIDs[j])));
 //                }
                 int zeroPoint = 4 * i;
                 int numPanels = 4;
@@ -239,8 +265,8 @@ public class CalendarDisplay extends JPanel {
                 //Get the boat that is selected
                 String selectedBoat = boatIDs[this.selectedStart[0]];
 
-                ReserveringPopup reserveringPopup = new ReserveringPopup(reservationService, this,
-                        vanTijd, totTijd, dateSelected, reservedBoats, boatIDs, selectedBoat);
+                ReserveringPopup reserveringPopup = new ReserveringPopup(reservationService, boatService, this,
+                        vanTijd, totTijd, dateSelected, reservedBoats, selectedBoat);
                 reserveringPopup.pack();
                 reserveringPopup.setLocationRelativeTo(null);
                 reserveringPopup.setVisible(true);
@@ -275,7 +301,7 @@ public class CalendarDisplay extends JPanel {
         }
     }
 
-    public void reserveBoat(ArrayList<String> selectedBoats) {
+    public void reserveBoat(ArrayList<String> selectedBoats, int reservationNumber) {
         //first, establish an end time based on whether or not more than 1 cell is selected
         int endTime;
         if(this.selectedEnd[0] == null){
@@ -288,7 +314,7 @@ public class CalendarDisplay extends JPanel {
             int row = Arrays.asList(boatIDs).indexOf(selectedBoats.get(i));
 
             for(int j = this.selectedStart[1]; j < endTime + 1; j++){
-                this.Calendar.getCalendarGrid().get(boatIDs[row])[j].reserve();
+                this.Calendar.getCalendarGrid().get(boatIDs[row])[j].reserve(reservationNumber);
                 cellBorder(row, j, allCells[row][j]);
                 // allCells[row][j].setBackground(MolvenoColor.DARK.getColor());
             }
@@ -314,7 +340,9 @@ public class CalendarDisplay extends JPanel {
     */
     private void selectTimeCell(int row, int column) {
         //scenario 1: no selection has been made yet
-        if(this.selectedStart[0] == null && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+        if(allCells[row][column].getBackground() == MolvenoColor.DARK.getColor()){
+
+        } else if(this.selectedStart[0] == null && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
             if(allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
                 allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
                 this.selectedStart = new Integer[]{row, column};
@@ -391,6 +419,32 @@ public class CalendarDisplay extends JPanel {
 
         cell.setBackground(MolvenoColor.DARK.getColor()); // painting the background of reserved timeslots
         cell.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, MolvenoColor.ORANGE.getColor()));   // setting the top and bottom border of the reservation slot
+    }
+
+    //Reloads the calendar display to a newly selected date
+    private void reLoadCalendarDate(ReservationService reservationService) {
+        //Cancel any selected cells
+        cancelSelection();
+
+        //Get the calendar information for the selected date
+        Calendar = new Calendar(reservationService, dateSelected, boatIDs);
+        HashMap<String, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
+
+        //Loop trough the calendar grid
+        for (int i = 0; i < CalGrid.size(); i++) {
+            final int row = i;
+            for (int j = 0; j < 50; j++) {
+                final int column = j;
+
+                //Change the button color based on calendar availability at the new date
+                if (!CalGrid.get(boatIDs[row])[column].getAvailable()) {
+                    cellBorder(row, column, allCells[i][j]);
+                } else {
+                    allCells[i][j].setBackground(MolvenoColor.LIGHT.getColor());
+                    allCells[i][j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+                }
+            }
+        }
     }
 
     public Calendar getCalendar(){return this.Calendar;}

@@ -1,21 +1,27 @@
 package service.BoatService;
 
 import domain.BoatRecord;
+import service.BoatStatusHandler.BoatStatusHandler;
+import service.BoatStatusHandler.BoatStatusHandlerImpl;
 import domain.BoatType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class keeps track of a list containing all boats.
  */
 public class BoatServiceImpl implements BoatService {
     private ArrayList<BoatRecord> boatList;
+    private BoatStatusHandler boatStatusHandler =  new BoatStatusHandlerImpl();
 
     /**
      * Constructor accepts a list of all boat data.
      * @param boatList ArrayList containing the data of all boats
      */
     public BoatServiceImpl(ArrayList<BoatRecord> boatList) {
+
         this.boatList = boatList;
     }
 
@@ -25,6 +31,7 @@ public class BoatServiceImpl implements BoatService {
      */
     @Override
     public ArrayList<BoatRecord> getBoatList() {
+
         return boatList;
     }
 
@@ -46,12 +53,20 @@ public class BoatServiceImpl implements BoatService {
                 );
                 boatList.set(i, updatedBoat);
 
-                // Here we should add a DataHandler to save the updated boat status
-                // Need to create a save() method
+                saveAllStatuses();
                 return;
             }
         }
     }
+
+    private void saveAllStatuses() {
+        Map<String, Boolean> statuses = new HashMap<>();
+        for (BoatRecord b : boatList) {
+            statuses.put(b.boatName(), b.isBroken());
+        }
+        boatStatusHandler.saveBoatStatuses(statuses);
+    }
+
 
     public int getBoatAmountOfType(BoatType boatType) {
         int result = 0;

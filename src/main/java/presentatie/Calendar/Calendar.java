@@ -32,15 +32,28 @@ public class Calendar {
             //50 calendar cells with boat ID
             ArrayList<ReservationRecord> boatReservations = getReservationsForBoat(reservationList, BoatIDs[i]);
             ArrayList<String> reservedTimes = new ArrayList<>();
+            //this loop creates a list of all times in which a specific boat is reserved
             for(int r = 0; r < boatReservations.size(); r++){
                 ReservationRecord record = boatReservations.get(r);
                 String[] newTimes = Arrays.copyOfRange(timeBoxes, timeList.indexOf(record.begintijd()), timeList.indexOf(record.eindtijd()));
                 Collections.addAll(reservedTimes, newTimes);
+
             }
             CalendarCell currentRow[] = new CalendarCell[50];
             for(int j = 0; j < 50; j++){
                 boolean Available = !reservedTimes.contains(timeBoxes[j]);
-                currentRow[j] = new CalendarCell(BoatIDs[i], timeBoxes[j], Available);
+                int reservationNumber = 0;
+                //this finds the reservation number
+                if(!Available){
+                    for(int r = 0; r < boatReservations.size(); r++){
+                        ReservationRecord record = boatReservations.get(r);
+                        if(j >= timeList.indexOf(record.begintijd()) && j <= timeList.indexOf(record.eindtijd())){
+                            reservationNumber = record.reserveringsNummer();
+                            break;
+                        };
+                    }
+                }
+                currentRow[j] = new CalendarCell(BoatIDs[i], timeBoxes[j], Available, reservationNumber );
             }
             CalendarGrid.put(BoatIDs[i], currentRow);
         }
