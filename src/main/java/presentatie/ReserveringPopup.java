@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class ReserveringPopup extends JDialog {
     private JPanel contentPane;
@@ -348,7 +349,7 @@ public class ReserveringPopup extends JDialog {
         } else if (boatIDs.isEmpty()){
             errorLabel.setText("Er zijn geen boten gereserveerd");
             return false;
-        } else if (!isANumber(phoneNumberField.getText())){
+        } else if (!isANumber(phoneNumberField.getText()) && !phoneNumberField.getText().isBlank()){
             errorLabel.setText("Telefoonnummer moet een getal zijn");
             return false;
         }

@@ -206,5 +206,21 @@
     "eindtijd": "14:30",
     "boatIDs": [],
     "prijs": 0.0
+  },
+  {
+    "reserveringsNummer": 14,
+    "customerRecord": {
+      "naam": "naam",
+      "email": "mail"
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-04-23",
+    "begintijd": "9:00",
+    "eindtijd": "9:30",
+    "boatIDs": [
+      "Standaard Roeiboot 2"
+    ],
+    "prijs": 0.0
   }
 ]
