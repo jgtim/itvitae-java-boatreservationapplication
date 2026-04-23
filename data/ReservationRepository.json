@@ -274,5 +274,21 @@
       "Familie Roeiboot 1"
     ],
     "prijs": 27.5
+  },
+  {
+    "reserveringsNummer": 19,
+    "customerRecord": {
+      "naam": "moneybags",
+      "telefoonNummer": 111
+    },
+    "betaald": true,
+    "kamerFacturatie": true,
+    "datum": "2026-04-23",
+    "begintijd": "09:00",
+    "eindtijd": "21:30",
+    "boatIDs": [
+      "Familie Roeiboot 5"
+    ],
+    "prijs": 687.5
   }
 ]
