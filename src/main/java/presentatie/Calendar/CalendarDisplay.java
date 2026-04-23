@@ -22,6 +22,8 @@ public class CalendarDisplay extends JPanel {
 
     private Calendar Calendar;
     private JPanel DisplayPanel = new JPanel();
+    private JPanel fullCalendar;
+    JScrollPane scrollPane;
     private String[] boatIDs;
     private JButton[][] allCells;
     private Integer[] selectedStart = {null, null};
@@ -50,17 +52,19 @@ public class CalendarDisplay extends JPanel {
         datePickerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JComboBox<String> boatTypePicker = new JComboBox<>();
-        boatTypePicker.addItem("Alle boten");
+        boatTypePicker.addItem("Alle Boten");
         for (BoatType boatType : BoatType.values()) {
             boatTypePicker.addItem(boatType.getDisplayBoatType());
         }
         boatTypePicker.setMaximumSize(new Dimension(200, 40));
         boatTypePicker.addItemListener(itemEvent -> {
             boatIDs = boatService.getBoatList().stream()
-                    .filter(record -> record.boatType().getDisplayBoatType() == itemEvent.getItem())
+                    .filter(record -> itemEvent.getItem() == "Alle Boten" ||
+                            record.boatType().getDisplayBoatType() == itemEvent.getItem())
                     .map(BoatRecord::boatName)
                     .toArray(String[]::new);
             createCalendar();
+            reLoadCalendar();
         });
 
         JLabel dateLabel = new JLabel("Selecteer een datum: ");
@@ -83,6 +87,7 @@ public class CalendarDisplay extends JPanel {
 
         dateSelected = datePicker.getDate();
 
+        initializeCalendar();
         createCalendar();
         reLoadCalendar();
 
@@ -311,6 +316,7 @@ public class CalendarDisplay extends JPanel {
     }
 
     private void createCalendar() {
+        fullCalendar.removeAll();
 
         // Giving the Integer[] BoatIDs to the Calendar constructor ---
         Calendar = new Calendar(reservationService, dateSelected, boatIDs);
@@ -368,11 +374,6 @@ public class CalendarDisplay extends JPanel {
             allCells[i] = buttonRow;
         }
 
-        JPanel fullCalendar = new JPanel();
-        fullCalendar.setBackground(MolvenoColor.LIGHT.getColor());
-        BoxLayout CalBoxLayout = new BoxLayout(fullCalendar, BoxLayout.X_AXIS);
-        fullCalendar.setLayout(CalBoxLayout);
-
         // Here we are creating a separate JPanel for the column of BoatIds
         // Will be removing the if (i==0) block down below
         JPanel idColumn = new JPanel();
@@ -419,7 +420,6 @@ public class CalendarDisplay extends JPanel {
             headerLabel.setPreferredSize(new Dimension(BUTTON_SIZE * 4, BUTTON_SIZE));
             headerLabel.setMaximumSize(new Dimension(BUTTON_SIZE * 4, BUTTON_SIZE));
 
-
             CalendarSegment.add(headerLabel);
             // ---
 
@@ -442,10 +442,21 @@ public class CalendarDisplay extends JPanel {
             }
             fullCalendar.add(CalendarSegment);
         }
+
+        fullCalendar.revalidate();
+        fullCalendar.repaint();
+    }
+
+    private void initializeCalendar() {
+        fullCalendar = new JPanel();
+        fullCalendar.setBackground(MolvenoColor.LIGHT.getColor());
+        BoxLayout CalBoxLayout = new BoxLayout(fullCalendar, BoxLayout.X_AXIS);
+        fullCalendar.setLayout(CalBoxLayout);
+
         add(fullCalendar);
 
         // Here we make a JScrollPane to wrap the fullCalendar in
-        JScrollPane scrollPane = new JScrollPane(fullCalendar);
+        scrollPane = new JScrollPane(fullCalendar);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
