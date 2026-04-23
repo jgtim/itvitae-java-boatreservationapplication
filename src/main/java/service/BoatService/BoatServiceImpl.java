@@ -98,5 +98,25 @@ public class BoatServiceImpl implements BoatService {
         return null;
     }
 
+    @Override
+    public double getBoatPrice15FromName(String boatName) throws Exception {
+        for (BoatRecord boatRecord : boatList) {
+            if (boatRecord.boatName().equals(boatName)) {
+                return boatRecord.price15();
+            }
+        }
+        throw new Exception("Price15 not found");
+    }
+
+    @Override
+    public double getBoatPrice30FromName(String boatName) throws Exception {
+        for (BoatRecord boatRecord : boatList) {
+            if (boatRecord.boatName().equals(boatName)) {
+                return boatRecord.price30();
+            }
+        }
+        throw new Exception("Price30 not found");
+    }
+
 
 }

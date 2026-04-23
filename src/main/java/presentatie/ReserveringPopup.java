@@ -316,8 +316,20 @@ private void confirmEdit() {
                         .toArray(String[]::new)
         );
 
-        double boatPrice15 = allBoats.get(validIDs.indexOf(boatString)).price15();
-        double boatPrice30 = allBoats.get(validIDs.indexOf(boatString)).price30();
+        System.out.println(validIDs.size());
+        System.out.println(boatString);
+        double boatPrice15 = 0;
+        try {
+            boatPrice15 = boatService.getBoatPrice15FromName(boatString);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        double boatPrice30 = 0;
+        try {
+            boatPrice30 = boatService.getBoatPrice30FromName(boatString);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         price += (times30 * boatPrice30);
         if(add15){
             price += boatPrice15;
