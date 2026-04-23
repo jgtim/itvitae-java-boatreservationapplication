@@ -302,8 +302,6 @@ public class ReserveringPopup extends JDialog {
         reservationService.addReservation(newReservation);
         this.DisplayTab.reserveBoat(boatIDs, newReservation.reserveringsNummer());
 
-        this.DisplayTab.reLoadCalendarDate(reservationService);
-        dispose();
     }
 
     private ReservationRecord getReservationRecord() {
@@ -338,9 +336,6 @@ public class ReserveringPopup extends JDialog {
     private void onDelete(ReservationRecord ReservationRecord, CalendarDisplay display) {
         reservationService.deleteReservation(ReservationRecord);
 
-        if (this.DisplayTab != null) {
-            this.DisplayTab.reLoadCalendarDate(reservationService);
-        }
         //TODO change display
         dispose();
     }
