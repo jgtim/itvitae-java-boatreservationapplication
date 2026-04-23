@@ -63,5 +63,53 @@
       "Standaard Roeiboot 4"
     ],
     "prijs": 0.0
+  },
+  {
+    "reserveringsNummer": 6,
+    "customerRecord": {
+      "naam": "peter",
+      "telefoonNummer": 87878
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-23",
+    "begintijd": "12:00",
+    "eindtijd": "13:00",
+    "boatIDs": [
+      "Standaard Roeiboot 6"
+    ],
+    "prijs": 0.0
+  },
+  {
+    "reserveringsNummer": 7,
+    "customerRecord": {
+      "naam": "johan",
+      "telefoonNummer": 7878
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-23",
+    "begintijd": "12:15",
+    "eindtijd": "16:30",
+    "boatIDs": [
+      "Familie Roeiboot 2"
+    ],
+    "prijs": 0.0
+  },
+  {
+    "reserveringsNummer": 8,
+    "customerRecord": {
+      "naam": "fgf",
+      "telefoonNummer": 8686
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-23",
+    "begintijd": "14:45",
+    "eindtijd": "18:15",
+    "boatIDs": [
+      "Standaard Roeiboot 8"
+    ],
+    "prijs": 0.0
   }
 ]
