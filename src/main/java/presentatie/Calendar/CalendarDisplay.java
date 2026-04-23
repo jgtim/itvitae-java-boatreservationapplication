@@ -495,5 +495,9 @@ public class CalendarDisplay extends JPanel {
         }
     }
 
+    public void onSelected(ReservationService reservationService, BoatService boatService) {
+        reLoadCalendarDate(reservationService, boatService);
+    }
+
     public Calendar getCalendar(){return this.Calendar;}
 }
