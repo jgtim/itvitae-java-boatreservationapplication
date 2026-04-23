@@ -3,6 +3,7 @@ package service.BoatService;
 import domain.BoatRecord;
 import service.BoatStatusHandler.BoatStatusHandler;
 import service.BoatStatusHandler.BoatStatusHandlerImpl;
+import domain.BoatType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,5 +66,57 @@ public class BoatServiceImpl implements BoatService {
         }
         boatStatusHandler.saveBoatStatuses(statuses);
     }
+
+
+    public int getBoatAmountOfType(BoatType boatType) {
+        int result = 0;
+        for (BoatRecord boatRecord : boatList) {
+            if (boatRecord.boatType() == boatType) {
+                result += 1;
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public int getBoatCapacityFromType(BoatType boatType) {
+        for (BoatRecord boatRecord : boatList) {
+            if (boatRecord.boatType() == boatType) {
+                return boatRecord.capacity();
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public BoatType getBoatTypeFromID(String boatID) {
+        for (BoatRecord boatRecord : boatList) {
+            if (boatRecord.boatName().equals(boatID)) {
+                return boatRecord.boatType();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public double getBoatPrice15FromName(String boatName) throws Exception {
+        for (BoatRecord boatRecord : boatList) {
+            if (boatRecord.boatName().equals(boatName)) {
+                return boatRecord.price15();
+            }
+        }
+        throw new Exception("Price15 not found");
+    }
+
+    @Override
+    public double getBoatPrice30FromName(String boatName) throws Exception {
+        for (BoatRecord boatRecord : boatList) {
+            if (boatRecord.boatName().equals(boatName)) {
+                return boatRecord.price30();
+            }
+        }
+        throw new Exception("Price30 not found");
+    }
+
 
 }
