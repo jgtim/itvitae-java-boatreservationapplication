@@ -65,6 +65,7 @@ public class ReserveringPopup extends JDialog {
     private ReservationRecord currentReservation;
     List<String> timeList;
 
+    //constructor voor het aanmaken van nieuwe reserveringen
     public ReserveringPopup(ReservationService reservationService, BoatService boatService, CalendarDisplay display,
                             String van, String tot, LocalDate datum, ArrayList<String> reservedBoats, String selectedBoat) {
         deletePane.remove(buttonDelete);
@@ -77,83 +78,116 @@ public class ReserveringPopup extends JDialog {
         this.reservedBoats = reservedBoats; //boats that are already reserved at the given time
         vanLabel.setText(van);
         totLabel.setText(tot);
-        this.timeList = Arrays.asList(this.DisplayTab.getCalendar().timeBoxes); //TODO also change this elsewhere timelist is used
-        int tijdsduur = Arrays.copyOfRange(this.DisplayTab.getCalendar().timeBoxes, timeList.indexOf(van), timeList.indexOf(tot)).length;
-        if((tijdsduur & 1) != 0){ //check if odd
-            tijdsduur -= 1;
-            this.add15 = true;
-        }
-        else{
-            this.add15 = false;
-        }
-        times30 = tijdsduur / 2;
+        calculateTimeSpan(this.DisplayTab.getCalendar().timeBoxes, van, tot);
         dateField.setText(datum.toString());
-        //this.allBoats = boatService.getBoatList();
         var boatDataHandler = new BoatDataExcel();
         allBoats = boatDataHandler.read();
+        this.validIDs = Arrays.asList(
+                allBoats.stream()
+                        .map(BoatRecord::boatName)
+                        .toArray(String[]::new)
+        );
 
         this.reservationService = reservationService;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        //Add the boat that is selected on the calendar
-        boatIDs.add(selectedBoat);
-        addedBoatsLabel.setText("Added: " + boatIDs.toString());
+    //Add the boat that is selected on the calendar
+    boatIDs.add(selectedBoat);
+    addedBoatsLabel.setText("Added: " + boatIDs.toString());
+    calculateCost();
+    buttonOK.addActionListener(e -> onOK());
 
-        buttonOK.addActionListener(e -> onOK());
+    buttonCancel.addActionListener(e -> onCancel());
 
-        buttonCancel.addActionListener(e -> onCancel());
+    // call onCancel() when cross is clicked
+    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    addWindowListener(new WindowAdapter() {
+        public void windowClosing(WindowEvent e) {
+            onCancel();
+        }
+    });
 
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
+    // call onCancel() on ESCAPE
+    contentPane.registerKeyboardAction(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            onCancel();
+        }
+    }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    addBoatButton.addActionListener(e -> {addBoat();});
+    removeBoatButton.addActionListener(e -> {removeBoat();});
+}
 
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        addBoatButton.addActionListener(e -> {addBoat();});
-        removeBoatButton.addActionListener(e -> {removeBoat();});
+//this calculates the cost of existing boats
+private void calculateCost() {
+    price = 0.0;
+    for(int i = 0; i < boatIDs.size(); i++){
+        String newBoatID = boatIDs.get(i);
+        double boatPrice15 = allBoats.get(validIDs.indexOf(newBoatID)).price15();
+        double boatPrice30 = allBoats.get(validIDs.indexOf(newBoatID)).price30();
+        price += (times30 * boatPrice30);
+        if(add15){
+            price += boatPrice15;
+        }
+        priceField.setText("€" + String.format("%.2f", price));
     }
 
-    private ReserveringPopup getReserveringPopup() {
-        return this;
-    }
+}
 
-    // Constructor voor gebruik in reserveringen tab om een reservering in te zien of te wijzigen
-    public ReserveringPopup(ReservationService reservationService, ReservationRecord reservationRecord) {
-        this.reservationService = reservationService;
-        currentMode = ReservationPopupMode.VIEWING;
-        currentReservation = reservationRecord;
-        boatIDs = (ArrayList<String>) reservationRecord.boatIDs().clone();
-        reservedBoats = boatIDs;
-        String[] OPEN_TIMES = {
-                "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45",
-                "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45",
-                "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45",
-                "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45",
-                "17:00", "17:15", "17:30", "17:45", "18:00", "18:15", "18:30", "18:45",
-                "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45",
-                "21:00", "21:15", "21:30"
-        };
+private ReserveringPopup getReserveringPopup() {
+    return this;
+}
 
-        var boatDataHandler = new BoatDataExcel();
-        allBoats = boatDataHandler.read();
+// Constructor voor oude reserveringen
+public ReserveringPopup(ReservationService reservationService, ReservationRecord reservationRecord) {
+    this.reservationService = reservationService;
+    currentMode = ReservationPopupMode.VIEWING;
+    currentReservation = reservationRecord;
+    boatIDs = (ArrayList<String>) reservationRecord.boatIDs().clone();
+    reservedBoats = boatIDs;
+    this.begintijd = reservationRecord.begintijd();
+    this.eindtijd = reservationRecord.eindtijd();
+    String[] OPEN_TIMES = {
+            "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45",
+            "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45",
+            "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45",
+            "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45",
+            "17:00", "17:15", "17:30", "17:45", "18:00", "18:15", "18:30", "18:45",
+            "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45",
+            "21:00", "21:15", "21:30"
+    };
 
-        setContentPane(contentPane);
-        setModal(true);
+    calculateTimeSpan(OPEN_TIMES, reservationRecord.begintijd(), reservationRecord.eindtijd());
+    var boatDataHandler = new BoatDataExcel();
+    allBoats = boatDataHandler.read();
+    this.validIDs = Arrays.asList(
+            allBoats.stream()
+                    .map(BoatRecord::boatName)
+                    .toArray(String[]::new)
+    );
+    calculateCost();
+    setContentPane(contentPane);
+    setModal(true);
 //        getRootPane().setDefaultButton(buttonOK);
 
 
-        comboBoxVan.setModel(new DefaultComboBoxModel<>(OPEN_TIMES));
-        comboBoxTot.setModel(new DefaultComboBoxModel<>(OPEN_TIMES));
+    comboBoxVan.setModel(new DefaultComboBoxModel<>(OPEN_TIMES));
+    comboBoxVan.addActionListener (new ActionListener () {
+        public void actionPerformed(ActionEvent e) {
+            begintijd = comboBoxVan.getSelectedItem().toString();
+            calculateTimeSpan(OPEN_TIMES, begintijd, eindtijd);
+            calculateCost();
+        }
+    });
+    comboBoxTot.setModel(new DefaultComboBoxModel<>(OPEN_TIMES));
+    comboBoxTot.addActionListener (new ActionListener () {
+        public void actionPerformed(ActionEvent e) {
+            eindtijd = comboBoxTot.getSelectedItem().toString();
+            calculateTimeSpan(OPEN_TIMES, begintijd, eindtijd);
+            calculateCost();
+        }
+    });
 
         // Populate the fields of the popup with the selected reservation
         dateField.setText(reservationRecord.datum());
@@ -174,69 +208,79 @@ public class ReserveringPopup extends JDialog {
         addBoatButton.setEnabled(false);
         removeBoatButton.setEnabled(false);
 
-        addBoatButton.addActionListener(e -> {addBoat();});
-        removeBoatButton.addActionListener(e -> {removeBoat();});
+    addBoatButton.addActionListener(e -> {addBoat();});
+    removeBoatButton.addActionListener(e -> {removeBoat();});
 
-        buttonOK.setText("Wijzig");
-        buttonOK.addActionListener(e -> onOK());
+    buttonOK.setText("Wijzig");
+    buttonOK.addActionListener(e -> onOK());
 
-        buttonCancel.addActionListener(e -> onCancel());
-        this.price = reservationRecord.prijs();
-        priceField.setText("€" + String.format("%.2f", price));
-        buttonDelete.addActionListener(e -> onDelete(reservationRecord));
+    buttonCancel.addActionListener(e -> onCancel());
+    buttonDelete.addActionListener(e -> onDelete(reservationRecord));
 
 
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
+    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    addWindowListener(new WindowAdapter() {
+        public void windowClosing(WindowEvent e) {
+            onCancel();
+        }
+    });
+}
+
+private void calculateTimeSpan(String[] timeBoxes, String van, String tot) {
+    this.timeList = Arrays.asList(timeBoxes);
+    int tijdsduur;
+    if(timeList.indexOf(van) < timeList.indexOf(tot)){
+        tijdsduur = Arrays.copyOfRange(timeBoxes, timeList.indexOf(van), timeList.indexOf(tot)).length;
+    }else{
+        tijdsduur = 0;
     }
+    if((tijdsduur & 1) != 0){ //check if odd
+        tijdsduur -= 1;
+        this.add15 = true;
+    }
+    else{
+        this.add15 = false;
+    }
+    this. times30 = tijdsduur / 2;
+}
 
+private void setEditMode() {
+    currentMode = ReservationPopupMode.EDITING;
+    buttonOK.setText("Bevestig");
+    comboBoxVan.setSelectedItem(vanLabel.getText());
+    comboBoxTot.setSelectedItem(totLabel.getText());
+    CardLayout cl = (CardLayout) tijdInformatie.getLayout();
+    cl.next(tijdInformatie);
+    boatIdInputField.setEditable(true);
+    addBoatButton.setEnabled(true);
+    removeBoatButton.setEnabled(true);
+}
 
-    private void setEditMode() {
-        currentMode = ReservationPopupMode.EDITING;
-        buttonOK.setText("Bevestig");
-        comboBoxVan.setSelectedItem(vanLabel.getText());
-        comboBoxTot.setSelectedItem(totLabel.getText());
+private void setViewMode() {
+    if (currentMode == ReservationPopupMode.EDITING) {
+        currentMode = ReservationPopupMode.VIEWING;
         CardLayout cl = (CardLayout) tijdInformatie.getLayout();
         cl.next(tijdInformatie);
-        boatIdInputField.setEditable(true);
-        addBoatButton.setEnabled(true);
-        removeBoatButton.setEnabled(true);
+        buttonOK.setText("Wijzig");
+        boatIdInputField.setEditable(false);
+        addBoatButton.setEnabled(false);
+        removeBoatButton.setEnabled(false);
     }
+}
 
-    private void setViewMode() {
-        if (currentMode == ReservationPopupMode.EDITING) {
-            currentMode = ReservationPopupMode.VIEWING;
-            CardLayout cl = (CardLayout) tijdInformatie.getLayout();
-            cl.next(tijdInformatie);
-            buttonOK.setText("Wijzig");
-            boatIdInputField.setEditable(false);
-            addBoatButton.setEnabled(false);
-            removeBoatButton.setEnabled(false);
-        }
-    }
-
-    private void confirmEdit() {
-        ReservationRecord updatedReservation = currentReservation.toBuilder()
-                .begintijd(comboBoxVan.getSelectedItem().toString())
-                .eindtijd(comboBoxTot.getSelectedItem().toString())
-                .boatIDs(boatIDs)
-                .build();
-        System.out.println(updatedReservation);
-        reservationService.updateReservation(updatedReservation);
-        vanLabel.setText((String) comboBoxVan.getSelectedItem());
-        totLabel.setText((String) comboBoxTot.getSelectedItem());
-    }
+private void confirmEdit() {
+    ReservationRecord updatedReservation = currentReservation.toBuilder()
+            .begintijd(comboBoxVan.getSelectedItem().toString())
+            .eindtijd(comboBoxTot.getSelectedItem().toString())
+            .boatIDs(boatIDs)
+            .build();
+    System.out.println(updatedReservation);
+    reservationService.updateReservation(updatedReservation);
+    vanLabel.setText((String) comboBoxVan.getSelectedItem());
+    totLabel.setText((String) comboBoxTot.getSelectedItem());
+}
 
     private void addBoat() {
-        this.validIDs = Arrays.asList(
-                allBoats.stream()
-                        .map(BoatRecord::boatName)
-                        .toArray(String[]::new)
-        );
         try{
             String newBoatID = boatIdInputField.getText();
             if(!validIDs.contains(newBoatID)){
@@ -259,7 +303,7 @@ public class ReserveringPopup extends JDialog {
                 //System.out.println(tijdsduur);
                 System.out.println("PRIJS: " + boatPrice30 + "+" + boatPrice15);
                 priceField.setText("€" + String.format("%.2f", price));
-            }//TODO don't add if there is no boat with the given ID
+            }
 
         } catch (NumberFormatException ex) {
             //TODO I don't think this actually does anything; exception thrown elsewhere in code
@@ -268,21 +312,21 @@ public class ReserveringPopup extends JDialog {
         }
     }
 
-    private void removeBoat() {
-        try{
-            String boatID = boatIdInputField.getText();
-            if (boatIDs.contains(boatID)) {
-                boatIDs.remove((Object) boatID);
-                addedBoatsLabel.setText("Added: " + boatIDs.toString());
-                boatIdInputField.setText("");
-                errorLabel.setText(" ");
-            } else {
-                errorLabel.setText("Die boot is niet gereserveerd");
-            }
-        } catch (NumberFormatException ex) {
-            errorLabel.setText("vul een getal in");
+private void removeBoat() {
+    try{
+        String boatID = boatIdInputField.getText();
+        if (boatIDs.contains(boatID)) {
+            boatIDs.remove((Object) boatID);
+            addedBoatsLabel.setText("Added: " + boatIDs.toString());
+            boatIdInputField.setText("");
+            errorLabel.setText(" ");
+        } else {
+            errorLabel.setText("Die boot is niet gereserveerd");
         }
+    } catch (NumberFormatException ex) {
+        errorLabel.setText("vul een getal in");
     }
+}
 
     private void onOK() {
         if (currentMode == ReservationPopupMode.CREATING) {
@@ -303,8 +347,8 @@ public class ReserveringPopup extends JDialog {
         }
     }
 
-    private void addReservation() {
-        ReservationRecord newReservation = getReservationRecord();
+private void addReservation() {
+    ReservationRecord newReservation = getReservationRecord();
 
         reservationService.addReservation(newReservation);
         //this.DisplayTab.reserveBoat(boatIDs, newReservation.reserveringsNummer());
@@ -327,13 +371,13 @@ public class ReserveringPopup extends JDialog {
                 boatIDs,
                 price
 
-        );
-    }
+    );
+}
 
-    private void onCancel() {
-        // add your code here if necessary
-        dispose();
-    }
+private void onCancel() {
+    // add your code here if necessary
+    dispose();
+}
 
     private void onDelete(ReservationRecord ReservationRecord){
         reservationService.deleteReservation(ReservationRecord);
@@ -353,9 +397,12 @@ public class ReserveringPopup extends JDialog {
         } else if (!isANumber(phoneNumberField.getText()) && !phoneNumberField.getText().isBlank()){
             errorLabel.setText("Telefoonnummer moet een getal zijn");
             return false;
-        } else if(vanLabel.getText() >= totLabel.getText()){
-
+        } else if(currentMode == ReservationPopupMode.EDITING && timeList.indexOf((String) comboBoxVan.getSelectedItem()) >= timeList.indexOf((String) comboBoxTot.getSelectedItem())){
+            errorLabel.setText("begintijd moet lager zijn dan eindtijd");
+            System.out.println("INDEXES TIMES: " + vanLabel.getText() + " AND " + totLabel.getText());
+            return false;
         }
+        errorLabel.setText("");
         return true;
     }
 
