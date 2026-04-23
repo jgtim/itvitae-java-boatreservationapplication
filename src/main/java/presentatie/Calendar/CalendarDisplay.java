@@ -351,7 +351,7 @@ public class CalendarDisplay extends JPanel {
         }
     }
 
-    public void onSelected(ReservationService reservationService, BoatService boatService) {
+    public void onSelected(BoatService boatService) {
         reLoadCalendar(boatService);
     }
 

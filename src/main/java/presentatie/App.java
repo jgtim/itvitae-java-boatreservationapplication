@@ -56,7 +56,7 @@ public class App extends JFrame {
             if (selectedIndex == TabIndex.RESERVERINGEN.getIndex()) {
                 reservations.onSelected();
             } else if (selectedIndex == TabIndex.AGENDA.getIndex()) {
-                ((CalendarDisplay) agenda).onSelected(reservationService, boatService);
+                ((CalendarDisplay) agenda).onSelected(boatService);
             }
         });
 
