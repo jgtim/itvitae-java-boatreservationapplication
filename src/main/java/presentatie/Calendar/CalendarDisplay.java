@@ -1,10 +1,7 @@
 package presentatie.Calendar;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import domain.BoatRecord;
-import domain.MolvenoColor;
-import domain.MolvenoFont;
-import domain.ReservationRecord;
+import domain.*;
 import presentatie.ReserveringPopup;
 import service.BoatService.BoatService;
 import service.ReservationService.ReservationService;
@@ -50,13 +47,24 @@ public class CalendarDisplay extends JPanel {
         datePickerPanel.setLayout(new BoxLayout(datePickerPanel, BoxLayout.X_AXIS));
         datePickerPanel.setBackground(MolvenoColor.LIGHT.getColor());
         datePickerPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
+        datePickerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JComboBox<String> boatTypePicker = new JComboBox<>();
-
+        boatTypePicker.addItem("Alle boten");
+        for (BoatType boatType : BoatType.values()) {
+            boatTypePicker.addItem(boatType.getDisplayBoatType());
+        }
+        boatTypePicker.setMaximumSize(new Dimension(200, 40));
+        boatTypePicker.addItemListener(itemEvent -> {
+            boatIDs = boatService.getBoatList().stream()
+                    .filter(record -> record.boatType().getDisplayBoatType() == itemEvent.getItem())
+                    .map(BoatRecord::boatName)
+                    .toArray(String[]::new);
+            createCalendar();
+        });
 
         JLabel dateLabel = new JLabel("Selecteer een datum: ");
         dateLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
-        datePickerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         DatePicker datePicker = new DatePicker();
         datePicker.setMaximumSize(new Dimension(200, 40));
@@ -67,6 +75,7 @@ public class CalendarDisplay extends JPanel {
             reLoadCalendar();
         });
 
+        datePickerPanel.add(boatTypePicker);
         datePickerPanel.add(dateLabel);
         datePickerPanel.add(datePicker);
 
