@@ -80,16 +80,15 @@ public class ReserveringPopup extends JDialog {
         if((tijdsduur & 1) != 0){ //check if odd
             tijdsduur -= 1;
             this.add15 = true;
-            System.out.println("ODD");
         }
         else{
-            System.out.println("EVEN");
             this.add15 = false;
         }
-        System.out.println("TIJDSDUUR: " + tijdsduur);
         times30 = tijdsduur / 2;
         dateField.setText(datum.toString());
-        ArrayList<BoatRecord> allBoats = boatService.getBoatList();
+        //this.allBoats = boatService.getBoatList();
+        var boatDataHandler = new BoatDataExcel();
+        allBoats = boatDataHandler.read();
 
         this.reservationService = reservationService;
         setContentPane(contentPane);
@@ -236,13 +235,14 @@ public class ReserveringPopup extends JDialog {
                         .map(BoatRecord::boatName)
                         .toArray(String[]::new)
         );
-
         try{
             String newBoatID = boatIdInputField.getText();
             if(!validIDs.contains(newBoatID)){
                 errorLabel.setText("Die boot bestaat niet");
             }else if(reservedBoats.contains(newBoatID)){
                 errorLabel.setText("Die boot is al gereserveerd");
+            }else if (boatIDs.contains(newBoatID)){
+                errorLabel.setText("Die boot staat al in deze reservering");
             }else {
                 boatIDs.add(newBoatID);
                 addedBoatsLabel.setText("Toegevoegd: " + boatIDs.toString());
@@ -260,8 +260,9 @@ public class ReserveringPopup extends JDialog {
             }//TODO don't add if there is no boat with the given ID
 
         } catch (NumberFormatException ex) {
-            //throw new RuntimeException(ex);
+            //TODO I don't think this actually does anything; exception thrown elsewhere in code
             errorLabel.setText("vul een getal in");
+            throw new RuntimeException(ex);
         }
     }
 
@@ -300,7 +301,7 @@ public class ReserveringPopup extends JDialog {
         ReservationRecord newReservation = getReservationRecord();
 
         reservationService.addReservation(newReservation);
-        this.DisplayTab.reserveBoat(boatIDs, newReservation.reserveringsNummer());
+        //this.DisplayTab.reserveBoat(boatIDs, newReservation.reserveringsNummer());
         dispose();
     }
 
@@ -333,12 +334,6 @@ public class ReserveringPopup extends JDialog {
         dispose();
     }
 
-    private void onDelete(ReservationRecord ReservationRecord, CalendarDisplay display) {
-        reservationService.deleteReservation(ReservationRecord);
-        //TODO change display
-        dispose();
-    }
-
     private boolean isFormValid() {
         if (nameField.getText().isEmpty()) {
             errorLabel.setText("geen naam ingevuld");
@@ -349,7 +344,19 @@ public class ReserveringPopup extends JDialog {
         } else if (boatIDs.isEmpty()){
             errorLabel.setText("Er zijn geen boten gereserveerd");
             return false;
+        } else if (!isANumber(phoneNumberField.getText())){
+            errorLabel.setText("Telefoonnummer moet een getal zijn");
+            return false;
         }
         return true;
+    }
+
+    public static boolean isANumber(String phoneNum) {
+        try {
+            Integer.parseInt(phoneNum);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
