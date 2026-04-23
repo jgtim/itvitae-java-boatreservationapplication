@@ -194,32 +194,35 @@
     "prijs": 0.0
   },
   {
-    "reserveringsNummer": 13,
-    "customerRecord": {
-      "naam": "wouter2",
-      "telefoonNummer": 1212312341
-    },
-    "betaald": false,
-    "kamerFacturatie": true,
-    "datum": "2026-04-23",
-    "begintijd": "14:00",
-    "eindtijd": "14:30",
-    "boatIDs": [],
-    "prijs": 0.0
-  },
-  {
     "reserveringsNummer": 14,
     "customerRecord": {
       "naam": "naam",
+      "telefoonNummer": 1212312341,
       "email": "mail"
     },
     "betaald": false,
     "kamerFacturatie": false,
     "datum": "2026-04-23",
-    "begintijd": "9:00",
-    "eindtijd": "9:30",
+    "begintijd": "09:00",
+    "eindtijd": "09:30",
     "boatIDs": [
       "Standaard Roeiboot 2"
+    ],
+    "prijs": 0.0
+  },
+  {
+    "reserveringsNummer": 15,
+    "customerRecord": {
+      "naam": "breakcode",
+      "telefoonNummer": 123
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-04-23",
+    "begintijd": "09:00",
+    "eindtijd": "09:15",
+    "boatIDs": [
+      "Familie Roeiboot 4"
     ],
     "prijs": 0.0
   }
