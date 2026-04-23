@@ -352,7 +352,6 @@ private void addReservation() {
 
         reservationService.addReservation(newReservation);
         //this.DisplayTab.reserveBoat(boatIDs, newReservation.reserveringsNummer());
-        dispose();
     }
 
 private ReservationRecord getReservationRecord() {
