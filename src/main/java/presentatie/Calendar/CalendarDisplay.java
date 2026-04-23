@@ -23,7 +23,6 @@ public class CalendarDisplay extends JPanel {
     private Calendar Calendar;
     private JPanel DisplayPanel = new JPanel();
     private JPanel fullCalendar;
-    JScrollPane scrollPane;
     private String[] boatIDs;
     private JButton[][] allCells;
     private Integer[] selectedStart = {null, null};
@@ -442,7 +441,6 @@ public class CalendarDisplay extends JPanel {
             }
             fullCalendar.add(CalendarSegment);
         }
-
         fullCalendar.revalidate();
         fullCalendar.repaint();
     }
@@ -456,7 +454,7 @@ public class CalendarDisplay extends JPanel {
         add(fullCalendar);
 
         // Here we make a JScrollPane to wrap the fullCalendar in
-        scrollPane = new JScrollPane(fullCalendar);
+        JScrollPane scrollPane = new JScrollPane(fullCalendar);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
