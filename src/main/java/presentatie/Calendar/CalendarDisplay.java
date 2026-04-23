@@ -87,7 +87,7 @@ public class CalendarDisplay extends JPanel {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (e.getClickCount() == 2) {
-                            if(buttonRow[column].getBackground() == MolvenoColor.DARK.getColor()){
+                            if(buttonRow[column].getBackground() == MolvenoColor.ORANGE.getColor()){
                                 ReservationRecord reservation = reservationService.getReservationWithReservationNumber(Calendar.getCalendarGrid().get(boatIDs[row])[column].getReservationNumber());
                                 var reserveringPopup = new ReserveringPopup(reservationService, reservation){
                                     @Override
@@ -246,7 +246,7 @@ public class CalendarDisplay extends JPanel {
                 ArrayList<String> reservedBoats = new ArrayList<String>();
                 for(int row = 0; row < allCells.length; row++){
                     for(int col = this.selectedStart[1]; col < end + 1; col++){
-                        if(allCells[row][col].getBackground() == MolvenoColor.DARK.getColor()){
+                        if(allCells[row][col].getBackground() == MolvenoColor.ORANGE.getColor()){
                             reservedBoats.add(boatIDs[row]);
                             break;
                         }
@@ -313,10 +313,10 @@ public class CalendarDisplay extends JPanel {
             }
         }
         //make green & red cells white again
-        if(allCells[this.selectedStart[0]][this.selectedStart[1]].getBackground() != MolvenoColor.DARK.getColor()){
+        if(allCells[this.selectedStart[0]][this.selectedStart[1]].getBackground() != MolvenoColor.ORANGE.getColor()){
             allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(MolvenoColor.LIGHT.getColor());
         }
-        if(this.selectedEnd[0] != null && allCells[this.selectedEnd[0]][this.selectedEnd[1]].getBackground() != MolvenoColor.DARK.getColor()){
+        if(this.selectedEnd[0] != null && allCells[this.selectedEnd[0]][this.selectedEnd[1]].getBackground() != MolvenoColor.ORANGE.getColor()){
             allCells[this.selectedEnd[0]][this.selectedEnd[1]].setBackground(MolvenoColor.LIGHT.getColor());
         }
         //reset markers for selected cells
@@ -333,15 +333,15 @@ public class CalendarDisplay extends JPanel {
     */
     private void selectTimeCell(int row, int column) {
         //scenario 1: no selection has been made yet
-        if(allCells[row][column].getBackground() == MolvenoColor.DARK.getColor()){
+        if(allCells[row][column].getBackground() == MolvenoColor.ORANGE.getColor()){
 
-        } else if(this.selectedStart[0] == null && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
-            if(allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+        } else if(this.selectedStart[0] == null && allCells[row][column].getBackground() != MolvenoColor.ORANGE.getColor()){
+            if(allCells[row][column].getBackground() != MolvenoColor.ORANGE.getColor()){
                 allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
                 this.selectedStart = new Integer[]{row, column};
             }
         //scenario 2: new boat selected
-        }else if(this.selectedStart[0] != row && allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+        }else if(this.selectedStart[0] != row && allCells[row][column].getBackground() != MolvenoColor.ORANGE.getColor()){
             allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
             allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(MolvenoColor.LIGHT.getColor());
             this.selectedStart = new Integer[]{row, column};
@@ -360,7 +360,7 @@ public class CalendarDisplay extends JPanel {
                 //check if the block attempting to be reserved is available
                 boolean allAvailable = true;
                 for(int i = this.selectedStart[1]; i < column + 1; i++){
-                    if(allCells[row][i].getBackground() == MolvenoColor.DARK.getColor()){
+                    if(allCells[row][i].getBackground() == MolvenoColor.ORANGE.getColor()){
                         allAvailable = false;
                         break;
                     }
@@ -373,7 +373,7 @@ public class CalendarDisplay extends JPanel {
                     }
                     this.selectedEnd = new Integer[]{row, column};
                 //scenario 5: new start point selected past reserved block
-                }else if(allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+                }else if(allCells[row][column].getBackground() != MolvenoColor.ORANGE.getColor()){
                     allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(MolvenoColor.LIGHT.getColor());
                     allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
                     this.selectedStart = new Integer[]{row, column};
@@ -384,7 +384,7 @@ public class CalendarDisplay extends JPanel {
                 }
             }else {
                 //scenario 6: new start point selected for the same boat (same as scenario 4)
-                if(allCells[row][column].getBackground() != MolvenoColor.DARK.getColor()){
+                if(allCells[row][column].getBackground() != MolvenoColor.ORANGE.getColor()){
                     allCells[this.selectedStart[0]][this.selectedStart[1]].setBackground(MolvenoColor.LIGHT.getColor());
                     allCells[row][column].setBackground(MolvenoColor.GREEN.getColor());
                     this.selectedStart = new Integer[]{row, column};
@@ -410,13 +410,13 @@ public class CalendarDisplay extends JPanel {
                                 !rowData[col + 1].getAvailable() &&
                                 rowData[col + 1].getReservationNumber() == currentResNumber ;
 
-        int bottom = 4;
-        int top = 4;
-        int left = prevReserved ? 0 : 4;    // setting only the left border of the reservation
-        int right = nextReserved ? 0 : 4;   // setting only the right border of the reservation
+        int bottom = 2;
+        int top = 2;
+        int left = prevReserved ? 0 : 2;    // setting only the left border of the reservation
+        int right = nextReserved ? 0 : 2;   // setting only the right border of the reservation
 
-        cell.setBackground(MolvenoColor.DARK.getColor()); // painting the background of reserved timeslots
-        cell.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, MolvenoColor.ORANGE.getColor()));   // setting the top and bottom border of the reservation slot
+        cell.setBackground(MolvenoColor.ORANGE.getColor()); // painting the background of reserved timeslots
+        cell.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, MolvenoColor.DARK.getColor()));   // setting the top and bottom border of the reservation slot
     }
 
     //Reloads the calendar display to a newly selected date
