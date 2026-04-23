@@ -119,10 +119,16 @@ public class ReservationsTab extends JPanel {
 
         if (reservationRecords != null) {
             for (ReservationRecord reservationRecord : reservationRecords) {
+                String phoneNumber;
+                if(reservationRecord.customerRecord().telefoonNummer() != null){
+                    phoneNumber = Integer.toString(reservationRecord.customerRecord().telefoonNummer());
+                }else{
+                    phoneNumber = "";
+                }
                 Object[] reservationFields = {
                         reservationRecord.reserveringsNummer(),
                         reservationRecord.customerRecord().naam(),
-                        Integer.toString(reservationRecord.customerRecord().telefoonNummer()),
+                        phoneNumber,
                         reservationRecord.customerRecord().email(),
                         reservationRecord.datum(),
                         reservationRecord.begintijd(),

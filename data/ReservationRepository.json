@@ -225,5 +225,21 @@
       "Familie Roeiboot 4"
     ],
     "prijs": 0.0
+  },
+  {
+    "reserveringsNummer": 16,
+    "customerRecord": {
+      "naam": "mailonly",
+      "email": "mail"
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-04-23",
+    "begintijd": "09:00",
+    "eindtijd": "09:30",
+    "boatIDs": [
+      "Familie Roeiboot 2"
+    ],
+    "prijs": 0.0
   }
 ]
