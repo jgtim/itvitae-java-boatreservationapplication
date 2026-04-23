@@ -45,6 +45,6 @@ public class Main {
         BoatService boatService = new BoatServiceImpl(finalizedBoats);
 
         // Launching UI
-        new Tabs(reservationService, boatService);
+        new App(reservationService, boatService);
     }
 }
