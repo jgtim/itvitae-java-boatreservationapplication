@@ -65,67 +65,51 @@
     "prijs": 0.0
   },
   {
-    "reserveringsNummer": 5,
-    "customerRecord": {
-      "naam": "Piet Hein",
-      "telefoonNummer": 611223344
-    },
-    "betaald": false,
-    "kamerFacturatie": true,
-    "datum": "2026-04-23",
-    "begintijd": "10:15",
-    "eindtijd": "14:00",
-    "boatIDs": [
-      "Standaard Roeiboot 4"
-    ],
-    "prijs": 90.0
-  },
-  {
     "reserveringsNummer": 6,
     "customerRecord": {
-      "naam": "Bram",
-      "telefoonNummer": 621605150
+      "naam": "peter",
+      "telefoonNummer": 87878
     },
     "betaald": false,
     "kamerFacturatie": true,
     "datum": "2026-04-23",
-    "begintijd": "10:30",
-    "eindtijd": "11:30",
+    "begintijd": "12:00",
+    "eindtijd": "13:00",
     "boatIDs": [
       "Standaard Roeiboot 6"
     ],
-    "prijs": 45.0
+    "prijs": 0.0
   },
   {
     "reserveringsNummer": 7,
     "customerRecord": {
-      "naam": "Bart Smit",
-      "telefoonNummer": 612345678
+      "naam": "johan",
+      "telefoonNummer": 7878
     },
     "betaald": false,
-    "kamerFacturatie": false,
+    "kamerFacturatie": true,
     "datum": "2026-04-23",
-    "begintijd": "12:45",
-    "eindtijd": "14:30",
+    "begintijd": "12:15",
+    "eindtijd": "16:30",
     "boatIDs": [
-      "Standaard Roeiboot 8"
+      "Familie Roeiboot 2"
     ],
     "prijs": 0.0
   },
   {
     "reserveringsNummer": 8,
     "customerRecord": {
-      "naam": "Stef",
-      "telefoonNummer": 647213892
+      "naam": "fgf",
+      "telefoonNummer": 8686
     },
     "betaald": false,
     "kamerFacturatie": true,
     "datum": "2026-04-23",
-    "begintijd": "11:30",
-    "eindtijd": "15:00",
+    "begintijd": "14:45",
+    "eindtijd": "18:15",
     "boatIDs": [
-      "Familie Roeiboot 1"
+      "Standaard Roeiboot 8"
     ],
-    "prijs": 70.0
+    "prijs": 0.0
   }
 ]
