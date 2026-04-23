@@ -161,7 +161,7 @@ public class ReserveringPopup extends JDialog {
         addedBoatsLabel.setText("Toegevoegd: " + reservationRecord.boatIDs().toString());
         nameField.setText(reservationRecord.customerRecord().naam());
         nameField.setEditable(false);
-        phoneNumberField.setText(reservationRecord.customerRecord().telefoonNummer().toString());
+        phoneNumberField.setText((reservationRecord.customerRecord().telefoonNummer() != null) ? reservationRecord.customerRecord().telefoonNummer().toString() : "");
         phoneNumberField.setEditable(false);
         emailField.setText(reservationRecord.customerRecord().email());
         emailField.setEditable(false);
@@ -315,7 +315,7 @@ public class ReserveringPopup extends JDialog {
                 reservationService.getNewReservationNumber(),
                 new CustomerRecord(
                         nameField.getText(),
-                        (phoneNumberField.getText().isEmpty()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
+                        (phoneNumberField.getText().isBlank()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
                         (emailField.getText().isEmpty()) ? null : emailField.getText()
                 ),
                 kamerFacturatieCheckBox.isSelected(),
