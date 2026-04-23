@@ -1,6 +1,7 @@
 package presentatie;
 
 import data.BoatDataExcel;
+import data.BoatDataHandler;
 import domain.*;
 import presentatie.Calendar.CalendarDisplay;
 import service.BoatService.BoatService;
@@ -36,7 +37,6 @@ public class ReserveringPopup extends JDialog {
     private JLabel dateField;
     private JButton addBoatButton;
     private JTextField boatIdInputField;
-    private JLabel addedBoatsLabel;
     private JPanel errorPane;
     private JLabel errorLabel;
     private JPanel tijdInformatie;
@@ -45,9 +45,8 @@ public class ReserveringPopup extends JDialog {
     private JTable availableBoatsTable;
     private JTable addedBoatsTable;
     private JPanel addBoatPane;
-    private JTextField textField1;
+    private JTextField boatAmountField;
     private JButton button1;
-    private JButton button2;
     private JButton removeBoatButton;
     private JPanel deletePane;
     private JButton buttonDelete;
@@ -65,13 +64,15 @@ public class ReserveringPopup extends JDialog {
     private ArrayList<String> reservedBoats;
     private ReservationPopupMode currentMode;
     private ReservationRecord currentReservation;
-    private JPanel newBoatPanel;
     private DefaultTableModel availableBoatsTableModel;
     private DefaultTableModel addedBoatsTableModel;
     private BoatService boatService;
+    private String preSelectedBoat = "";
+    private BoatType selectedBoatType;
+    private String dateString;
 
     public ReserveringPopup(ReservationService reservationService, BoatService boatService, CalendarDisplay display,
-                            String van, String tot, LocalDate datum, ArrayList<String> reservedBoats, String selectedBoat) {
+                            String van, String tot, LocalDate datum, ArrayList<String> reservedBoats, String preSelectedBoat) {
         this.boatService = boatService;
         deletePane.remove(buttonDelete);
         getReserveringPopup().DisplayTab = display;
@@ -80,7 +81,9 @@ public class ReserveringPopup extends JDialog {
         this.begintijd = van;
         this.eindtijd = tot;
         this.datum = datum;
+        dateString = datum.toString();
         this.reservedBoats = reservedBoats; //boats that are already reserved at the given time
+        this.preSelectedBoat = preSelectedBoat;
         vanLabel.setText(van);
         totLabel.setText(tot);
         List<String> timeList = Arrays.asList(this.DisplayTab.getCalendar().timeBoxes);
@@ -94,16 +97,12 @@ public class ReserveringPopup extends JDialog {
         }
         times30 = tijdsduur / 2;
         dateField.setText(datum.toString());
-        ArrayList<BoatRecord> allBoats = boatService.getBoatList();
+        allBoats = boatService.getBoatList();
 
         this.reservationService = reservationService;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-
-        //Add the boat that is selected on the calendar
-        boatIDs.add(selectedBoat);
-        addedBoatsLabel.setText("Added: " + boatIDs.toString());
 
         buttonOK.addActionListener(e -> onOK());
 
@@ -123,10 +122,12 @@ public class ReserveringPopup extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        addBoatButton.addActionListener(e -> {addBoat();});
-        removeBoatButton.addActionListener(e -> {removeBoat();});
+        addBoatButton.addActionListener(e -> {addBoatButtonPressed();});
+        removeBoatButton.addActionListener(e -> {removeBoatButtonPressed();});
         initializeBoatTables();
         reloadBoatTables();
+        //Add the boat that is selected on the calendar
+        addBoat();
     }
 
     private ReserveringPopup getReserveringPopup() {
@@ -138,6 +139,7 @@ public class ReserveringPopup extends JDialog {
         this.reservationService = reservationService;
         currentMode = ReservationPopupMode.VIEWING;
         currentReservation = reservationRecord;
+        dateString = currentReservation.datum();
         boatIDs = (ArrayList<String>) reservationRecord.boatIDs().clone();
         reservedBoats = boatIDs;
         begintijd = reservationRecord.begintijd();
@@ -152,9 +154,9 @@ public class ReserveringPopup extends JDialog {
                 "21:00", "21:15", "21:30"
         };
 
-        var boatDataHandler = new BoatDataExcel();
-        allBoats = boatDataHandler.read();
-        boatService = new BoatServiceImpl(allBoats);
+        BoatDataHandler boatDataHandler = new BoatDataExcel();
+        boatService = new BoatServiceImpl(boatDataHandler.read());
+        allBoats = boatService.getBoatList();
 
         setContentPane(contentPane);
         setModal(true);
@@ -168,7 +170,6 @@ public class ReserveringPopup extends JDialog {
         dateField.setText(reservationRecord.datum());
         vanLabel.setText(reservationRecord.begintijd());
         totLabel.setText(reservationRecord.eindtijd());
-        addedBoatsLabel.setText("Toegevoegd: " + reservationRecord.boatIDs().toString());
         nameField.setText(reservationRecord.customerRecord().naam());
         nameField.setEditable(false);
         phoneNumberField.setText(reservationRecord.customerRecord().telefoonNummer().toString());
@@ -179,7 +180,6 @@ public class ReserveringPopup extends JDialog {
         kamerFacturatieCheckBox.setEnabled(false);
         betaaldCheckBox.setSelected(reservationRecord.betaald());
         betaaldCheckBox.setEnabled(false);
-        boatIdInputField.setEditable(false);
         addBoatButton.setEnabled(false);
         removeBoatButton.setEnabled(false);
 
@@ -213,7 +213,6 @@ public class ReserveringPopup extends JDialog {
         comboBoxTot.setSelectedItem(totLabel.getText());
         CardLayout cl = (CardLayout) tijdInformatie.getLayout();
         cl.next(tijdInformatie);
-        boatIdInputField.setEditable(true);
         addBoatButton.setEnabled(true);
         removeBoatButton.setEnabled(true);
     }
@@ -242,56 +241,73 @@ public class ReserveringPopup extends JDialog {
         totLabel.setText((String) comboBoxTot.getSelectedItem());
     }
 
+    private void addBoatButtonPressed(){
+        if (boatAmountField.getText().isEmpty()) {
+            addBoat();
+        }
+        try {
+            int amountToAdd = Integer.parseInt(boatAmountField.getText());
+            for(int i = 0; i < amountToAdd; i++) {
+                addBoat();
+            }
+        } catch (NumberFormatException ignored) {}
+    }
+
     private void addBoat() {
+        String boatString;
+        // checks if its the boat that was clicked on the agenda
+        if (!preSelectedBoat.isEmpty()) {
+            boatIDs.add(preSelectedBoat);
+            boatString = preSelectedBoat;
+            preSelectedBoat = "";
+        } else {
+            String firstAvailable = reservationService.getFirstAvailableBoatOfType(selectedBoatType, boatIDs, boatService, begintijd, eindtijd, dateString);
+            boatIDs.add(firstAvailable);
+            boatString = firstAvailable;
+        }
+
+
+
         this.validIDs = Arrays.asList(
                 allBoats.stream()
                         .map(BoatRecord::boatName)
                         .toArray(String[]::new)
         );
 
-        try{
-            String newBoatID = boatIdInputField.getText();
-            if(!validIDs.contains(newBoatID)){
-                errorLabel.setText("Die boot bestaat niet");
-            }else if(reservedBoats.contains(newBoatID)){
-                errorLabel.setText("Die boot is al gereserveerd");
-            }else {
-                boatIDs.add(newBoatID);
-                addedBoatsLabel.setText("Toegevoegd: " + boatIDs.toString());
-                boatIdInputField.setText("");
-                errorLabel.setText(" ");
-                double boatPrice15 = allBoats.get(validIDs.indexOf(newBoatID)).price15();
-                double boatPrice30 = allBoats.get(validIDs.indexOf(newBoatID)).price30();
-                price += (times30 * boatPrice30);
-                if(add15){
-                    price += boatPrice15;
-                }
-                //System.out.println(tijdsduur);
-                System.out.println("PRIJS: " + boatPrice30 + "+" + boatPrice15);
-                priceField.setText("€" + String.format("%.2f", price));
-            }//TODO don't add if there is no boat with the given ID
-
-        } catch (NumberFormatException ex) {
-            //throw new RuntimeException(ex);
-            errorLabel.setText("vul een getal in");
+        double boatPrice15 = allBoats.get(validIDs.indexOf(boatString)).price15();
+        double boatPrice30 = allBoats.get(validIDs.indexOf(boatString)).price30();
+        price += (times30 * boatPrice30);
+        if(add15){
+            price += boatPrice15;
         }
+
+        System.out.println("PRIJS: " + boatPrice30 + "+" + boatPrice15);
+        priceField.setText("€" + String.format("%.2f", price));
+
         reloadBoatTables();
     }
 
-    private void removeBoat() {
-        try{
-            String boatID = boatIdInputField.getText();
-            if (boatIDs.contains(boatID)) {
-                boatIDs.remove((Object) boatID);
-                addedBoatsLabel.setText("Added: " + boatIDs.toString());
-                boatIdInputField.setText("");
-                errorLabel.setText(" ");
-            } else {
-                errorLabel.setText("Die boot is niet gereserveerd");
-            }
-        } catch (NumberFormatException ex) {
-            errorLabel.setText("vul een getal in");
+    private void removeBoatButtonPressed() {
+        if (boatAmountField.getText().isEmpty()) {
+            removeBoat();
         }
+        try {
+            int amountToRemove = Integer.parseInt(boatAmountField.getText());
+            for(int i = 0; i < amountToRemove; i++) {
+                removeBoat();
+            }
+        } catch (NumberFormatException ignored) {}
+    }
+
+    private void removeBoat() {
+        for (int i = boatIDs.size() - 1; i >= 0; i--) {
+            if (boatService.getBoatTypeFromID(boatIDs.get(i)) == selectedBoatType) {
+                boatIDs.remove(i);
+                break;
+            }
+        }
+
+        reloadBoatTables();
     }
 
     private void onOK() {
@@ -388,12 +404,34 @@ public class ReserveringPopup extends JDialog {
 
         availableBoatsTable.setModel(availableBoatsTableModel);
         addedBoatsTable.setModel(addedBoatsTableModel);
+
+        availableBoatsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        addedBoatsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        addedBoatsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                    availableBoatsTable.clearSelection();
+                    int viewRow = addedBoatsTable.rowAtPoint(e.getPoint());
+                    selectedBoatType = (BoatType) addedBoatsTable.getModel().getValueAt(viewRow, 0);
+            }
+        });
+
+        availableBoatsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                    addedBoatsTable.clearSelection();
+                    int viewRow = availableBoatsTable.rowAtPoint(e.getPoint());
+                    selectedBoatType = (BoatType) availableBoatsTable.getModel().getValueAt(viewRow, 0);
+            }
+        });
     }
 
     private void reloadBoatTables() {
         Object[] row;
         BoatType[] boatTypes = BoatType.class.getEnumConstants();
         // Load available boats table
+        int selectedrow = availableBoatsTable.getSelectedRow();
         availableBoatsTableModel.setRowCount(0);
         for (BoatType boatType : boatTypes) {
             row = new Object[3];
@@ -403,12 +441,19 @@ public class ReserveringPopup extends JDialog {
                     boatType,
                     begintijd,
                     eindtijd,
-                    boatService
+                    dateString,
+                    boatService,
+                    boatIDs
             );
             availableBoatsTableModel.addRow(row);
         }
+        try {
+            availableBoatsTable.setRowSelectionInterval(selectedrow, selectedrow);
+        } catch (Exception ignored) {}
+
 
         // reload added boats table
+        selectedrow = addedBoatsTable.getSelectedRow();
         addedBoatsTableModel.setRowCount(0);
         for (BoatType boatType : boatTypes) {
             row = new Object[3];
@@ -425,6 +470,10 @@ public class ReserveringPopup extends JDialog {
                 addedBoatsTableModel.addRow(row);
             }
         }
+
+        try {
+            addedBoatsTable.setRowSelectionInterval(selectedrow, selectedrow);
+        } catch (Exception ignored) {}
 
     }
 }

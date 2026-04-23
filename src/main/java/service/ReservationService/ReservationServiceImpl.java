@@ -71,13 +71,12 @@ public class ReservationServiceImpl implements ReservationService {
         saveReservationsToRepository();
     }
 
-    private boolean isBoatAvailableDuringTime(String boatID, String startTimeString, String endTimeString) {
+    private boolean isBoatAvailableDuringTime(String boatID, String startTimeString, String endTimeString, String dateString) {
         LocalTime startTimeToCheck = LocalTime.parse(startTimeString);
         LocalTime endTimeToCheck = LocalTime.parse(endTimeString);
 
         for (ReservationRecord reservationRecord : reservationRecords) {
-            if (reservationRecord.boatIDs().contains(boatID)) {
-                System.out.println(boatID);
+            if (reservationRecord.datum().equals(dateString) && reservationRecord.boatIDs().contains(boatID)) {
                 LocalTime reservationStartTime = LocalTime.parse(reservationRecord.begintijd());
                 LocalTime reservationEndTime = LocalTime.parse(reservationRecord.eindtijd());
 
@@ -90,19 +89,39 @@ public class ReservationServiceImpl implements ReservationService {
         return true;
     }
 
-    public int getBoatAmountAvailableDuringTimeByType (BoatType boatType, String startTimeString, String endTimeString, BoatService boatService) {
+    public int getBoatAmountAvailableDuringTimeByType (BoatType boatType, String startTimeString, String endTimeString, String dateString, BoatService boatService, ArrayList<String> boatIDs) {
         int total = boatService.getBoatAmountOfType(boatType);
+
+        for (BoatRecord boatRecord : boatService.getBoatList()) {
+            if (boatRecord.boatType() == boatType && boatIDs.contains(boatRecord.boatName())) {
+                total -=1;
+            }
+        }
+
         for (ReservationRecord reservationRecord : reservationRecords) {
             for (String boatID : reservationRecord.boatIDs()) {
                 if (boatType == boatService.getBoatTypeFromID(boatID)) {
-                    System.out.println(boatID);
-                    if (!isBoatAvailableDuringTime(boatID, startTimeString, endTimeString)) {
+                    if (!isBoatAvailableDuringTime(boatID, startTimeString, endTimeString, dateString)) {
                         total -= 1;
                     }
                 }
+
             }
         }
         return total;
+    }
+
+    @Override
+    public String getFirstAvailableBoatOfType(BoatType selectedBoatType, ArrayList<String> boatIDs, BoatService boatService, String startTime, String endTime, String dateString) {
+        ArrayList<BoatRecord> boatList = boatService.getBoatList();
+        for (BoatRecord boatRecord : boatList) {
+            if (boatRecord.boatType() == selectedBoatType && !boatIDs.contains(boatRecord.boatName())) {
+                if (isBoatAvailableDuringTime(boatRecord.boatName(), startTime, endTime, dateString)) {
+                    return boatRecord.boatName();
+                }
+            }
+        }
+        return null;
     }
 
 }

@@ -2,66 +2,46 @@
   {
     "reserveringsNummer": 1,
     "customerRecord": {
-      "naam": "Bram",
-      "telefoonNummer": 623423
+      "naam": "2133",
+      "telefoonNummer": 5345345,
+      "email": "wafwae"
     },
     "betaald": false,
     "kamerFacturatie": false,
-    "datum": "2026-04-16",
-    "begintijd": "10:00",
-    "eindtijd": "12:00",
+    "datum": "2026-04-15",
+    "begintijd": "12:45",
+    "eindtijd": "14:15",
     "boatIDs": [
-      "Familie Roeiboot 1"
+      "Familie Roeiboot 4"
     ],
-    "prijs": 0.0
+    "prijs": 82.5
   },
   {
     "reserveringsNummer": 2,
     "customerRecord": {
-      "naam": "sad",
-      "telefoonNummer": 124124
+      "naam": "Shane Sail",
+      "telefoonNummer": 2342412,
+      "email": "shanesail@gmail.com"
     },
     "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-16",
-    "begintijd": "10:15",
-    "eindtijd": "12:00",
-    "boatIDs": [
-      "Familie Roeiboot 2"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 3,
-    "customerRecord": {
-      "naam": "Bram",
-      "telefoonNummer": 21321
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-16",
-    "begintijd": "10:30",
-    "eindtijd": "12:30",
-    "boatIDs": [
-      "Standaard Roeiboot 8"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 4,
-    "customerRecord": {
-      "naam": "111",
-      "telefoonNummer": 111
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-17",
-    "begintijd": "13:00",
+    "kamerFacturatie": true,
+    "datum": "2026-04-23",
+    "begintijd": "11:30",
     "eindtijd": "13:45",
     "boatIDs": [
-      "Standaard Roeiboot 6",
-      "Standaard Roeiboot 4"
+      "Standaard Roeiboot 7",
+      "Stille Elektrische Boot 1",
+      "Stille Elektrische Boot 2",
+      "Familie Roeiboot 1",
+      "Familie Roeiboot 2",
+      "Familie Roeiboot 3",
+      "Familie Roeiboot 4",
+      "Stille Elektrische Boot 3",
+      "Stille Elektrische Boot 4",
+      "Stille Elektrische Boot 5",
+      "Stille Elektrische Boot 6",
+      "Stille Elektrische Boot 7"
     ],
-    "prijs": 0.0
+    "prijs": 2447.5
   }
 ]
