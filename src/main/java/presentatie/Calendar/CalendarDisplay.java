@@ -158,9 +158,21 @@ public class CalendarDisplay extends JPanel {
         idColumn.add(header);
 
         for (int i = 0; i < allCells.length; i++) {
+            domain.BoatRecord currentBoat = boatService.getBoatList().get(i);
+            String displayName = boatIDs[i];
+
             JLabel idLabel = new JLabel(boatIDs[i]);
             idLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
             idLabel.setForeground(MolvenoColor.DARK.getColor());
+
+            if (currentBoat.isBroken()) {
+                idLabel.setText(displayName + " (defect)");
+                idLabel.setForeground(Color.GRAY);
+            } else {
+                idLabel.setText(displayName);
+                idLabel.setForeground(MolvenoColor.DARK.getColor());
+            }
+
             idLabel.setHorizontalAlignment(JLabel.LEFT);
             idLabel.setPreferredSize(new Dimension(200, 25));
             idLabel.setMaximumSize(new Dimension(200, 25));
@@ -461,12 +473,12 @@ public class CalendarDisplay extends JPanel {
 
                 if (isBroken) {
                     cell.setEnabled(false);
-                    cell.setBackground(MolvenoColor.DARK.getColor());
+                    cell.setBackground(Color.GRAY);
                 } else {
                     cell.setEnabled(true);
                     if (!CalGrid.get(boatIDs[row])[column].getAvailable()) {
                         cellBorder(i, j, cell);
-                } else {
+                    } else {
                         cell.setUI(new javax.swing.plaf.basic.BasicButtonUI());
                         cell.setBackground(MolvenoColor.LIGHT.getColor());
                         if (column % 4 == 0) {
