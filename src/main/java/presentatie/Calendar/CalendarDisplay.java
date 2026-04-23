@@ -155,7 +155,7 @@ public class CalendarDisplay extends JPanel {
         buttonrow.add(cancelButton);
         add(buttonrow);
 
-        reLoadCalendarDate(reservationService);
+        reLoadCalendar();
     }
 
     //this function is tied to the cancel button and simply undoes any selections that have already been made
@@ -436,7 +436,8 @@ public class CalendarDisplay extends JPanel {
             // CalendarSegment.setBackground(MolvenoColor.BEIGE.getColor());
             BoxLayout CalSegBox = new BoxLayout(CalendarSegment, BoxLayout.Y_AXIS);
             CalendarSegment.setLayout(CalSegBox);
-            CalendarSegment.setBorder(new LineBorder(MolvenoColor.DARK.getColor()));
+            // commented out: will implement in cellBorder method and
+            // CalendarSegment.setBorder(new LineBorder(MolvenoColor.DARK.getColor()));
 
             int hour = i + 9;
             JLabel headerLabel = new JLabel(hour + ":00");
