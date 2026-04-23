@@ -192,5 +192,19 @@
       "Standaard Roeiboot 5"
     ],
     "prijs": 0.0
+  },
+  {
+    "reserveringsNummer": 13,
+    "customerRecord": {
+      "naam": "wouter2",
+      "telefoonNummer": 1212312341
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-23",
+    "begintijd": "14:00",
+    "eindtijd": "14:30",
+    "boatIDs": [],
+    "prijs": 0.0
   }
 ]

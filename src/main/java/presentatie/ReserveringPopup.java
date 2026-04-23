@@ -292,8 +292,12 @@ public class ReserveringPopup extends JDialog {
         } else if (currentMode == ReservationPopupMode.VIEWING) {
             setEditMode();
         } else if (currentMode == ReservationPopupMode.EDITING) {
+            if (!isFormValid()) {
+                return;
+            }
             confirmEdit();
             setViewMode();
+
         }
     }
 
