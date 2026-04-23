@@ -257,5 +257,22 @@
       "Standaard Roeiboot 7"
     ],
     "prijs": 0.0
+  },
+  {
+    "reserveringsNummer": 18,
+    "customerRecord": {
+      "naam": "walt",
+      "telefoonNummer": 111
+    },
+    "betaald": true,
+    "kamerFacturatie": true,
+    "datum": "2026-04-23",
+    "begintijd": "10:00",
+    "eindtijd": "11:00",
+    "boatIDs": [
+      "Familie Roeiboot 2",
+      "Familie Roeiboot 1"
+    ],
+    "prijs": 27.5
   }
 ]

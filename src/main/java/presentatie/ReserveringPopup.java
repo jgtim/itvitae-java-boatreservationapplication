@@ -63,6 +63,7 @@ public class ReserveringPopup extends JDialog {
     private ArrayList<String> reservedBoats;
     private ReservationPopupMode currentMode;
     private ReservationRecord currentReservation;
+    List<String> timeList;
 
     public ReserveringPopup(ReservationService reservationService, BoatService boatService, CalendarDisplay display,
                             String van, String tot, LocalDate datum, ArrayList<String> reservedBoats, String selectedBoat) {
@@ -76,7 +77,7 @@ public class ReserveringPopup extends JDialog {
         this.reservedBoats = reservedBoats; //boats that are already reserved at the given time
         vanLabel.setText(van);
         totLabel.setText(tot);
-        List<String> timeList = Arrays.asList(this.DisplayTab.getCalendar().timeBoxes);
+        this.timeList = Arrays.asList(this.DisplayTab.getCalendar().timeBoxes); //TODO also change this elsewhere timelist is used
         int tijdsduur = Arrays.copyOfRange(this.DisplayTab.getCalendar().timeBoxes, timeList.indexOf(van), timeList.indexOf(tot)).length;
         if((tijdsduur & 1) != 0){ //check if odd
             tijdsduur -= 1;
@@ -352,6 +353,8 @@ public class ReserveringPopup extends JDialog {
         } else if (!isANumber(phoneNumberField.getText()) && !phoneNumberField.getText().isBlank()){
             errorLabel.setText("Telefoonnummer moet een getal zijn");
             return false;
+        } else if(vanLabel.getText() >= totLabel.getText()){
+
         }
         return true;
     }
