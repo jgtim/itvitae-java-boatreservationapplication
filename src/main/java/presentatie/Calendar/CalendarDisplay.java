@@ -103,10 +103,6 @@ public class CalendarDisplay extends JPanel {
                         }
                     }
                 });
-                // IMPORTANT -------------------------------------------------------------------------------------------
-                // Because of use of JButtons, our own colors get overridden with system standard
-                // When we disable this, we have to manually add lots of tweaks.
-                // BETTER CHOICE: Change JButtons to JPanels with MouseListener. Much easier for styling.
 
                 buttonRow[j].setContentAreaFilled(false); // Disable automatic filling
                 buttonRow[j].setOpaque(true); // Making sure our colors get selected
@@ -139,7 +135,6 @@ public class CalendarDisplay extends JPanel {
         fullCalendar.setLayout(CalBoxLayout);
 
         // Here we are creating a separate JPanel for the column of BoatIds
-        // Will be removing the if (i==0) block down below
         JPanel idColumn = new JPanel();
         idColumn.setBackground(MolvenoColor.LIGHT.getColor());
         idColumn.setLayout(new BoxLayout(idColumn, BoxLayout.Y_AXIS));
@@ -170,8 +165,7 @@ public class CalendarDisplay extends JPanel {
         //here the panel containing the calendar is split into 13 pieces; 1 for each hour
         for (int i = 0; i < 13; i++) {
             JPanel CalendarSegment = new JPanel();
-            // This is really ugly:
-            // CalendarSegment.setBackground(MolvenoColor.BEIGE.getColor());
+
             BoxLayout CalSegBox = new BoxLayout(CalendarSegment, BoxLayout.Y_AXIS);
             CalendarSegment.setLayout(CalSegBox);
             CalendarSegment.setBorder(new LineBorder(MolvenoColor.DARK.getColor()));
@@ -194,10 +188,7 @@ public class CalendarDisplay extends JPanel {
                 cellRow.setAlignmentX(Component.LEFT_ALIGNMENT);
                 BoxLayout boxLayoutManagerRow = new BoxLayout(cellRow, BoxLayout.X_AXIS);
                 cellRow.setLayout(boxLayoutManagerRow);
-                // COMMENTED THIS OUT: replaced with idColumn logic above
-//                if (i == 0) {
-//                    cellRow.add(new JLabel(String.valueOf(BoatIDs[j])));
-//                }
+
                 int zeroPoint = 4 * i;
                 int numPanels = 4;
                 if (i == 12) {
@@ -287,6 +278,8 @@ public class CalendarDisplay extends JPanel {
         });
         buttonrow.add(cancelButton);
         add(buttonrow);
+
+        reLoadCalendarDate(reservationService);
     }
 
     //this function is tied to the cancel button and simply undoes any selections that have already been made
@@ -408,9 +401,14 @@ public class CalendarDisplay extends JPanel {
     // Method for drawing borders around reserved timeslot block
     private void cellBorder(int row, int col, JButton cell) {
         CalendarCell[] rowData = Calendar.getCalendarGrid().get(boatIDs[row]);
+        int currentResNumber = rowData[col].getReservationNumber();
 
-        boolean prevReserved = (col > 0) && !rowData[col - 1].getAvailable();
-        boolean nextReserved = (col < 49) && !rowData[col + 1].getAvailable();
+        boolean prevReserved = (col > 0) &&
+                                !rowData[col - 1].getAvailable() &&
+                                rowData[col].getReservationNumber() == currentResNumber;
+        boolean nextReserved = (col < 49) &&
+                                !rowData[col + 1].getAvailable() &&
+                                rowData[col + 1].getReservationNumber() == currentResNumber ;
 
         int bottom = 4;
         int top = 4;
@@ -422,7 +420,7 @@ public class CalendarDisplay extends JPanel {
     }
 
     //Reloads the calendar display to a newly selected date
-    private void reLoadCalendarDate(ReservationService reservationService) {
+    public void reLoadCalendarDate(ReservationService reservationService) {
         //Cancel any selected cells
         cancelSelection();
 
