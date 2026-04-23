@@ -120,7 +120,14 @@ public class CalendarDisplay extends JPanel {
                     cellBorder(row, column, buttonRow[j]);
                 } else {
                     buttonRow[j].setBackground(MolvenoColor.LIGHT.getColor());
-                    buttonRow[j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+                    if (column % 4 == 0) {
+                        buttonRow[j].setBorder(BorderFactory.createCompoundBorder(
+                                BorderFactory.createMatteBorder(0, 1, 0, 0, MolvenoColor.DARK.getColor()),
+                                BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1)
+                        ));
+                    } else {
+                        buttonRow[j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+                    }
                 }
                 buttonRow[j].addActionListener(e -> {
                     selectTimeCell(row, column);
@@ -168,7 +175,8 @@ public class CalendarDisplay extends JPanel {
 
             BoxLayout CalSegBox = new BoxLayout(CalendarSegment, BoxLayout.Y_AXIS);
             CalendarSegment.setLayout(CalSegBox);
-            CalendarSegment.setBorder(new LineBorder(MolvenoColor.DARK.getColor()));
+            // commented out: will implement in cellBorder method and
+            // CalendarSegment.setBorder(new LineBorder(MolvenoColor.DARK.getColor()));
 
             int hour = i + 9;
             JLabel headerLabel = new JLabel(hour + ":00");
@@ -410,13 +418,26 @@ public class CalendarDisplay extends JPanel {
                                 !rowData[col + 1].getAvailable() &&
                                 rowData[col + 1].getReservationNumber() == currentResNumber ;
 
+        boolean isHourStart = (col % 4 == 0);
+
         int bottom = 2;
         int top = 2;
         int left = prevReserved ? 0 : 2;    // setting only the left border of the reservation
         int right = nextReserved ? 0 : 2;   // setting only the right border of the reservation
 
-        cell.setBackground(MolvenoColor.ORANGE.getColor()); // painting the background of reserved timeslots
-        cell.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, MolvenoColor.DARK.getColor()));   // setting the top and bottom border of the reservation slot
+        cell.setOpaque(true);
+        cell.setContentAreaFilled(true);
+        cell.setBorderPainted(true);
+
+        cell.setUI(new javax.swing.plaf.basic.BasicButtonUI());
+
+        cell.setBackground(MolvenoColor.ORANGE.getColor());
+
+        if (isHourStart && !prevReserved) {
+            left = 4;
+        }
+        cell.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, MolvenoColor.DARK.getColor()));
+
     }
 
     //Reloads the calendar display to a newly selected date
@@ -439,7 +460,14 @@ public class CalendarDisplay extends JPanel {
                     cellBorder(row, column, allCells[i][j]);
                 } else {
                     allCells[i][j].setBackground(MolvenoColor.LIGHT.getColor());
-                    allCells[i][j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+                    if (column % 4 == 0) {
+                        allCells[i][j].setBorder(BorderFactory.createCompoundBorder(
+                                BorderFactory.createMatteBorder(0, 1, 0, 0, MolvenoColor.DARK.getColor()), // Hour line
+                                BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1)
+                        ));
+                    } else {
+                        allCells[i][j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+                    }
                 }
             }
         }
