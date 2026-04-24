@@ -25,7 +25,8 @@ public class CalendarDisplay extends JPanel {
     private JPanel fullCalendar;
     private String[] boatIDs;
     private JButton[][] allCells;
-    private JViewport headers = new JViewport();;
+    private JViewport headers = new JViewport();
+    private JViewport rowHeaders = new JViewport();
     private Integer[] selectedStart = {null, null};
     private Integer[] selectedEnd = {null, null};
     private LocalDate dateSelected;
@@ -462,13 +463,15 @@ public class CalendarDisplay extends JPanel {
             idColumn.add(idLabel);
         }
         fullCalendar.add(idColumn);
+        rowHeaders.setView(idColumn);
         JPanel headerPanel = new JPanel();
-        JLabel aboveIDLabel = new JLabel();
-        aboveIDLabel.setPreferredSize(new Dimension(190, 25));
-        aboveIDLabel.setMaximumSize(new Dimension(190, 25));
-        aboveIDLabel.setMinimumSize(new Dimension(190, 25));
-        aboveIDLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        headerPanel.add(aboveIDLabel);
+        //the below was to align header with ID column before this became a row header
+        //JLabel aboveIDLabel = new JLabel();
+        //aboveIDLabel.setPreferredSize(new Dimension(190, 25));
+        //aboveIDLabel.setMaximumSize(new Dimension(190, 25));
+        //aboveIDLabel.setMinimumSize(new Dimension(190, 25));
+        //aboveIDLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        //headerPanel.add(aboveIDLabel);
         for (int i = 0; i < 13; i++) {
             int hour = i + 9;
             JLabel headerLabel = new JLabel(hour + ":00");
@@ -547,6 +550,7 @@ public class CalendarDisplay extends JPanel {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setPreferredSize(new Dimension(1000, 600));
         scrollPane.setColumnHeaderView(headers);
+        scrollPane.setRowHeaderView(rowHeaders);
 
         add(scrollPane);
     }
