@@ -91,22 +91,26 @@ public class ReservationServiceImpl implements ReservationService {
 
     public int getBoatAmountAvailableDuringTimeByType (BoatType boatType, String startTimeString, String endTimeString, String dateString, BoatService boatService, ArrayList<String> boatIDs) {
         int total = boatService.getBoatAmountOfType(boatType);
+        var subtractedBoats = new ArrayList<String>();
 
         for (BoatRecord boatRecord : boatService.getBoatList()) {
             if (boatRecord.boatType() == boatType && boatIDs.contains(boatRecord.boatName())) {
-                total -=1;
+                if (!subtractedBoats.contains(boatRecord.boatName())) {
+                    total -= 1;
+                    subtractedBoats.add(boatRecord.boatName());
+                }
             }
         }
 
         for (ReservationRecord reservationRecord : reservationRecords) {
-            if (dateString.equals(reservationRecord.datum())) {
-                for (String boatID : reservationRecord.boatIDs()) {
-                    if (boatType == boatService.getBoatTypeFromID(boatID)) {
-                        if (!isBoatAvailableDuringTime(boatID, startTimeString, endTimeString, dateString)) {
+            for (String boatID : reservationRecord.boatIDs()) {
+                if (boatType == boatService.getBoatTypeFromID(boatID)) {
+                    if (!isBoatAvailableDuringTime(boatID, startTimeString, endTimeString, dateString)) {
+                        if (!subtractedBoats.contains(boatID)) {
                             total -= 1;
+                            subtractedBoats.add(boatID);
                         }
                     }
-
                 }
             }
         }
