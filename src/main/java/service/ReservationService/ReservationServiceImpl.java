@@ -99,13 +99,15 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         for (ReservationRecord reservationRecord : reservationRecords) {
-            for (String boatID : reservationRecord.boatIDs()) {
-                if (boatType == boatService.getBoatTypeFromID(boatID)) {
-                    if (!isBoatAvailableDuringTime(boatID, startTimeString, endTimeString, dateString)) {
-                        total -= 1;
+            if (dateString.equals(reservationRecord.datum())) {
+                for (String boatID : reservationRecord.boatIDs()) {
+                    if (boatType == boatService.getBoatTypeFromID(boatID)) {
+                        if (!isBoatAvailableDuringTime(boatID, startTimeString, endTimeString, dateString)) {
+                            total -= 1;
+                        }
                     }
-                }
 
+                }
             }
         }
         return total;
