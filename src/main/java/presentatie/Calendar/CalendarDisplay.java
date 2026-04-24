@@ -528,6 +528,8 @@ public class CalendarDisplay extends JPanel {
                 }
                 CalendarSegment.add(cellRow);
             }
+            //TODO
+            CalendarSegment.setAlignmentY(TOP_ALIGNMENT);
             fullCalendar.add(CalendarSegment);
         }
         fullCalendar.revalidate();
