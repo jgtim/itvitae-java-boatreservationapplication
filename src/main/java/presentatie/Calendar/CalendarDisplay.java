@@ -137,7 +137,7 @@ public class CalendarDisplay extends JPanel {
                     @Override
                     public void dispose() {
                         super.dispose();
-                        reLoadCalendarDate(reservationService);
+                        reLoadCalendar(boatService);
                     }
                 };
                 reserveringPopup.pack();
