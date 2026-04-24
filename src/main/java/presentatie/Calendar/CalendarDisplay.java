@@ -431,14 +431,14 @@ public class CalendarDisplay extends JPanel {
 
         // Setting the fixed size of this column
         idColumn.setMinimumSize(new Dimension(200, 0));
-        idColumn.setPreferredSize(new Dimension(200, 600));
+        //idColumn.setPreferredSize(new Dimension(200, 600));
 
         // Adding a Header to the top of the column
-        JLabel header = new  JLabel("Boten:", SwingConstants.LEFT);
-        header.setFont(MolvenoFont.PARAGRAPH.getFont());
-        header.setForeground(MolvenoColor.DARK.getColor());
-        header.setAlignmentX(Component.LEFT_ALIGNMENT);
-        idColumn.add(header);
+        //JLabel header = new  JLabel("Boten:", SwingConstants.LEFT);
+        //header.setFont(MolvenoFont.PARAGRAPH.getFont());
+        //header.setForeground(MolvenoColor.DARK.getColor());
+        //header.setAlignmentX(Component.LEFT_ALIGNMENT);
+        //idColumn.add(header);
 
         for (int i = 0; i < allCells.length; i++) {
             domain.BoatRecord currentBoat = boatService.getBoatList().get(i);
