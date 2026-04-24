@@ -62,8 +62,8 @@ public class CalendarDisplay extends JPanel {
                             record.boatType().getDisplayBoatType() == itemEvent.getItem())
                     .map(BoatRecord::boatName)
                     .toArray(String[]::new);
-            createCalendar();
-            reLoadCalendar();
+            createCalendar(boatService);
+            reLoadCalendar(boatService);
         });
 
         JLabel dateLabel = new JLabel("Selecteer een datum: ");
@@ -75,7 +75,7 @@ public class CalendarDisplay extends JPanel {
 
         datePicker.addDateChangeListener(event -> {
             dateSelected = event.getNewDate();
-            reLoadCalendar();
+            reLoadCalendar(boatService);
         });
 
         datePickerPanel.add(boatTypePicker);
@@ -87,8 +87,8 @@ public class CalendarDisplay extends JPanel {
         dateSelected = datePicker.getDate();
 
         initializeCalendar();
-        createCalendar();
-        reLoadCalendar();
+        createCalendar(boatService);
+        reLoadCalendar(boatService);
 
         //this panel contains the "reserve" and "cancel" buttons
         JPanel buttonrow = new JPanel();
@@ -161,7 +161,7 @@ public class CalendarDisplay extends JPanel {
         buttonrow.add(cancelButton);
         add(buttonrow);
 
-        reLoadCalendar();
+        reLoadCalendar(boatService);
     }
 
     //this function is tied to the cancel button and simply undoes any selections that have already been made
@@ -315,39 +315,53 @@ public class CalendarDisplay extends JPanel {
     }
 
     //Reloads the calendar display to a newly selected date
-    public void reLoadCalendar() {
+    public void reLoadCalendar(BoatService boatService) {
         //Cancel any selected cells
         cancelSelection();
 
         //Get the calendar information for the selected date
         Calendar = new Calendar(reservationService, dateSelected, boatIDs);
         HashMap<String, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
+        ArrayList<domain.BoatRecord> boatList = boatService.getBoatList();
 
-        //Loop trough the calendar grid
+        //Loop through the calendar grid
         for (int i = 0; i < CalGrid.size(); i++) {
             final int row = i;
+            boolean isBroken = boatList.get(i).isBroken();
+
             for (int j = 0; j < 50; j++) {
                 final int column = j;
+                JButton cell = allCells[i][j];
 
-                //Change the button color based on calendar availability at the new date
-                if (!CalGrid.get(boatIDs[row])[column].getAvailable()) {
-                    cellBorder(row, column, allCells[i][j]);
+                if (isBroken) {
+                    cell.setEnabled(false);
+                    cell.setBackground(Color.GRAY);
                 } else {
-                    allCells[i][j].setBackground(MolvenoColor.LIGHT.getColor());
-                    if (column % 4 == 0) {
-                        allCells[i][j].setBorder(BorderFactory.createCompoundBorder(
+                    cell.setEnabled(true);
+                    if (!CalGrid.get(boatIDs[row])[column].getAvailable()) {
+                        cellBorder(i, j, cell);
+                    } else {
+                        cell.setUI(new javax.swing.plaf.basic.BasicButtonUI());
+                        cell.setBackground(MolvenoColor.LIGHT.getColor());
+                        if (column % 4 == 0) {
+                            allCells[i][j].setBorder(BorderFactory.createCompoundBorder(
                                 BorderFactory.createMatteBorder(0, 1, 0, 0, MolvenoColor.DARK.getColor()), // Hour line
                                 BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1)
                         ));
-                    } else {
-                        allCells[i][j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+                        } else {
+                            allCells[i][j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+                        }
                     }
                 }
             }
         }
     }
 
-    private void createCalendar() {
+    public void onSelected(BoatService boatService) {
+        reLoadCalendar(boatService);
+    }
+
+    private void createCalendar(BoatService boatService) {
         fullCalendar.removeAll();
 
         // Giving the Integer[] BoatIDs to the Calendar constructor ---
@@ -373,7 +387,7 @@ public class CalendarDisplay extends JPanel {
                                     @Override
                                     public void dispose() {
                                         super.dispose();
-                                        reLoadCalendar();
+                                        reLoadCalendar(boatService);
                                     }
                                 };
                                 reserveringPopup.pack();
@@ -424,9 +438,21 @@ public class CalendarDisplay extends JPanel {
         idColumn.add(header);
 
         for (int i = 0; i < allCells.length; i++) {
+            domain.BoatRecord currentBoat = boatService.getBoatList().get(i);
+            String displayName = boatIDs[i];
+
             JLabel idLabel = new JLabel(boatIDs[i]);
             idLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
             idLabel.setForeground(MolvenoColor.DARK.getColor());
+
+            if (currentBoat.isBroken()) {
+                idLabel.setText(displayName + " (defect)");
+                idLabel.setForeground(Color.GRAY);
+            } else {
+                idLabel.setText(displayName);
+                idLabel.setForeground(MolvenoColor.DARK.getColor());
+            }
+
             idLabel.setHorizontalAlignment(JLabel.LEFT);
             idLabel.setPreferredSize(new Dimension(200, 25));
             idLabel.setMaximumSize(new Dimension(200, 25));
