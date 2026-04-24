@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -261,6 +262,7 @@ public class ReserveringPopup extends JDialog {
         });
         initializeBoatTables();
         reloadBoatTables();
+        reloadSelectableTimes();
     }
 
     private void calculateTimeSpan(String[] timeBoxes, String van, String tot) {
@@ -586,6 +588,29 @@ public class ReserveringPopup extends JDialog {
         //TODO change display
 
         dispose();
+    }
+
+    public void reloadSelectableTimes() {
+        // For each element in the StartTimes combobox check if its possible to switch to
+        var startTimes = new ArrayList<String>();
+        BoatType[] boatTypes = BoatType.class.getEnumConstants();
+        for (String time : timeList) {
+            for (BoatType boatType : boatTypes) {
+                int availableAmount = reservationService.getBoatAmountAvailableDuringTimeByType(
+                        boatType,
+                        time,
+                        LocalTime.parse(time).plusMinutes(15).toString(),
+                        dateString,
+                        boatService,
+                        new ArrayList<String>()
+                );
+                System.out.println(time + " " + boatType + " " + availableAmount);
+            }
+        }
+
+
+
+
     }
 
 }

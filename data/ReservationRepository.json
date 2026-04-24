@@ -2,311 +2,44 @@
   {
     "reserveringsNummer": 1,
     "customerRecord": {
-      "naam": "Bram",
-      "telefoonNummer": 623423
+      "naam": "John Boat",
+      "telefoonNummer": 12345678,
+      "email": "johnboat@gmail.com"
     },
-    "betaald": false,
+    "betaald": true,
     "kamerFacturatie": false,
-    "datum": "2026-04-16",
+    "datum": "2026-04-24",
     "begintijd": "10:00",
     "eindtijd": "12:00",
     "boatIDs": [
-      "Familie Roeiboot 1"
+      "Standaard Roeiboot 1",
+      "Standaard Roeiboot 2",
+      "Standaard Roeiboot 3",
+      "Standaard Roeiboot 4",
+      "Standaard Roeiboot 5",
+      "Standaard Roeiboot 6",
+      "Standaard Roeiboot 7"
     ],
-    "prijs": 0.0
+    "prijs": 630.0
   },
   {
     "reserveringsNummer": 2,
     "customerRecord": {
-      "naam": "sad",
-      "telefoonNummer": 124124
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-16",
-    "begintijd": "10:15",
-    "eindtijd": "12:00",
-    "boatIDs": [
-      "Familie Roeiboot 2"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 3,
-    "customerRecord": {
-      "naam": "Bram",
-      "telefoonNummer": 21321
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-16",
-    "begintijd": "10:30",
-    "eindtijd": "12:30",
-    "boatIDs": [
-      "Standaard Roeiboot 8"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 4,
-    "customerRecord": {
-      "naam": "111",
-      "telefoonNummer": 111
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-17",
-    "begintijd": "13:00",
-    "eindtijd": "13:45",
-    "boatIDs": [
-      "Standaard Roeiboot 6",
-      "Standaard Roeiboot 4"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 5,
-    "customerRecord": {
-      "naam": "123",
-      "telefoonNummer": 123
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-23",
-    "begintijd": "12:00",
-    "eindtijd": "12:30",
-    "boatIDs": [
-      "Standaard Roeiboot 5"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 6,
-    "customerRecord": {
-      "naam": "www",
-      "telefoonNummer": 123
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-23",
-    "begintijd": "12:00",
-    "eindtijd": "12:45",
-    "boatIDs": [
-      "Standaard Roeiboot 10"
-    ],
-    "prijs": 35.0
-  },
-  {
-    "reserveringsNummer": 7,
-    "customerRecord": {
-      "naam": "www",
-      "telefoonNummer": 123
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-23",
-    "begintijd": "12:00",
-    "eindtijd": "12:45",
-    "boatIDs": [
-      "Standaard Roeiboot 1"
-    ],
-    "prijs": 70.0
-  },
-  {
-    "reserveringsNummer": 8,
-    "customerRecord": {
-      "naam": "www",
-      "telefoonNummer": 123
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-23",
-    "begintijd": "13:00",
-    "eindtijd": "13:45",
-    "boatIDs": [
-      "Standaard Roeiboot 6"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 9,
-    "customerRecord": {
-      "naam": "www",
-      "telefoonNummer": 123
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-23",
-    "begintijd": "13:00",
-    "eindtijd": "13:45",
-    "boatIDs": [
-      "Standaard Roeiboot 6",
-      "Standaard Roeiboot 10"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 10,
-    "customerRecord": {
-      "naam": "www",
-      "telefoonNummer": 123
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-23",
-    "begintijd": "13:00",
-    "eindtijd": "13:45",
-    "boatIDs": [
-      "Standaard Roeiboot 8"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 11,
-    "customerRecord": {
-      "naam": "wouter",
-      "telefoonNummer": 666
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-23",
-    "begintijd": "13:45",
-    "eindtijd": "15:00",
-    "boatIDs": [
-      "Standaard Roeiboot 3"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 12,
-    "customerRecord": {
-      "naam": "wouterrr",
-      "telefoonNummer": 1111111
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-23",
-    "begintijd": "13:45",
-    "eindtijd": "14:30",
-    "boatIDs": [
-      "Standaard Roeiboot 5"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 14,
-    "customerRecord": {
-      "naam": "naam",
-      "telefoonNummer": 1212312341,
-      "email": "mail"
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-23",
-    "begintijd": "09:00",
-    "eindtijd": "09:30",
-    "boatIDs": [
-      "Standaard Roeiboot 2"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 15,
-    "customerRecord": {
-      "naam": "breakcode",
-      "telefoonNummer": 123
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-23",
-    "begintijd": "09:00",
-    "eindtijd": "09:15",
-    "boatIDs": [
-      "Familie Roeiboot 4"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 16,
-    "customerRecord": {
-      "naam": "mailonly",
-      "email": "mail"
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-23",
-    "begintijd": "09:00",
-    "eindtijd": "09:30",
-    "boatIDs": [
-      "Familie Roeiboot 2"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 17,
-    "customerRecord": {
-      "naam": "mailonly3",
-      "email": "mm"
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-23",
-    "begintijd": "09:15",
-    "eindtijd": "10:00",
-    "boatIDs": [
-      "Standaard Roeiboot 7"
-    ],
-    "prijs": 0.0
-  },
-  {
-    "reserveringsNummer": 18,
-    "customerRecord": {
-      "naam": "walt",
-      "telefoonNummer": 111
+      "naam": "Shane Sail",
+      "telefoonNummer": 12345678,
+      "email": "shanesail@gmail.com"
     },
     "betaald": true,
-    "kamerFacturatie": true,
-    "datum": "2026-04-23",
-    "begintijd": "10:00",
-    "eindtijd": "10:30",
-    "boatIDs": [
-      "Familie Roeiboot 2",
-      "Familie Roeiboot 1"
-    ],
-    "prijs": 27.5
-  },
-  {
-    "reserveringsNummer": 19,
-    "customerRecord": {
-      "naam": "moneybags",
-      "telefoonNummer": 111
-    },
-    "betaald": true,
-    "kamerFacturatie": true,
-    "datum": "2026-04-23",
-    "begintijd": "09:00",
-    "eindtijd": "21:30",
-    "boatIDs": [
-      "Familie Roeiboot 5"
-    ],
-    "prijs": 687.5
-  },
-  {
-    "reserveringsNummer": 20,
-    "customerRecord": {
-      "naam": "moneyyy",
-      "telefoonNummer": 3333
-    },
-    "betaald": false,
     "kamerFacturatie": false,
     "datum": "2026-04-24",
-    "begintijd": "11:00",
-    "eindtijd": "12:00",
+    "begintijd": "13:00",
+    "eindtijd": "14:00",
     "boatIDs": [
-      "Standaard Roeiboot 5",
       "Standaard Roeiboot 1",
-      "Standaard Roeiboot 2"
+      "Standaard Roeiboot 2",
+      "Standaard Roeiboot 3",
+      "Standaard Roeiboot 4"
     ],
-    "prijs": 135.0
+    "prijs": 180.0
   }
 ]
