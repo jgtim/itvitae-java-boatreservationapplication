@@ -118,6 +118,15 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public int getBoatAmountAvailableDuringTimeByType(BoatType boatType, String startTimeString, String endTimeString, String dateString, BoatService boatService, ArrayList<String> boatIDs, ReservationRecord reservationToExclude) {
+        ArrayList<ReservationRecord> reservationRecordsStash = (ArrayList<ReservationRecord>) reservationRecords.clone();
+        reservationRecords.remove(reservationToExclude);
+        int result =  getBoatAmountAvailableDuringTimeByType(boatType, startTimeString, endTimeString, dateString, boatService, boatIDs);
+        reservationRecords = reservationRecordsStash;
+        return result;
+    }
+
+    @Override
     public String getFirstAvailableBoatOfType(BoatType selectedBoatType, ArrayList<String> boatIDs, BoatService boatService, String startTime, String endTime, String dateString) {
         ArrayList<BoatRecord> boatList = boatService.getBoatList();
         for (BoatRecord boatRecord : boatList) {

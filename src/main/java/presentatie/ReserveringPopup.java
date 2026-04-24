@@ -190,12 +190,12 @@ public class ReserveringPopup extends JDialog {
 
 
         comboBoxVan.setModel(new DefaultComboBoxModel<>(OPEN_TIMES));
-        comboBoxVan.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                begintijd = comboBoxVan.getSelectedItem().toString();
-                calculateTimeSpan(OPEN_TIMES, begintijd, eindtijd);
-                calculateCost();
-            }
+        comboBoxVan.addActionListener(e -> {
+            begintijd = comboBoxVan.getSelectedItem().toString();
+            calculateTimeSpan(OPEN_TIMES, begintijd, eindtijd);
+            calculateCost();
+            reloadSelectableTimes();
+            comboBoxVan.setSelectedItem(begintijd);
         });
         comboBoxTot.setModel(new DefaultComboBoxModel<>(OPEN_TIMES));
         comboBoxTot.addActionListener(new ActionListener() {
@@ -328,6 +328,7 @@ public class ReserveringPopup extends JDialog {
             }
         } catch (NumberFormatException ignored) {
         }
+        reloadSelectableTimes();
     }
 
     private void addBoat() {
@@ -384,7 +385,8 @@ public class ReserveringPopup extends JDialog {
             for (int i = 0; i < amountToRemove; i++) {
                 removeBoat();
             }
-        } catch (NumberFormatException ignored) {
+        } catch (NumberFormatException e) {
+            System.out.println(e);
         }
     }
 
@@ -398,6 +400,7 @@ public class ReserveringPopup extends JDialog {
         }
 
         reloadBoatTables();
+        reloadSelectableTimes();
     }
 
     private void onOK() {
@@ -592,7 +595,7 @@ public class ReserveringPopup extends JDialog {
 
     public void reloadSelectableTimes() {
         // For each element in the StartTimes combobox check if its possible to switch to
-        var startTimes = new ArrayList<String>();
+        var startTimes = new ArrayList<String>(timeList);
         BoatType[] boatTypes = BoatType.class.getEnumConstants();
         for (String time : timeList) {
             for (BoatType boatType : boatTypes) {
@@ -602,15 +605,50 @@ public class ReserveringPopup extends JDialog {
                         LocalTime.parse(time).plusMinutes(15).toString(),
                         dateString,
                         boatService,
-                        new ArrayList<String>()
+                        new ArrayList<String>(),
+                        currentReservation
                 );
-                System.out.println(time + " " + boatType + " " + availableAmount);
+                if (availableAmount < getAmountOfSelectedBoatsFromType(boatType)) {
+                    startTimes.remove(time);
+                }
             }
         }
+        comboBoxVan.setModel(new DefaultComboBoxModel<>(startTimes.toArray()));
+
+        // For each element in the EndTimes combobox check if its possible to switch to
+        var endTimes = new ArrayList<String>(timeList);
+        for (String time : timeList) {
+            for (BoatType boatType : boatTypes) {
+                int availableAmount = reservationService.getBoatAmountAvailableDuringTimeByType(
+                        boatType,
+                        begintijd,
+                        time,
+                        dateString,
+                        boatService,
+                        new ArrayList<String>(),
+                        currentReservation
+                );
+                if (availableAmount < getAmountOfSelectedBoatsFromType(boatType)) {
+                    endTimes.remove(time);
+                }
+                if (LocalTime.parse(time).isBefore(LocalTime.parse(begintijd))) {
+                    endTimes.remove(time);
+                }
+            }
+        }
+        comboBoxTot.setModel(new DefaultComboBoxModel<>(endTimes.toArray()));
 
 
+    }
 
-
+    private int getAmountOfSelectedBoatsFromType (BoatType boatType) {
+        int result = 0;
+        for (String boatID : boatIDs) {
+            if (boatService.getBoatTypeFromID(boatID) == boatType) {
+                result ++;
+            }
+        }
+        return result;
     }
 
 }

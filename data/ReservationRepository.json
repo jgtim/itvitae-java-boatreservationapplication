@@ -33,7 +33,7 @@
     "kamerFacturatie": false,
     "datum": "2026-04-24",
     "begintijd": "13:00",
-    "eindtijd": "14:00",
+    "eindtijd": "14:15",
     "boatIDs": [
       "Standaard Roeiboot 1",
       "Standaard Roeiboot 2",
@@ -41,5 +41,31 @@
       "Standaard Roeiboot 4"
     ],
     "prijs": 180.0
+  },
+  {
+    "reserveringsNummer": 3,
+    "customerRecord": {
+      "naam": "ergaergser",
+      "telefoonNummer": 234432,
+      "email": "grsherher"
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-04-24",
+    "begintijd": "15:45",
+    "eindtijd": "16:30",
+    "boatIDs": [
+      "Standaard Roeiboot 1",
+      "Standaard Roeiboot 2",
+      "Standaard Roeiboot 3",
+      "Standaard Roeiboot 4",
+      "Standaard Roeiboot 5",
+      "Standaard Roeiboot 6",
+      "Standaard Roeiboot 7",
+      "Standaard Roeiboot 8",
+      "Standaard Roeiboot 9",
+      "Standaard Roeiboot 10"
+    ],
+    "prijs": 350.0
   }
 ]

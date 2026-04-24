@@ -14,6 +14,7 @@ public interface ReservationService {
     void addReservation(ReservationRecord newReservation);
     void deleteReservation(ReservationRecord Reservation);
     public int getBoatAmountAvailableDuringTimeByType (BoatType boatType, String startTimeString, String endTimeString, String dateString, BoatService boatService, ArrayList<String> boatIDs);
+    public int getBoatAmountAvailableDuringTimeByType (BoatType boatType, String startTimeString, String endTimeString, String dateString, BoatService boatService, ArrayList<String> boatIDs, ReservationRecord reservationToExclude);
 
     String getFirstAvailableBoatOfType(BoatType selectedBoatType, ArrayList<String> boatIDs, BoatService boatService, String startTime, String endTime, String dateString);
 }

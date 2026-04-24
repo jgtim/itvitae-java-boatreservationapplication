@@ -15,4 +15,14 @@ public record ReservationRecord(
         String eindtijd,
         ArrayList<String> boatIDs,
         double prijs
-) { }
+) {
+    public int getBoatAmountOfType(BoatType boatType) {
+        int result = 0;
+        for (String boatID : boatIDs) {
+            if (boatID.contains(boatType.getDisplayBoatType())) {
+                result++;
+            }
+        }
+        return result;
+    }
+}
