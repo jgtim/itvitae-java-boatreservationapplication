@@ -470,7 +470,6 @@ public class CalendarDisplay extends JPanel {
         aboveIDLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         headerPanel.add(aboveIDLabel);
         for (int i = 0; i < 13; i++) {
-            //TODO make this work. For some reason time slots slide with vertical scroll & they're not the right size
             int hour = i + 9;
             JLabel headerLabel = new JLabel(hour + ":00");
             headerLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
