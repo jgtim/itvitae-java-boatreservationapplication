@@ -389,6 +389,7 @@ public class ReserveringPopup extends JDialog {
         for (int i = boatIDs.size() - 1; i >= 0; i--) {
             if (boatService.getBoatTypeFromID(boatIDs.get(i)) == selectedBoatType) {
                 boatIDs.remove(i);
+                calculateCost();
                 break;
             }
         }
