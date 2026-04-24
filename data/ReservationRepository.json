@@ -290,5 +290,23 @@
       "Familie Roeiboot 5"
     ],
     "prijs": 687.5
+  },
+  {
+    "reserveringsNummer": 20,
+    "customerRecord": {
+      "naam": "moneyyy",
+      "telefoonNummer": 3333
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-04-24",
+    "begintijd": "11:00",
+    "eindtijd": "12:00",
+    "boatIDs": [
+      "Standaard Roeiboot 5",
+      "Standaard Roeiboot 1",
+      "Standaard Roeiboot 2"
+    ],
+    "prijs": 135.0
   }
 ]
