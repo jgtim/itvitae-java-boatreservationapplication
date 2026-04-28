@@ -308,5 +308,22 @@
       "Standaard Roeiboot 2"
     ],
     "prijs": 135.0
+  },
+  {
+    "reserveringsNummer": 21,
+    "customerRecord": {
+      "naam": "Johan",
+      "telefoonNummer": 7878
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-28",
+    "begintijd": "09:00",
+    "eindtijd": "10:00",
+    "boatIDs": [
+      "Standaard Roeiboot 3",
+      "Premium Elektrische Boot 1"
+    ],
+    "prijs": 155.0
   }
 ]
