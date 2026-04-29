@@ -121,37 +121,17 @@ public class ReserveringPopup extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        addBoatButton.addActionListener(e -> {
-            addBoatButtonPressed();
-        });
-        removeBoatButton.addActionListener(e -> {
-            removeBoatButtonPressed();
-        });
+
+        addBoatButton.addActionListener(e -> addBoatButtonPressed());
+        removeBoatButton.addActionListener(e -> removeBoatButtonPressed());
+
         initializeBoatTables();
         reloadBoatTables();
+
         //Add the boat that is selected on the calendar
         addBoat();
     }
 
-    //this calculates the cost of existing boats
-    private void calculateCost() {
-        price = 0.0;
-        for (int i = 0; i < boatIDs.size(); i++) {
-            String newBoatID = boatIDs.get(i);
-            double boatPrice15 = allBoats.get(validIDs.indexOf(newBoatID)).price15();
-            double boatPrice30 = allBoats.get(validIDs.indexOf(newBoatID)).price30();
-            price += (times30 * boatPrice30);
-            if (add15) {
-                price += boatPrice15;
-            }
-            priceField.setText("€" + String.format("%.2f", price));
-        }
-
-    }
-
-    private ReserveringPopup getReserveringPopup() {
-        return this;
-    }
 
     // Constructor voor bestaande reserveringen
     public ReserveringPopup(ReservationService reservationService, ReservationRecord reservationRecord) {
@@ -259,6 +239,26 @@ public class ReserveringPopup extends JDialog {
         reloadSelectableTimes();
     }
 
+    //this calculates the cost of existing boats
+    private void calculateCost() {
+        price = 0.0;
+        for (int i = 0; i < boatIDs.size(); i++) {
+            String newBoatID = boatIDs.get(i);
+            double boatPrice15 = allBoats.get(validIDs.indexOf(newBoatID)).price15();
+            double boatPrice30 = allBoats.get(validIDs.indexOf(newBoatID)).price30();
+            price += (times30 * boatPrice30);
+            if (add15) {
+                price += boatPrice15;
+            }
+            priceField.setText("€" + String.format("%.2f", price));
+        }
+
+    }
+
+    private ReserveringPopup getReserveringPopup() {
+        return this;
+    }
+
     private void calculateTimeSpan(String[] timeBoxes, String van, String tot) {
         this.timeList = Arrays.asList(timeBoxes);
         int tijdsduur;
@@ -326,47 +326,16 @@ public class ReserveringPopup extends JDialog {
     }
 
     private void addBoat() {
-        String boatString;
         // checks if its the boat that was clicked on the agenda
         if (!preSelectedBoat.isEmpty()) {
             boatIDs.add(preSelectedBoat);
-            boatString = preSelectedBoat;
             preSelectedBoat = "";
         } else {
             String firstAvailable = reservationService.getFirstAvailableBoatOfType(selectedBoatType, boatIDs, boatService, begintijd, eindtijd, dateString);
             boatIDs.add(firstAvailable);
-            boatString = firstAvailable;
         }
 
-
-        this.validIDs = Arrays.asList(
-                allBoats.stream()
-                        .map(BoatRecord::boatName)
-                        .toArray(String[]::new)
-        );
-
-        System.out.println(validIDs.size());
-        System.out.println(boatString);
-        double boatPrice15 = 0;
-        try {
-            boatPrice15 = boatService.getBoatPrice15FromName(boatString);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        double boatPrice30 = 0;
-        try {
-            boatPrice30 = boatService.getBoatPrice30FromName(boatString);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        price += (times30 * boatPrice30);
-        if (add15) {
-            price += boatPrice15;
-        }
-
-        System.out.println("PRIJS: " + boatPrice30 + "+" + boatPrice15);
-        priceField.setText("€" + String.format("%.2f", price));
-
+        calculateCost();
         reloadBoatTables();
     }
 
