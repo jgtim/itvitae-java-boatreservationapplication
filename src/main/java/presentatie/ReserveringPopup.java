@@ -69,7 +69,7 @@ public class ReserveringPopup extends JDialog {
     private DefaultTableModel addedBoatsTableModel;
     private BoatService boatService;
     private String preSelectedBoat = "";
-    private BoatType selectedBoatType;
+    private BoatType selectedBoatType = null;
     private String dateString;
     List<String> timeList;
 
@@ -128,7 +128,9 @@ public class ReserveringPopup extends JDialog {
         reloadBoatTables();
 
         //Add the boat that is selected on the calendar
+        selectedBoatType = boatService.getBoatTypeFromID(preSelectedBoat);
         addBoat();
+        addedBoatsTable.setRowSelectionInterval(0, 0);
     }
 
 
@@ -319,17 +321,24 @@ public class ReserveringPopup extends JDialog {
     }
 
     private void addBoatButtonPressed() {
-        if (boatAmountField.getText().isEmpty()) {
-            addBoat();
-        }
-        try {
-            int amountToAdd = Integer.parseInt(boatAmountField.getText());
-            for (int i = 0; i < amountToAdd; i++) {
+        if (selectedBoatType == null) {
+            errorLabel.setText("Geen boot type geselecteerd");
+        } else if (reservationService.getBoatAmountAvailableDuringTimeByType(selectedBoatType, begintijd, eindtijd, dateString, boatService, boatIDs) <=0) {
+            errorLabel.setText("Maximale van boot type al geselecteerd");
+        } else {
+            if (boatAmountField.getText().isEmpty()) {
                 addBoat();
             }
-        } catch (NumberFormatException ignored) {
+            try {
+                int amountToAdd = Integer.parseInt(boatAmountField.getText());
+                for (int i = 0; i < amountToAdd; i++) {
+                    addBoat();
+                }
+            } catch (NumberFormatException ignored) {
+            }
+            reloadSelectableTimes();
+            errorLabel.setText("");
         }
-        reloadSelectableTimes();
     }
 
     private void addBoat() {
@@ -338,8 +347,13 @@ public class ReserveringPopup extends JDialog {
             boatIDs.add(preSelectedBoat);
             preSelectedBoat = "";
         } else {
-            String firstAvailable = reservationService.getFirstAvailableBoatOfType(selectedBoatType, boatIDs, boatService, begintijd, eindtijd, dateString);
-            boatIDs.add(firstAvailable);
+            if (reservationService.getBoatAmountAvailableDuringTimeByType(selectedBoatType, begintijd, eindtijd, dateString, boatService, boatIDs) > 0) {
+                String firstAvailable = reservationService.getFirstAvailableBoatOfType(selectedBoatType, boatIDs, boatService, begintijd, eindtijd, dateString);
+                boatIDs.add(firstAvailable);
+                errorLabel.setText("");
+            } else {
+                errorLabel.setText("Maximale van boot type al geselecteerd");
+            }
         }
 
         calculateCost();
@@ -347,23 +361,36 @@ public class ReserveringPopup extends JDialog {
     }
 
     private void removeBoatButtonPressed() {
-        if (boatAmountField.getText().isEmpty()) {
-            removeBoat();
-        }
-        try {
-            int amountToRemove = Integer.parseInt(boatAmountField.getText());
-            for (int i = 0; i < amountToRemove; i++) {
+        if (selectedBoatType != null &&
+                getAmountOfSelectedBoatsFromType(selectedBoatType) > 0) {
+            if (boatAmountField.getText().isEmpty()) {
                 removeBoat();
+            } else {
+                try {
+                    int amountToRemove = Integer.parseInt(boatAmountField.getText());
+                    for (int i = 0; i < amountToRemove; i++) {
+                        removeBoat();
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println(e);
+                }
             }
-        } catch (NumberFormatException e) {
-            System.out.println(e);
+            errorLabel.setText("");
+        } else {
+            errorLabel.setText("Geen boot type geselecteerd");
         }
     }
 
     private void removeBoat() {
         for (int i = boatIDs.size() - 1; i >= 0; i--) {
-            if (boatService.getBoatTypeFromID(boatIDs.get(i)) == selectedBoatType) {
+            if (boatService.getBoatTypeFromID(boatIDs.get(i)) == selectedBoatType &&
+                    getAmountOfSelectedBoatsFromType(selectedBoatType) > 0) {
                 boatIDs.remove(i);
+                if (getAmountOfSelectedBoatsFromType(selectedBoatType) <= 0) {
+                    selectedBoatType = null;
+                    addedBoatsTable.clearSelection();
+                    availableBoatsTable.clearSelection();
+                }
                 calculateCost();
                 break;
             }
@@ -478,7 +505,7 @@ public class ReserveringPopup extends JDialog {
 
         addedBoatsTable.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 availableBoatsTable.clearSelection();
                 int viewRow = addedBoatsTable.rowAtPoint(e.getPoint());
                 selectedBoatType = BoatType.getBoatTypeFromDisplayName(
@@ -488,7 +515,7 @@ public class ReserveringPopup extends JDialog {
 
         availableBoatsTable.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 addedBoatsTable.clearSelection();
                 int viewRow = availableBoatsTable.rowAtPoint(e.getPoint());
                 selectedBoatType = BoatType.getBoatTypeFromDisplayName(
