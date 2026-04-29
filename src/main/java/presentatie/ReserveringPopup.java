@@ -210,7 +210,7 @@ public class ReserveringPopup extends JDialog {
         totLabel.setText(reservationRecord.eindtijd());
         nameField.setText(reservationRecord.customerRecord().naam());
         nameField.setEditable(false);
-        phoneNumberField.setText(reservationRecord.customerRecord().telefoonNummer().toString());
+        phoneNumberField.setText((reservationRecord.customerRecord().telefoonNummer() != null) ? reservationRecord.customerRecord().telefoonNummer().toString() : "");
         phoneNumberField.setEditable(false);
         emailField.setText(reservationRecord.customerRecord().email());
         emailField.setEditable(false);
