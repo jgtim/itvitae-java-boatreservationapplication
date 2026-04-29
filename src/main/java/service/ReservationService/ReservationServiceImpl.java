@@ -139,4 +139,25 @@ public class ReservationServiceImpl implements ReservationService {
         return null;
     }
 
+    @Override
+    public boolean isBoatIDOverLapping(String boatID, String date, String startTime, String endTime, int reservationNumber) {
+        LocalTime startTimeToCheck = LocalTime.parse(startTime);
+        LocalTime endTimeToCheck = LocalTime.parse(endTime);
+
+        for (ReservationRecord reservationRecord : reservationRecords) {
+            LocalTime reservationStartTime = LocalTime.parse(reservationRecord.begintijd());
+            LocalTime reservationEndTime = LocalTime.parse(reservationRecord.eindtijd());
+            if(
+                    reservationNumber != reservationRecord.reserveringsNummer()
+                    && reservationRecord.boatIDs().contains(boatID)
+                    && date.equals(reservationRecord.datum())
+                    && startTimeToCheck.isBefore(reservationEndTime) && endTimeToCheck.isAfter(reservationStartTime)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

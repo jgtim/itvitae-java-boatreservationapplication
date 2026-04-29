@@ -293,13 +293,21 @@ public class ReserveringPopup extends JDialog {
             CardLayout cl = (CardLayout) tijdInformatie.getLayout();
             cl.next(tijdInformatie);
             buttonOK.setText("Wijzig");
-            boatIdInputField.setEditable(false);
             addBoatButton.setEnabled(false);
             removeBoatButton.setEnabled(false);
         }
     }
 
     private void confirmEdit() {
+        // Check if new boats are overlapping with existing ones
+        boolean isOverLapping = false;
+        for (String boatID : new ArrayList<>(boatIDs)) {
+            if (reservationService.isBoatIDOverLapping(boatID, dateString, begintijd, eindtijd, currentReservation.reserveringsNummer())) {
+                boatIDs.remove(boatID);
+                boatIDs.add(reservationService.getFirstAvailableBoatOfType(boatService.getBoatTypeFromID(boatID), boatIDs, boatService, begintijd, eindtijd, dateString));
+            }
+        }
+
         ReservationRecord updatedReservation = currentReservation.toBuilder()
                 .begintijd(comboBoxVan.getSelectedItem().toString())
                 .eindtijd(comboBoxTot.getSelectedItem().toString())
