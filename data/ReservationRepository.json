@@ -102,5 +102,87 @@
       "Standaard Roeiboot 4"
     ],
     "prijs": 172.5
+  },
+  {
+    "reserveringsNummer": 7,
+    "customerRecord": {
+      "naam": "s",
+      "telefoonNummer": 1,
+      "email": "hfhfh"
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-29",
+    "begintijd": "11:30",
+    "eindtijd": "11:45",
+    "boatIDs": [
+      "Familie Roeiboot 5"
+    ],
+    "prijs": 15.0
+  },
+  {
+    "reserveringsNummer": 8,
+    "customerRecord": {
+      "naam": "erg",
+      "telefoonNummer": 34,
+      "email": "34"
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-29",
+    "begintijd": "11:30",
+    "eindtijd": "11:45",
+    "boatIDs": [
+      "1 Persoons Kayak 1"
+    ],
+    "prijs": 10.0
+  },
+  {
+    "reserveringsNummer": 9,
+    "customerRecord": {
+      "naam": "er",
+      "telefoonNummer": 454
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-29",
+    "begintijd": "11:30",
+    "eindtijd": "11:45",
+    "boatIDs": [
+      "1 Persoons Kayak 2"
+    ],
+    "prijs": 10.0
+  },
+  {
+    "reserveringsNummer": 10,
+    "customerRecord": {
+      "naam": "dg",
+      "telefoonNummer": 345
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-29",
+    "begintijd": "11:30",
+    "eindtijd": "11:45",
+    "boatIDs": [
+      "1 Persoons Kayak 3"
+    ],
+    "prijs": 10.0
+  },
+  {
+    "reserveringsNummer": 11,
+    "customerRecord": {
+      "naam": "frfr",
+      "telefoonNummer": 345
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-29",
+    "begintijd": "11:30",
+    "eindtijd": "11:45",
+    "boatIDs": [
+      "1 Persoons Kayak 4"
+    ],
+    "prijs": 10.0
   }
 ]
