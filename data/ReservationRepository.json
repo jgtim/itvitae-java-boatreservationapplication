@@ -121,8 +121,8 @@
     "betaald": false,
     "kamerFacturatie": false,
     "datum": "2026-04-23",
-    "begintijd": "13:00",
-    "eindtijd": "13:45",
+    "begintijd": "14:15",
+    "eindtijd": "17:30",
     "boatIDs": [
       "Standaard Roeiboot 6"
     ],
@@ -294,68 +294,19 @@
   {
     "reserveringsNummer": 20,
     "customerRecord": {
-      "naam": "wouter",
-      "email": "mail"
-    },
-    "betaald": true,
-    "kamerFacturatie": true,
-    "datum": "2026-04-24",
-    "begintijd": "13:00",
-    "eindtijd": "14:00",
-    "boatIDs": [
-      "Standaard Roeiboot 6",
-      "1 Persoons Kayak 1",
-      "1 Persoons Kayak 2"
-    ],
-    "prijs": 115.0
-  },
-  {
-    "reserveringsNummer": 21,
-    "customerRecord": {
-      "naam": "rowboathoarder",
-      "email": "mai;"
-    },
-    "betaald": true,
-    "kamerFacturatie": false,
-    "datum": "2026-04-24",
-    "begintijd": "13:00",
-    "eindtijd": "14:00",
-    "boatIDs": [
-      "Standaard Roeiboot 7"
-    ],
-    "prijs": 45.0
-  },
-  {
-    "reserveringsNummer": 22,
-    "customerRecord": {
-      "naam": "wouter2",
-      "telefoonNummer": 123
+      "naam": "moneyyy",
+      "telefoonNummer": 3333
     },
     "betaald": false,
     "kamerFacturatie": false,
     "datum": "2026-04-24",
-    "begintijd": "13:00",
-    "eindtijd": "14:00",
+    "begintijd": "11:00",
+    "eindtijd": "12:00",
     "boatIDs": [
-      "Standaard Roeiboot 3"
+      "Standaard Roeiboot 5",
+      "Standaard Roeiboot 1",
+      "Standaard Roeiboot 2"
     ],
-    "prijs": 45.0
-  },
-  {
-    "reserveringsNummer": 23,
-    "customerRecord": {
-      "naam": "w",
-      "telefoonNummer": 1
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-24",
-    "begintijd": "13:00",
-    "eindtijd": "14:00",
-    "boatIDs": [
-      "Standaard Roeiboot 4",
-      "Standaard Roeiboot 1"
-    ],
-    "prijs": 90.0
+    "prijs": 135.0
   }
 ]
