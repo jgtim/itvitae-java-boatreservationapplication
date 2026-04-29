@@ -38,7 +38,6 @@ public class ReserveringPopup extends JDialog {
     private JLabel dateLabel;
     private JLabel dateField;
     private JButton addBoatButton;
-    private JTextField boatIdInputField;
     private JPanel errorPane;
     private JLabel errorLabel;
     private JPanel tijdInformatie;
@@ -293,7 +292,6 @@ public class ReserveringPopup extends JDialog {
             CardLayout cl = (CardLayout) tijdInformatie.getLayout();
             cl.next(tijdInformatie);
             buttonOK.setText("Wijzig");
-            boatIdInputField.setEditable(false);
             addBoatButton.setEnabled(false);
             removeBoatButton.setEnabled(false);
         }
