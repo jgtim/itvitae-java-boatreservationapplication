@@ -1,5 +1,6 @@
 package presentatie;
 
+import domain.MolvenoColor;
 import domain.MolvenoFont;
 import domain.TabIndex;
 import presentatie.BoatTab.BoatTab;
@@ -8,6 +9,7 @@ import service.BoatService.BoatService;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 public class App extends JFrame {
 
@@ -15,7 +17,7 @@ public class App extends JFrame {
         // UIManager Class manipulation
 
         // --- Setting Look and Feel:
-        // Default Java: getCrossPlatformLookAndFeelClassName()
+        // Default Java:getCrossPlatformLookAndFeelClassName()
         // System Native: UIManager.getSystemLookAndFeelClassName
         // Vector Based: "javax.swing.plaf.nimbus.NimbusLookAndFeel"
         try {
@@ -24,8 +26,7 @@ public class App extends JFrame {
             e.printStackTrace();
         }
 
-        // Changing font ob the TabbedPane (not possible without UIManager)
-        UIManager.put("TabbedPane.font", MolvenoFont.H3.getFont());
+        UIManager.put("TabbedPane.font", MolvenoFont.H2.getFont());
 
         // Configuring MainFrame (window voor window voor tabbladen)
         setTitle("Molveno Bootverhuur");
@@ -59,6 +60,11 @@ public class App extends JFrame {
                 ((CalendarDisplay) agenda).onSelected(boatService);
             }
         });
+
+        tabPane.setBackground(MolvenoColor.LIGHT.getColor());
+        tabPane.setOpaque(true);
+        tabPane.setBackgroundAt(0, MolvenoColor.BLUE.getColor());
+        tabPane.setBorder(new EmptyBorder(5, 10, 5, 10));
 
         // Adding JTabbedPane to JFrame and setting to visible
         add(tabPane);
