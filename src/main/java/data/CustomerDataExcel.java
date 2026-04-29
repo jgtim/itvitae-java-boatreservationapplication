@@ -47,7 +47,9 @@ public class CustomerDataExcel implements CustomerDataHandler {
                     String lastName = row.getCellAsString(0).orElse("");
                     String firstName = row.getCellAsString(1).orElse("");
                     int roomNumber = row.getCellAsNumber(2).orElse(BigDecimal.valueOf(0)).intValue();
-                    int phoneNumber = row.getCellAsNumber(3).orElse(BigDecimal.valueOf(0)).intValue();
+                    //NOTE may want this to be an actual number instead
+                    String phoneNumberString = row.getCellAsString(3).orElse(String.valueOf(BigDecimal.valueOf(0)));
+                    int phoneNumber = Integer.parseInt(phoneNumberString);
                     String email = row.getCellAsString(4).orElse("");
 
 
