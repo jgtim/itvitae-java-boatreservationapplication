@@ -178,7 +178,7 @@ public class ReservationsTab extends JPanel {
         table1.setForeground(MolvenoColor.DARK.getColor());
         table1.setBackground(MolvenoColor.LIGHT.getColor());
 
-        table1.setSelectionBackground(MolvenoColor.BLUE.getColor());
+        table1.setSelectionBackground(MolvenoColor.ORANGE.getColor());
         table1.setSelectionForeground(MolvenoColor.DARK.getColor());
         table1.setFocusable(false);
         table1.setShowGrid(true);
@@ -221,7 +221,7 @@ public class ReservationsTab extends JPanel {
 
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                setBackground(MolvenoColor.BLUE.getColor());
+                setBackground(MolvenoColor.GREEN.getColor());
                 setForeground(MolvenoColor.DARK.getColor());
                 setFont(MolvenoFont.BUTTONLABEL.getFont());
 
