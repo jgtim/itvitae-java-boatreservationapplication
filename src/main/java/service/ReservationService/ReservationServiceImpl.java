@@ -91,10 +91,14 @@ public class ReservationServiceImpl implements ReservationService {
 
     public int getBoatAmountAvailableDuringTimeByType (BoatType boatType, String startTimeString, String endTimeString, String dateString, BoatService boatService, ArrayList<String> boatIDs) {
         int total = boatService.getBoatAmountOfType(boatType);
+        var subtractedBoats = new ArrayList<String>();
 
         for (BoatRecord boatRecord : boatService.getBoatList()) {
             if (boatRecord.boatType() == boatType && boatIDs.contains(boatRecord.boatName())) {
-                total -=1;
+                if (!subtractedBoats.contains(boatRecord.boatName())) {
+                    total -= 1;
+                    subtractedBoats.add(boatRecord.boatName());
+                }
             }
         }
 
@@ -102,13 +106,24 @@ public class ReservationServiceImpl implements ReservationService {
             for (String boatID : reservationRecord.boatIDs()) {
                 if (boatType == boatService.getBoatTypeFromID(boatID)) {
                     if (!isBoatAvailableDuringTime(boatID, startTimeString, endTimeString, dateString)) {
-                        total -= 1;
+                        if (!subtractedBoats.contains(boatID)) {
+                            total -= 1;
+                            subtractedBoats.add(boatID);
+                        }
                     }
                 }
-
             }
         }
         return total;
+    }
+
+    @Override
+    public int getBoatAmountAvailableDuringTimeByType(BoatType boatType, String startTimeString, String endTimeString, String dateString, BoatService boatService, ArrayList<String> boatIDs, ReservationRecord reservationToExclude) {
+        ArrayList<ReservationRecord> reservationRecordsStash = (ArrayList<ReservationRecord>) reservationRecords.clone();
+        reservationRecords.remove(reservationToExclude);
+        int result =  getBoatAmountAvailableDuringTimeByType(boatType, startTimeString, endTimeString, dateString, boatService, boatIDs);
+        reservationRecords = reservationRecordsStash;
+        return result;
     }
 
     @Override

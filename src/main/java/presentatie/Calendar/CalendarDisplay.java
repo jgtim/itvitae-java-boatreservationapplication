@@ -25,6 +25,8 @@ public class CalendarDisplay extends JPanel {
     private JPanel fullCalendar;
     private String[] boatIDs;
     private JButton[][] allCells;
+    private JViewport headers = new JViewport();
+    private JViewport rowHeaders = new JViewport();
     private Integer[] selectedStart = {null, null};
     private Integer[] selectedEnd = {null, null};
     private LocalDate dateSelected;
@@ -49,6 +51,7 @@ public class CalendarDisplay extends JPanel {
         datePickerPanel.setBackground(MolvenoColor.LIGHT.getColor());
         datePickerPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
         datePickerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
         JComboBox<String> boatTypePicker = new JComboBox<>();
         boatTypePicker.addItem("Alle Boten");
@@ -428,14 +431,14 @@ public class CalendarDisplay extends JPanel {
 
         // Setting the fixed size of this column
         idColumn.setMinimumSize(new Dimension(200, 0));
-        idColumn.setPreferredSize(new Dimension(200, 600));
+        //idColumn.setPreferredSize(new Dimension(200, 600));
 
         // Adding a Header to the top of the column
-        JLabel header = new  JLabel("Boten:", SwingConstants.LEFT);
-        header.setFont(MolvenoFont.PARAGRAPH.getFont());
-        header.setForeground(MolvenoColor.DARK.getColor());
-        header.setAlignmentX(Component.LEFT_ALIGNMENT);
-        idColumn.add(header);
+        //JLabel header = new  JLabel("Boten:", SwingConstants.LEFT);
+        //header.setFont(MolvenoFont.PARAGRAPH.getFont());
+        //header.setForeground(MolvenoColor.DARK.getColor());
+        //header.setAlignmentX(Component.LEFT_ALIGNMENT);
+        //idColumn.add(header);
 
         for (int i = 0; i < allCells.length; i++) {
             domain.BoatRecord currentBoat = boatService.getBoatList().get(i);
@@ -460,6 +463,29 @@ public class CalendarDisplay extends JPanel {
             idColumn.add(idLabel);
         }
         fullCalendar.add(idColumn);
+        rowHeaders.setView(idColumn);
+        JPanel headerPanel = new JPanel();
+        //the below was to align header with ID column before this became a row header
+        //JLabel aboveIDLabel = new JLabel();
+        //aboveIDLabel.setPreferredSize(new Dimension(190, 25));
+        //aboveIDLabel.setMaximumSize(new Dimension(190, 25));
+        //aboveIDLabel.setMinimumSize(new Dimension(190, 25));
+        //aboveIDLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        //headerPanel.add(aboveIDLabel);
+        for (int i = 0; i < 13; i++) {
+            int hour = i + 9;
+            JLabel headerLabel = new JLabel(hour + ":00");
+            headerLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
+            headerLabel.setForeground(MolvenoColor.DARK.getColor());
+            headerLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            headerLabel.setPreferredSize(new Dimension(95, BUTTON_SIZE));
+            headerLabel.setMaximumSize(new Dimension(95, BUTTON_SIZE));
+            headerLabel.setMinimumSize(new Dimension(95, BUTTON_SIZE));
+            headerPanel.add(headerLabel);
+            headerPanel.setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+        }
+        fullCalendar.add(headerPanel);
+        headers.setView(headerPanel);
 
         //here the panel containing the calendar is split into 13 pieces; 1 for each hour
         for (int i = 0; i < 13; i++) {
@@ -471,15 +497,18 @@ public class CalendarDisplay extends JPanel {
             // commented out: will implement in cellBorder method and
             // CalendarSegment.setBorder(new LineBorder(MolvenoColor.DARK.getColor()));
 
-            int hour = i + 9;
-            JLabel headerLabel = new JLabel(hour + ":00");
-            headerLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
-            headerLabel.setForeground(MolvenoColor.DARK.getColor());
-            headerLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            headerLabel.setPreferredSize(new Dimension(BUTTON_SIZE * 4, BUTTON_SIZE));
-            headerLabel.setMaximumSize(new Dimension(BUTTON_SIZE * 4, BUTTON_SIZE));
+            // this is the old way of adding times
+//            int hour = i + 9;
+//
+//            JLabel headerLabel = new JLabel(hour + ":00");
+//            headerLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
+//            headerLabel.setForeground(MolvenoColor.DARK.getColor());
+//            headerLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+//            headerLabel.setPreferredSize(new Dimension(BUTTON_SIZE * 4, BUTTON_SIZE));
+//            headerLabel.setMaximumSize(new Dimension(BUTTON_SIZE * 4, BUTTON_SIZE));
 
-            CalendarSegment.add(headerLabel);
+
+            //CalendarSegment.add(headerLabel);
             // ---
 
             //this loop creates a row of cells for each hour, placing cells that were created earlier as part of one 2D grid
@@ -499,6 +528,8 @@ public class CalendarDisplay extends JPanel {
                 }
                 CalendarSegment.add(cellRow);
             }
+            //TODO
+            CalendarSegment.setAlignmentY(TOP_ALIGNMENT);
             fullCalendar.add(CalendarSegment);
         }
         fullCalendar.revalidate();
@@ -520,6 +551,8 @@ public class CalendarDisplay extends JPanel {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setPreferredSize(new Dimension(1000, 600));
+        scrollPane.setColumnHeaderView(headers);
+        scrollPane.setRowHeaderView(rowHeaders);
 
         add(scrollPane);
     }
