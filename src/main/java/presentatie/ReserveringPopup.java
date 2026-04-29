@@ -103,7 +103,6 @@ public class ReserveringPopup extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        // TODO look at this
         buttonOK.addActionListener(e -> onOK());
         buttonCancel.addActionListener(e -> onCancel());
 
@@ -239,12 +238,8 @@ public class ReserveringPopup extends JDialog {
         addBoatButton.setEnabled(false);
         removeBoatButton.setEnabled(false);
 
-        addBoatButton.addActionListener(e -> {
-            addBoat();
-        });
-        removeBoatButton.addActionListener(e -> {
-            removeBoat();
-        });
+        addBoatButton.addActionListener(e -> {addBoatButtonPressed();});
+        removeBoatButton.addActionListener(e -> {removeBoatButtonPressed();});
 
         buttonOK.setText("Wijzig");
         buttonOK.addActionListener(e -> onOK());
