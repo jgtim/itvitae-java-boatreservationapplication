@@ -294,8 +294,8 @@
   {
     "reserveringsNummer": 20,
     "customerRecord": {
-      "naam": "moneyyy",
-      "telefoonNummer": 3333
+      "naam": "w",
+      "telefoonNummer": 111
     },
     "betaald": false,
     "kamerFacturatie": false,
@@ -303,10 +303,8 @@
     "begintijd": "11:00",
     "eindtijd": "12:00",
     "boatIDs": [
-      "Standaard Roeiboot 5",
-      "Standaard Roeiboot 1",
-      "Standaard Roeiboot 2"
+      "Standaard Roeiboot 5"
     ],
-    "prijs": 135.0
+    "prijs": 45.0
   }
 ]
