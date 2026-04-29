@@ -17,4 +17,6 @@ public interface ReservationService {
     public int getBoatAmountAvailableDuringTimeByType (BoatType boatType, String startTimeString, String endTimeString, String dateString, BoatService boatService, ArrayList<String> boatIDs, ReservationRecord reservationToExclude);
 
     String getFirstAvailableBoatOfType(BoatType selectedBoatType, ArrayList<String> boatIDs, BoatService boatService, String startTime, String endTime, String dateString);
+
+    boolean isBoatIDOverLapping(String boatID, String date, String startTime, String endTime, int reservationNumberToExclude);
 }
