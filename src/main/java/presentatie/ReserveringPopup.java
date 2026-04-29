@@ -234,7 +234,6 @@ public class ReserveringPopup extends JDialog {
         kamerFacturatieCheckBox.setEnabled(false);
         betaaldCheckBox.setSelected(reservationRecord.betaald());
         betaaldCheckBox.setEnabled(false);
-        //boatIdInputField.setEditable(false);
         addBoatButton.setEnabled(false);
         removeBoatButton.setEnabled(false);
 
@@ -495,12 +494,14 @@ public class ReserveringPopup extends JDialog {
         availableBoatsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addedBoatsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+
         addedBoatsTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 availableBoatsTable.clearSelection();
                 int viewRow = addedBoatsTable.rowAtPoint(e.getPoint());
-                selectedBoatType = (BoatType) addedBoatsTable.getModel().getValueAt(viewRow, 0);
+                selectedBoatType = BoatType.getBoatTypeFromDisplayName(
+                        (String) addedBoatsTable.getModel().getValueAt(viewRow, 0));
             }
         });
 
@@ -509,7 +510,8 @@ public class ReserveringPopup extends JDialog {
             public void mouseClicked(MouseEvent e) {
                 addedBoatsTable.clearSelection();
                 int viewRow = availableBoatsTable.rowAtPoint(e.getPoint());
-                selectedBoatType = (BoatType) availableBoatsTable.getModel().getValueAt(viewRow, 0);
+                selectedBoatType = BoatType.getBoatTypeFromDisplayName(
+                        (String) availableBoatsTable.getModel().getValueAt(viewRow, 0));
             }
         });
     }
@@ -522,7 +524,7 @@ public class ReserveringPopup extends JDialog {
         availableBoatsTableModel.setRowCount(0);
         for (BoatType boatType : boatTypes) {
             row = new Object[3];
-            row[0] = boatType;
+            row[0] = boatType.getDisplayBoatType();
             row[1] = boatService.getBoatCapacityFromType(boatType);
             row[2] = reservationService.getBoatAmountAvailableDuringTimeByType(
                     boatType,
@@ -545,7 +547,7 @@ public class ReserveringPopup extends JDialog {
         addedBoatsTableModel.setRowCount(0);
         for (BoatType boatType : boatTypes) {
             row = new Object[3];
-            row[0] = boatType;
+            row[0] = boatType.getDisplayBoatType();
             row[1] = boatService.getBoatCapacityFromType(boatType);
             row[2] = 0;
             // check how many boats of this type have been added
