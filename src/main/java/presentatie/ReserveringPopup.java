@@ -1,7 +1,6 @@
 package presentatie;
 
 import data.BoatDataExcel;
-import data.BoatDataHandler;
 import domain.*;
 import presentatie.Calendar.CalendarDisplay;
 import service.BoatService.BoatService;
@@ -17,7 +16,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class ReserveringPopup extends JDialog {
     private JPanel contentPane;
@@ -48,7 +46,7 @@ public class ReserveringPopup extends JDialog {
     private JTable addedBoatsTable;
     private JPanel addBoatPane;
     private JTextField boatAmountField;
-    private JButton button1;
+    private JButton HotelDataButton;
     private JButton removeBoatButton;
     private JPanel deletePane;
     private JButton buttonDelete;
@@ -125,12 +123,15 @@ public class ReserveringPopup extends JDialog {
         addBoatButton.addActionListener(e -> addBoatButtonPressed());
         removeBoatButton.addActionListener(e -> removeBoatButtonPressed());
 
+        HotelDataButton.addActionListener(e -> searchButtonPressed());
+
         initializeBoatTables();
         reloadBoatTables();
 
         //Add the boat that is selected on the calendar
         addBoat();
     }
+
 
 
     // Constructor voor bestaande reserveringen
@@ -364,6 +365,19 @@ public class ReserveringPopup extends JDialog {
 
         reloadBoatTables();
         reloadSelectableTimes();
+    }
+
+    private void searchButtonPressed() {
+        HotelGuestSearch searchWindow = new HotelGuestSearch(){
+            @Override
+            public void dispose() {
+                super.dispose();
+                //TODO add guest record - set as variable in HotelGuestSearch?
+            }
+        };
+        searchWindow.pack();
+        searchWindow.setLocationRelativeTo(null);
+        searchWindow.setVisible(true);
     }
 
     private void onOK() {
