@@ -1,6 +1,7 @@
 package presentatie.Calendar;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 import domain.*;
 import presentatie.ReserveringPopup;
 import service.BoatService.BoatService;
@@ -506,8 +507,8 @@ public class CalendarDisplay extends JPanel {
         idColumn.setLayout(new BoxLayout(idColumn, BoxLayout.Y_AXIS));
 
         // Setting the fixed size of this column
-        idColumn.setMinimumSize(new Dimension(200, 0));
-        //idColumn.setPreferredSize(new Dimension(200, 600));
+        idColumn.setMinimumSize(new Dimension(265, 0));
+        //idColumn.setPreferredSize(new Dimension(265, 0));
 
         // Adding a Header to the top of the column
         //JLabel header = new  JLabel("Boten:", SwingConstants.LEFT);
@@ -533,9 +534,9 @@ public class CalendarDisplay extends JPanel {
             }
 
             idLabel.setHorizontalAlignment(JLabel.LEFT);
-            idLabel.setPreferredSize(new Dimension(200, 25));
-            idLabel.setMaximumSize(new Dimension(200, 25));
-            idLabel.setMinimumSize(new Dimension(200, 25));
+            idLabel.setPreferredSize(new Dimension(265, 25));
+            idLabel.setMaximumSize(new Dimension(265, 25));
+            idLabel.setMinimumSize(new Dimension(265, 25));
             idColumn.add(idLabel);
         }
         fullCalendar.add(idColumn);
