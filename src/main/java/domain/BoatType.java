@@ -19,4 +19,13 @@ public enum BoatType {
         return displayBoatType;
     }
 
+    public static BoatType getBoatTypeFromDisplayName(String displayName) {
+        BoatType[] boatTypes = BoatType.class.getEnumConstants();
+        for (BoatType boatType : boatTypes) {
+            if (boatType.getDisplayBoatType().equals(displayName)) {
+                return boatType;
+            }
+        }
+        return null;
+    }
 }

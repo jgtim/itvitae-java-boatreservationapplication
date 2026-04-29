@@ -121,8 +121,8 @@
     "betaald": false,
     "kamerFacturatie": false,
     "datum": "2026-04-23",
-    "begintijd": "13:00",
-    "eindtijd": "13:45",
+    "begintijd": "14:15",
+    "eindtijd": "17:30",
     "boatIDs": [
       "Standaard Roeiboot 6"
     ],
@@ -294,8 +294,8 @@
   {
     "reserveringsNummer": 20,
     "customerRecord": {
-      "naam": "moneyyy",
-      "telefoonNummer": 3333
+      "naam": "w",
+      "telefoonNummer": 111
     },
     "betaald": false,
     "kamerFacturatie": false,
@@ -303,9 +303,7 @@
     "begintijd": "11:00",
     "eindtijd": "12:00",
     "boatIDs": [
-      "Standaard Roeiboot 5",
-      "Standaard Roeiboot 1",
-      "Standaard Roeiboot 2"
+      "Standaard Roeiboot 5"
     ],
     "prijs": 135.0
   },
