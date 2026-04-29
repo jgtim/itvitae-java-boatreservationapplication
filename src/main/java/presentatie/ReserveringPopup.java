@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class ReserveringPopup extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -372,7 +373,10 @@ public class ReserveringPopup extends JDialog {
             @Override
             public void dispose() {
                 super.dispose();
-                //TODO add guest record - set as variable in HotelGuestSearch?
+                HotelGuestRecord currentGuest = this.selectedGuest;
+                nameField.setText(currentGuest.voornaam() + " " + currentGuest.achternaam());
+                phoneNumberField.setText(String.valueOf(currentGuest.telefoonnummer()));
+                emailField.setText(currentGuest.email());
             }
         };
         searchWindow.pack();
