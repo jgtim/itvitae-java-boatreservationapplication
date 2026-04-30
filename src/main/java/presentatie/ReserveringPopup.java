@@ -243,22 +243,6 @@ public class ReserveringPopup extends JDialog {
         betaaldCheckBox.setEnabled(false);
         addBoatButton.setEnabled(false);
         removeBoatButton.setEnabled(false);
-        // Populate the fields of the popup with the selected reservation
-        dateField.setText(reservationRecord.datum());
-        vanLabel.setText(reservationRecord.begintijd());
-        totLabel.setText(reservationRecord.eindtijd());
-        nameField.setText(reservationRecord.customerRecord().naam());
-        nameField.setEditable(false);
-        phoneNumberField.setText((reservationRecord.customerRecord().telefoonNummer() != null) ? reservationRecord.customerRecord().telefoonNummer().toString() : "");
-        phoneNumberField.setEditable(false);
-        emailField.setText(reservationRecord.customerRecord().email());
-        emailField.setEditable(false);
-        kamerFacturatieCheckBox.setSelected(reservationRecord.kamerFacturatie());
-        kamerFacturatieCheckBox.setEnabled(false);
-        betaaldCheckBox.setSelected(reservationRecord.betaald());
-        betaaldCheckBox.setEnabled(false);
-        addBoatButton.setEnabled(false);
-        removeBoatButton.setEnabled(false);
 
         addBoatButton.addActionListener(e -> {addBoatButtonPressed();});
         removeBoatButton.addActionListener(e -> {removeBoatButtonPressed();});
@@ -303,9 +287,8 @@ public class ReserveringPopup extends JDialog {
             if (add15) {
                 price += boatPrice15;
             }
-            priceField.setText("€" + String.format("%.2f", price));
         }
-
+        priceField.setText("€" + String.format("%.2f", price));
     }
 
     private ReserveringPopup getReserveringPopup() {
@@ -366,7 +349,6 @@ public class ReserveringPopup extends JDialog {
                 .eindtijd(comboBoxTot.getSelectedItem().toString())
                 .boatIDs(boatIDs)
                 .build();
-        System.out.println(updatedReservation);
         reservationService.updateReservation(updatedReservation);
         vanLabel.setText((String) comboBoxVan.getSelectedItem());
         totLabel.setText((String) comboBoxTot.getSelectedItem());
@@ -571,6 +553,11 @@ public class ReserveringPopup extends JDialog {
         availableBoatsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addedBoatsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+        availableBoatsTable.getTableHeader().setReorderingAllowed(false);
+        addedBoatsTable.getTableHeader().setReorderingAllowed(false);
+
+        availableBoatsTable.getTableHeader().setResizingAllowed(false);
+        addedBoatsTable.getTableHeader().setResizingAllowed(false);
 
         addedBoatsTable.addMouseListener(new MouseAdapter() {
             @Override

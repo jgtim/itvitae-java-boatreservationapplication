@@ -67,6 +67,8 @@ public class HotelGuestSearch extends JDialog {
         setWindowIcon();
 
         this.getRootPane().setDefaultButton(searchButton);
+        ResultsTable.getTableHeader().setReorderingAllowed(false);
+        ResultsTable.getTableHeader().setResizingAllowed(false);
     }
 
     private void onSearch() {
