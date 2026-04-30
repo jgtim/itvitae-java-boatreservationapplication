@@ -434,8 +434,8 @@ public class ReserveringPopup extends JDialog {
                         (phoneNumberField.getText().isBlank()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
                         (emailField.getText().isEmpty()) ? null : emailField.getText()
                 ),
-                kamerFacturatieCheckBox.isSelected(),
                 betaaldCheckBox.isSelected(),
+                kamerFacturatieCheckBox.isSelected(),
                 datum.toString(),
                 begintijd,
                 eindtijd,
