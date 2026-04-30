@@ -51,6 +51,7 @@ public class ReserveringPopup extends JDialog {
     private JPanel deletePane;
     private JButton buttonDelete;
     private JLabel priceField;
+    private JTextField roomNumberField;
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
@@ -196,6 +197,8 @@ public class ReserveringPopup extends JDialog {
         nameField.setEditable(false);
         phoneNumberField.setText((reservationRecord.customerRecord().telefoonNummer() != null) ? reservationRecord.customerRecord().telefoonNummer().toString() : "");
         phoneNumberField.setEditable(false);
+        roomNumberField.setText((reservationRecord.customerRecord().kamerNummer() != null) ? reservationRecord.customerRecord().kamerNummer().toString() : "");
+        roomNumberField.setEditable(false);
         emailField.setText(reservationRecord.customerRecord().email());
         emailField.setEditable(false);
         kamerFacturatieCheckBox.setSelected(reservationRecord.kamerFacturatie());
@@ -412,6 +415,7 @@ public class ReserveringPopup extends JDialog {
                 phoneNumberField.setText(String.valueOf(currentGuest.telefoonnummer()));
                 emailField.setText(currentGuest.email());
                 kamerFacturatieCheckBox.setSelected(true);
+                roomNumberField.setText(String.valueOf(currentGuest.kamernummer()));
             }
         };
         searchWindow.pack();
@@ -451,17 +455,19 @@ public class ReserveringPopup extends JDialog {
                 new CustomerRecord(
                         nameField.getText(),
                         (phoneNumberField.getText().isBlank()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
-                        (emailField.getText().isEmpty()) ? null : emailField.getText()
+                        (emailField.getText().isEmpty()) ? null : emailField.getText(),
+                        (roomNumberField.getText().isBlank()) ? null : Integer.parseInt(roomNumberField.getText().replace(" ", ""))
+
                 ),
-                kamerFacturatieCheckBox.isSelected(),
                 betaaldCheckBox.isSelected(),
+                kamerFacturatieCheckBox.isSelected(),
                 datum.toString(),
                 begintijd,
                 eindtijd,
                 boatIDs,
                 price
 
-        );
+                );
     }
 
     private void onCancel() {
@@ -489,6 +495,9 @@ public class ReserveringPopup extends JDialog {
             return false;
         } else if (currentMode == ReservationPopupMode.EDITING && timeList.indexOf((String) comboBoxVan.getSelectedItem()) >= timeList.indexOf((String) comboBoxTot.getSelectedItem())) {
             errorLabel.setText("begintijd moet lager zijn dan eindtijd");
+            return false;
+        } else if  (!isANumber(roomNumberField.getText()) && !roomNumberField.getText().isBlank()) {
+            errorLabel.setText("Kamernummer moet een getal zijn");
             return false;
         }
         errorLabel.setText("");
