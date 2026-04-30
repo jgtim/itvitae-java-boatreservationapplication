@@ -239,22 +239,6 @@ public class ReserveringPopup extends JDialog {
         betaaldCheckBox.setEnabled(false);
         addBoatButton.setEnabled(false);
         removeBoatButton.setEnabled(false);
-        // Populate the fields of the popup with the selected reservation
-        dateField.setText(reservationRecord.datum());
-        vanLabel.setText(reservationRecord.begintijd());
-        totLabel.setText(reservationRecord.eindtijd());
-        nameField.setText(reservationRecord.customerRecord().naam());
-        nameField.setEditable(false);
-        phoneNumberField.setText((reservationRecord.customerRecord().telefoonNummer() != null) ? reservationRecord.customerRecord().telefoonNummer().toString() : "");
-        phoneNumberField.setEditable(false);
-        emailField.setText(reservationRecord.customerRecord().email());
-        emailField.setEditable(false);
-        kamerFacturatieCheckBox.setSelected(reservationRecord.kamerFacturatie());
-        kamerFacturatieCheckBox.setEnabled(false);
-        betaaldCheckBox.setSelected(reservationRecord.betaald());
-        betaaldCheckBox.setEnabled(false);
-        addBoatButton.setEnabled(false);
-        removeBoatButton.setEnabled(false);
 
         addBoatButton.addActionListener(e -> {addBoatButtonPressed();});
         removeBoatButton.addActionListener(e -> {removeBoatButtonPressed();});
