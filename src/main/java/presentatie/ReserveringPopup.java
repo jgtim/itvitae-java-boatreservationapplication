@@ -567,6 +567,11 @@ public class ReserveringPopup extends JDialog {
         availableBoatsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addedBoatsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+        availableBoatsTable.getTableHeader().setReorderingAllowed(false);
+        addedBoatsTable.getTableHeader().setReorderingAllowed(false);
+
+        availableBoatsTable.getTableHeader().setResizingAllowed(false);
+        addedBoatsTable.getTableHeader().setResizingAllowed(false);
 
         addedBoatsTable.addMouseListener(new MouseAdapter() {
             @Override

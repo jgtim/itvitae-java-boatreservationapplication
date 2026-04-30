@@ -63,6 +63,8 @@ public class ReservationsTab extends JPanel {
         };
         table1.setModel(tableModel);
         table1.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table1.getTableHeader().setReorderingAllowed(false);
+        table1.getTableHeader().setResizingAllowed(false);
         // table1.setBounds(30, 40, 900, 400);
 
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(tableModel) {
