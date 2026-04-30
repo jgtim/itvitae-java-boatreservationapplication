@@ -1,6 +1,7 @@
 package presentatie.Calendar;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 import domain.*;
 import presentatie.ReserveringPopup;
 import service.BoatService.BoatService;
@@ -52,13 +53,45 @@ public class CalendarDisplay extends JPanel {
         datePickerPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
         datePickerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
         JComboBox<String> boatTypePicker = new JComboBox<>();
+        boatTypePicker.setBackground(MolvenoColor.BEIGE.getColor());
+        boatTypePicker.setForeground(MolvenoColor.DARK.getColor());
+        boatTypePicker.setFont(MolvenoFont.BUTTONLABEL.getFont());
+        boatTypePicker.setFocusable(false);
+
+        boatTypePicker.setPreferredSize(new Dimension(265, 30));
+        boatTypePicker.setMaximumSize(new Dimension(265, 30));
+        boatTypePicker.setMinimumSize(new Dimension(265, 30));
+
+        boatTypePicker.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                label.setFont(MolvenoFont.PARAGRAPH.getFont());
+
+                if (isSelected) {
+                    label.setBackground(MolvenoColor.BLUE.getColor());
+                    label.setForeground(MolvenoColor.DARK.getColor());
+                } else {
+                    label.setBackground(MolvenoColor.LIGHT.getColor());
+                    label.setForeground(MolvenoColor.DARK.getColor());
+                }
+
+                // Add some padding to the items
+                label.setBorder(new EmptyBorder(5, 10, 5, 0));
+
+                return label;
+            }
+        });
+
+
         boatTypePicker.addItem("Alle Boten");
         for (BoatType boatType : BoatType.values()) {
             boatTypePicker.addItem(boatType.getDisplayBoatType());
         }
-        boatTypePicker.setMaximumSize(new Dimension(200, 40));
+        boatTypePicker.setPreferredSize(new Dimension(220, 35));
+        boatTypePicker.setMaximumSize(new Dimension(220, 35));
         boatTypePicker.addItemListener(itemEvent -> {
             boatIDs = boatService.getBoatList().stream()
                     .filter(record -> itemEvent.getItem() == "Alle Boten" ||
@@ -71,9 +104,52 @@ public class CalendarDisplay extends JPanel {
 
         JLabel dateLabel = new JLabel("Selecteer een datum: ");
         dateLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
+        dateLabel.setBorder(new EmptyBorder(5, 10, 5, 10));
 
-        DatePicker datePicker = new DatePicker();
-        datePicker.setMaximumSize(new Dimension(200, 40));
+        JLabel boatTypeLabel = new JLabel("Selecteer een boottype: ");
+        boatTypeLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
+        boatTypeLabel.setBorder(new EmptyBorder(5, 10, 5, 10));
+
+        DatePickerSettings dateSettings = new DatePickerSettings();
+        dateSettings.setColor(DatePickerSettings.DateArea.BackgroundOverallCalendarPanel, MolvenoColor.LIGHT.getColor());
+        dateSettings.setColor(DatePickerSettings.DateArea.TextFieldBackgroundValidDate, MolvenoColor.LIGHT.getColor());
+        dateSettings.setColor(DatePickerSettings.DateArea.CalendarBackgroundNormalDates, MolvenoColor.LIGHT.getColor());
+        dateSettings.setColor(DatePickerSettings.DateArea.CalendarTextNormalDates, MolvenoColor.DARK.getColor());
+        dateSettings.setColor(DatePickerSettings.DateArea.CalendarBackgroundSelectedDate, MolvenoColor.BLUE.getColor());
+
+        dateSettings.setColor(DatePickerSettings.DateArea.BackgroundTodayLabel, MolvenoColor.LIGHT.getColor());
+        dateSettings.setColor(DatePickerSettings.DateArea.BackgroundClearLabel, MolvenoColor.LIGHT.getColor());
+        dateSettings.setColor(DatePickerSettings.DateArea.BackgroundMonthAndYearMenuLabels,  MolvenoColor.LIGHT.getColor());
+        dateSettings.setColor(DatePickerSettings.DateArea.TextTodayLabel, MolvenoColor.DARK.getColor());
+        dateSettings.setColor(DatePickerSettings.DateArea.TextClearLabel, MolvenoColor.DARK.getColor());
+
+        dateSettings.setColor(DatePickerSettings.DateArea.BackgroundCalendarPanelLabelsOnHover, MolvenoColor.BLUE.getColor());
+        dateSettings.setColor(DatePickerSettings.DateArea.TextCalendarPanelLabelsOnHover, MolvenoColor.DARK.getColor());
+
+        dateSettings.setFontCalendarDateLabels(MolvenoFont.PARAGRAPH.getFont());
+        dateSettings.setFontCalendarWeekdayLabels(MolvenoFont.PARAGRAPH.getFont());
+        dateSettings.setFontMonthAndYearMenuLabels(MolvenoFont.PARAGRAPH.getFont());
+        dateSettings.setFontValidDate(MolvenoFont.PARAGRAPH.getFont());
+
+        dateSettings.setFontTodayLabel(MolvenoFont.PARAGRAPH.getFont());
+        dateSettings.setFontClearLabel(MolvenoFont.PARAGRAPH.getFont());
+
+        dateSettings.setTranslationToday(String.valueOf("Vandaag"));
+        dateSettings.setLocale(new java.util.Locale("nl", "NL"));
+
+        dateSettings.setAllowEmptyDates(false);
+        dateSettings.setVisibleClearButton(false);
+        dateSettings.setVisibleTodayButton(true);
+
+        DatePicker datePicker = new DatePicker(dateSettings);
+        datePicker.setPreferredSize(new Dimension(250, 40));
+        datePicker.setMaximumSize(new Dimension(300, 40));
+
+        JButton toggleButton = datePicker.getComponentToggleCalendarButton();
+        toggleButton.setText("...");
+        toggleButton.setBackground(MolvenoColor.LIGHT.getColor());
+        toggleButton.setBorder(new LineBorder(MolvenoColor.DARK.getColor(), 1));
+
         datePicker.setDateToToday();
 
         datePicker.addDateChangeListener(event -> {
@@ -81,6 +157,7 @@ public class CalendarDisplay extends JPanel {
             reLoadCalendar(boatService);
         });
 
+        datePickerPanel.add(boatTypeLabel);
         datePickerPanel.add(boatTypePicker);
         datePickerPanel.add(dateLabel);
         datePickerPanel.add(datePicker);
@@ -103,7 +180,7 @@ public class CalendarDisplay extends JPanel {
         JButton selectButton = new JButton("Reserveer");
         selectButton.setFont(MolvenoFont.PARAGRAPH.getFont());
         selectButton.setForeground(MolvenoColor.DARK.getColor());
-        selectButton.setBackground(MolvenoColor.LIGHT.getColor());
+        selectButton.setBackground(MolvenoColor.BEIGE.getColor());
         selectButton.setFocusPainted(false);
         selectButton.setBorder(new EmptyBorder(10, 10, 10, 10));
 
@@ -149,12 +226,14 @@ public class CalendarDisplay extends JPanel {
             }
 
         });
+        buttonrow.add(Box.createRigidArea(new Dimension(200, 0)));
         buttonrow.add(selectButton);
+        buttonrow.add(Box.createRigidArea(new Dimension(50, 0)));
 
         JButton cancelButton = new JButton("Annuleer");
         cancelButton.setFont(MolvenoFont.PARAGRAPH.getFont());
         cancelButton.setForeground(MolvenoColor.DARK.getColor());
-        cancelButton.setBackground(MolvenoColor.LIGHT.getColor());
+        cancelButton.setBackground(MolvenoColor.BEIGE.getColor());
         cancelButton.setFocusPainted(false);
         cancelButton.setBorder(new EmptyBorder(10, 10, 10, 10));
 
@@ -430,8 +509,8 @@ public class CalendarDisplay extends JPanel {
         idColumn.setLayout(new BoxLayout(idColumn, BoxLayout.Y_AXIS));
 
         // Setting the fixed size of this column
-        idColumn.setMinimumSize(new Dimension(200, 0));
-        //idColumn.setPreferredSize(new Dimension(200, 600));
+        idColumn.setMinimumSize(new Dimension(265, 0));
+        //idColumn.setPreferredSize(new Dimension(265, 0));
 
         // Adding a Header to the top of the column
         //JLabel header = new  JLabel("Boten:", SwingConstants.LEFT);
@@ -457,14 +536,16 @@ public class CalendarDisplay extends JPanel {
             }
 
             idLabel.setHorizontalAlignment(JLabel.LEFT);
-            idLabel.setPreferredSize(new Dimension(200, 25));
-            idLabel.setMaximumSize(new Dimension(200, 25));
-            idLabel.setMinimumSize(new Dimension(200, 25));
+            idLabel.setPreferredSize(new Dimension(265, 25));
+            idLabel.setMaximumSize(new Dimension(265, 25));
+            idLabel.setMinimumSize(new Dimension(265, 25));
             idColumn.add(idLabel);
         }
         fullCalendar.add(idColumn);
         rowHeaders.setView(idColumn);
         JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.X_AXIS));
+        headerPanel.setBackground(MolvenoColor.BLUE.getColor());
         //the below was to align header with ID column before this became a row header
         //JLabel aboveIDLabel = new JLabel();
         //aboveIDLabel.setPreferredSize(new Dimension(190, 25));
@@ -476,13 +557,15 @@ public class CalendarDisplay extends JPanel {
             int hour = i + 9;
             JLabel headerLabel = new JLabel(hour + ":00");
             headerLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
+            headerLabel.setOpaque(true);
             headerLabel.setForeground(MolvenoColor.DARK.getColor());
+            headerLabel.setBackground(MolvenoColor.BLUE.getColor());
             headerLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            headerLabel.setPreferredSize(new Dimension(95, BUTTON_SIZE));
-            headerLabel.setMaximumSize(new Dimension(95, BUTTON_SIZE));
-            headerLabel.setMinimumSize(new Dimension(95, BUTTON_SIZE));
+            headerLabel.setPreferredSize(new Dimension(100, BUTTON_SIZE));
+            headerLabel.setMaximumSize(new Dimension(100, BUTTON_SIZE));
+            headerLabel.setMinimumSize(new Dimension(100, BUTTON_SIZE));
             headerPanel.add(headerLabel);
-            headerPanel.setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+            // headerPanel.setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
         }
         fullCalendar.add(headerPanel);
         headers.setView(headerPanel);
@@ -553,6 +636,11 @@ public class CalendarDisplay extends JPanel {
         scrollPane.setPreferredSize(new Dimension(1000, 600));
         scrollPane.setColumnHeaderView(headers);
         scrollPane.setRowHeaderView(rowHeaders);
+
+        JPanel corner = new JPanel();
+        corner.setBackground(MolvenoColor.BLUE.getColor());
+        scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, corner);
+
 
         add(scrollPane);
     }
