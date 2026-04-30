@@ -63,6 +63,10 @@ public class HotelGuestSearch extends JDialog {
         stylingPanel();
         styleTable();
         styleScrollPane();
+
+        setWindowIcon();
+
+        this.getRootPane().setDefaultButton(searchButton);
     }
 
     private void onSearch() {
@@ -190,5 +194,10 @@ public class HotelGuestSearch extends JDialog {
 
         // 3. Optional: Prevent columns from auto-resizing and squishing your manual widths
         ResultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+
+    private void setWindowIcon() {
+        ImageIcon logo = new ImageIcon(App.class.getResource("/images/MolvenoLogo.png"));
+        setIconImage(logo.getImage());
     }
 }
