@@ -52,6 +52,8 @@ public class HotelGuestSearch extends JDialog {
                 }
             }
         });
+        ResultsTable.getTableHeader().setReorderingAllowed(false);
+        ResultsTable.getTableHeader().setResizingAllowed(false);
     }
 
     private void onSearch() {
