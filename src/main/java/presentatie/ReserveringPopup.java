@@ -74,6 +74,7 @@ public class ReserveringPopup extends JDialog {
     private JLabel toegevoegdLabel;
     private JLabel aantalLabel;
     private JPanel comboPanel;
+    private JLabel kamerLabel;
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
@@ -728,7 +729,7 @@ public class ReserveringPopup extends JDialog {
             table.getColumnModel().getColumn(2).setPreferredWidth(100);
         }
 
-        List<JTextField> fields = Arrays.asList(nameField, phoneNumberField, emailField, boatAmountField);
+        List<JTextField> fields = Arrays.asList(nameField, phoneNumberField, emailField, boatAmountField, roomNumberField);
         int padding = 5;
 
         for (JTextField field : fields) {
@@ -742,7 +743,7 @@ public class ReserveringPopup extends JDialog {
             field.setBorder(BorderFactory.createCompoundBorder(lineBorder, margin));
         }
 
-        List<JLabel> labels = Arrays.asList(dateLabel, phoneNumberLabel, dateField, aantalLabel, beschikbaarLabel, toegevoegdLabel, vanLabel, VanLabel, Van2Label, TotLabel, Tot2Label, totLabel, priceLabel, priceField, emailLabel, nameLabel, kamerFacturatieLabel, betaaldLabel);
+        List<JLabel> labels = Arrays.asList(kamerLabel, phoneNumberLabel, dateField, aantalLabel, beschikbaarLabel, toegevoegdLabel, vanLabel, VanLabel, Van2Label, TotLabel, Tot2Label, totLabel, priceLabel, priceField, emailLabel, nameLabel, kamerFacturatieLabel, betaaldLabel);
         for (JLabel label : labels) {
             if (label != null) {
                 label.setForeground(MolvenoColor.DARK.getColor());
