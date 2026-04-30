@@ -139,6 +139,8 @@ public class ReserveringPopup extends JDialog {
     // Constructor voor bestaande reserveringen
     public ReserveringPopup(ReservationService reservationService, ReservationRecord reservationRecord) {
         this.reservationService = reservationService;
+        //TODO REMOVE
+        contentPane.remove(HotelDataButton);
         currentMode = ReservationPopupMode.VIEWING;
         currentReservation = reservationRecord;
         dateString = currentReservation.datum();
