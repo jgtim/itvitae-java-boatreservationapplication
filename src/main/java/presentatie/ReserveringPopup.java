@@ -248,7 +248,6 @@ public class ReserveringPopup extends JDialog {
     private void calculateCost() {
         price = 0.0;
         for (int i = 0; i < boatIDs.size(); i++) {
-            System.out.println(boatIDs.size());
             String newBoatID = boatIDs.get(i);
             double boatPrice15 = allBoats.get(validIDs.indexOf(newBoatID)).price15();
             double boatPrice30 = allBoats.get(validIDs.indexOf(newBoatID)).price30();
@@ -318,7 +317,6 @@ public class ReserveringPopup extends JDialog {
                 .eindtijd(comboBoxTot.getSelectedItem().toString())
                 .boatIDs(boatIDs)
                 .build();
-        System.out.println(updatedReservation);
         reservationService.updateReservation(updatedReservation);
         vanLabel.setText((String) comboBoxVan.getSelectedItem());
         totLabel.setText((String) comboBoxTot.getSelectedItem());
