@@ -411,7 +411,7 @@ public class ReserveringPopup extends JDialog {
                 super.dispose();
                 HotelGuestRecord currentGuest = this.selectedGuest;
                 nameField.setText(currentGuest.voornaam() + " " + currentGuest.achternaam());
-                phoneNumberField.setText(String.valueOf(currentGuest.telefoonnummer()));
+                phoneNumberField.setText(currentGuest.telefoonnummer() == null ? "" : String.valueOf(currentGuest.telefoonnummer()));
                 emailField.setText(currentGuest.email());
                 kamerFacturatieCheckBox.setSelected(true);
             }
@@ -455,8 +455,8 @@ public class ReserveringPopup extends JDialog {
                         (phoneNumberField.getText().isBlank()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
                         (emailField.getText().isEmpty()) ? null : emailField.getText()
                 ),
-                kamerFacturatieCheckBox.isSelected(),
                 betaaldCheckBox.isSelected(),
+                kamerFacturatieCheckBox.isSelected(),
                 datum.toString(),
                 begintijd,
                 eindtijd,
