@@ -75,6 +75,7 @@ public class HotelGuestSearch extends JDialog {
     }
 
     private void reloadTable() {
+        tableModel.setRowCount(0);
         for (HotelGuestRecord guest : foundGuests) {
             String phoneNumber;
             if(guest.telefoonnummer() != null){
