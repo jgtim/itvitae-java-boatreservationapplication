@@ -299,9 +299,8 @@ public class ReserveringPopup extends JDialog {
             if (add15) {
                 price += boatPrice15;
             }
-            priceField.setText("€" + String.format("%.2f", price));
         }
-
+        priceField.setText("€" + String.format("%.2f", price));
     }
 
     private ReserveringPopup getReserveringPopup() {
@@ -362,7 +361,6 @@ public class ReserveringPopup extends JDialog {
                 .eindtijd(comboBoxTot.getSelectedItem().toString())
                 .boatIDs(boatIDs)
                 .build();
-        System.out.println(updatedReservation);
         reservationService.updateReservation(updatedReservation);
         vanLabel.setText((String) comboBoxVan.getSelectedItem());
         totLabel.setText((String) comboBoxTot.getSelectedItem());
