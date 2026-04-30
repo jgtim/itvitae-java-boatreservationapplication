@@ -184,5 +184,21 @@
       "1 Persoons Kayak 4"
     ],
     "prijs": 10.0
+  },
+  {
+    "reserveringsNummer": 12,
+    "customerRecord": {
+      "naam": "gh",
+      "telefoonNummer": 455
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-29",
+    "begintijd": "09:45",
+    "eindtijd": "11:15",
+    "boatIDs": [
+      "Standaard Roeiboot 4"
+    ],
+    "prijs": 67.5
   }
 ]

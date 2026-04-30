@@ -1,0 +1,8 @@
+Naam, Telefoonnummer, Email, betaald, kamerFacturatie
+John DOe, 12345678, johndoe@example.com, true, false
+null, null, , false, false
+John doe, 123456, null, false, true
+John doe, null, sklfmewf@gmail.com, true, false
+Stef, 11112222, null, false, false
+James, 123456, null, false, true
+Johan, 757575, jgdg, true, false
