@@ -8,6 +8,8 @@ import service.BoatService.BoatServiceImpl;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
@@ -51,6 +53,26 @@ public class ReserveringPopup extends JDialog {
     private JPanel deletePane;
     private JButton buttonDelete;
     private JLabel priceField;
+    private JPanel botenPanel;
+    private JScrollPane availableBoatsScrollPane;
+    private JScrollPane addedBoatsScrollPane;
+    private JPanel beschikbaarPanel;
+    private JPanel toegevoegdPanel;
+    private JLabel nameLabel;
+    private JLabel phoneNumberLabel;
+    private JLabel kamerFacturatieLabel;
+    private JLabel betaaldLabel;
+    private JLabel emailLabel;
+    private JLabel priceLabel;
+    private JLabel VanLabel;
+    private JLabel TotLabel;
+    private JLabel Van2Label;
+    private JLabel Tot2Label;
+    private JLabel BotenLabel;
+    private JLabel beschikbaarLabel;
+    private JLabel toegevoegdLabel;
+    private JLabel aantalLabel;
+    private JPanel comboPanel;
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
@@ -132,6 +154,17 @@ public class ReserveringPopup extends JDialog {
         selectedBoatType = boatService.getBoatTypeFromID(preSelectedBoat);
         addBoat();
         addedBoatsTable.setRowSelectionInterval(0, 0);
+
+        styleBackgrounds();
+        styleButtons();
+        styleTables();
+        styleComponents();
+        // applyBoatTypeRenderer();
+
+        setWindowIcon();
+
+        this.pack();
+        this.setLocationRelativeTo(null);
     }
 
 
@@ -242,6 +275,17 @@ public class ReserveringPopup extends JDialog {
         initializeBoatTables();
         reloadBoatTables();
         reloadSelectableTimes();
+
+        styleBackgrounds();
+        styleButtons();
+        styleTables();
+        styleComponents();
+
+        setWindowIcon();
+
+        this.pack();
+        this.setLocationRelativeTo(null);
+        // applyBoatTypeRenderer();
     }
 
     //this calculates the cost of existing boats
@@ -478,10 +522,10 @@ public class ReserveringPopup extends JDialog {
 
     private boolean isFormValid() {
         if (nameField.getText().isEmpty()) {
-            errorLabel.setText("geen naam ingevuld");
+            errorLabel.setText("Geen naam ingevuld");
             return false;
         } else if (phoneNumberField.getText().isEmpty() && emailField.getText().isEmpty()) {
-            errorLabel.setText("vul telefoonnummer en/of email in");
+            errorLabel.setText("Vul telefoonnummer en/of email in");
             return false;
         } else if (boatIDs.isEmpty()) {
             errorLabel.setText("Er zijn geen boten gereserveerd");
@@ -490,7 +534,7 @@ public class ReserveringPopup extends JDialog {
             errorLabel.setText("Telefoonnummer moet een getal zijn");
             return false;
         } else if (currentMode == ReservationPopupMode.EDITING && timeList.indexOf((String) comboBoxVan.getSelectedItem()) >= timeList.indexOf((String) comboBoxTot.getSelectedItem())) {
-            errorLabel.setText("begintijd moet lager zijn dan eindtijd");
+            errorLabel.setText("Begintijd moet lager zijn dan eindtijd");
             return false;
         }
         errorLabel.setText("");
@@ -672,4 +716,216 @@ public class ReserveringPopup extends JDialog {
         return result;
     }
 
+    // Styling -------------------------------------------------------------------------------------------------------
+    private void styleComponents() {
+        contentPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        inputPane.setPreferredSize(new Dimension(200, 400));
+        addBoatPane.setPreferredSize(new Dimension(700, 400));
+
+        for (JTable table : Arrays.asList(availableBoatsTable, addedBoatsTable)) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(200);
+            table.getColumnModel().getColumn(1).setPreferredWidth(100);
+            table.getColumnModel().getColumn(2).setPreferredWidth(100);
+        }
+
+        List<JTextField> fields = Arrays.asList(nameField, phoneNumberField, emailField, boatAmountField);
+        int padding = 5;
+
+        for (JTextField field : fields) {
+            field.setBackground(MolvenoColor.LIGHT.getColor());
+            field.setForeground(MolvenoColor.DARK.getColor());
+            field.setFont(MolvenoFont.PARAGRAPH.getFont());
+            field.setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor()));
+
+            Border lineBorder = BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor());
+            Border margin = BorderFactory.createEmptyBorder(padding, padding, padding, padding);
+            field.setBorder(BorderFactory.createCompoundBorder(lineBorder, margin));
+        }
+
+        List<JLabel> labels = Arrays.asList(dateLabel, phoneNumberLabel, dateField, aantalLabel, beschikbaarLabel, toegevoegdLabel, vanLabel, VanLabel, Van2Label, TotLabel, Tot2Label, totLabel, priceLabel, priceField, emailLabel, nameLabel, kamerFacturatieLabel, betaaldLabel);
+        for (JLabel label : labels) {
+            if (label != null) {
+                label.setForeground(MolvenoColor.DARK.getColor());
+                label.setFont(MolvenoFont.PARAGRAPH.getFont().deriveFont(Font.BOLD));
+            }
+        }
+
+        List<JScrollPane> scrollPanes = Arrays.asList(availableBoatsScrollPane, addedBoatsScrollPane);
+
+        for (JScrollPane pane : scrollPanes) {
+            if (pane != null) {
+                pane.setBackground(MolvenoColor.LIGHT.getColor());
+                pane.getViewport().setBackground(MolvenoColor.LIGHT.getColor());
+                pane.setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor()));
+            }
+        }
+        availableBoatsScrollPane.setPreferredSize(new Dimension(700, 200));
+        addedBoatsScrollPane.setPreferredSize(new Dimension(700, 150));
+
+        availableBoatsScrollPane.revalidate();
+        addedBoatsScrollPane.revalidate();
+        contentPane.revalidate();
+
+        List<JCheckBox> checkBoxes = Arrays.asList(kamerFacturatieCheckBox, betaaldCheckBox);
+        for (JCheckBox checkBox : checkBoxes) {
+            if (checkBox != null) {
+                checkBox.setBackground(MolvenoColor.LIGHT.getColor());
+                checkBox.setForeground(MolvenoColor.DARK.getColor());
+                checkBox.setFont(MolvenoFont.PARAGRAPH.getFont());
+                checkBox.setFocusPainted(false);
+            }
+        }
+
+        List<JComboBox> combos = Arrays.asList(comboBoxVan, comboBoxTot);
+        for (JComboBox combo : combos) {
+            if (combo != null) {
+                combo.setBackground(MolvenoColor.LIGHT.getColor());
+                combo.setForeground(MolvenoColor.DARK.getColor());
+                combo.setFont(MolvenoFont.PARAGRAPH.getFont());
+                combo.setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor()));
+
+                Object child = combo.getAccessibleContext().getAccessibleChild(0);
+                if (child instanceof javax.swing.plaf.basic.BasicComboPopup) {
+                    javax.swing.plaf.basic.BasicComboPopup popup = (javax.swing.plaf.basic.BasicComboPopup) child;
+                    popup.getList().setBackground(MolvenoColor.LIGHT.getColor());
+                    popup.getList().setSelectionBackground(MolvenoColor.ORANGE.getColor());
+                }
+
+                ((JLabel)combo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+
+                combo.setRenderer(new DefaultListCellRenderer() {
+                    @Override
+                    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                        label.setHorizontalAlignment(SwingConstants.CENTER);
+
+                        if (isSelected) {
+                            label.setBackground(MolvenoColor.ORANGE.getColor());
+                            label.setForeground(MolvenoColor.DARK.getColor());
+                        } else {
+                            label.setBackground(MolvenoColor.LIGHT.getColor());
+                            label.setForeground(MolvenoColor.DARK.getColor());
+                        }
+                        return label;
+                    }
+                });
+            }
+        }
+    }
+
+    private void styleTables () {
+        for (JTable table : Arrays.asList(availableBoatsTable, addedBoatsTable)) {
+            table.setRowHeight(25);
+            table.setIntercellSpacing(new Dimension(10, 5));
+
+            table.setBackground(MolvenoColor.LIGHT.getColor());
+            table.setGridColor(MolvenoColor.BEIGE.getColor());
+            table.setSelectionBackground(MolvenoColor.ORANGE.getColor());
+            table.setSelectionForeground(MolvenoColor.DARK.getColor());
+            table.setFont(MolvenoFont.PARAGRAPH.getFont());
+            table.setFocusable(false);
+
+
+            javax.swing.table.JTableHeader header = table.getTableHeader();
+            header.setFont(MolvenoFont.PARAGRAPH.getFont());
+
+            header.setDefaultRenderer(new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value,
+                                                               boolean isSelected, boolean hasFocus,
+                                                               int row, int column) {
+                    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                    setBackground(MolvenoColor.GREEN.getColor());
+                    setForeground(MolvenoColor.DARK.getColor());
+                    setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, MolvenoColor.BEIGE.getColor()));
+                    setHorizontalAlignment(JLabel.CENTER);
+
+                    return this;
+                }
+            });
+        }
+    }
+
+    private void applyBoatTypeRenderer(JTable table) {
+        table.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            protected void setValue(Object value) {
+                if (value instanceof BoatType) {
+                    setText(((BoatType) value).getDisplayBoatType());
+                } else {
+                    super.setValue(value);
+                }
+            }
+        });
+    }
+
+    private void styleButtons() {
+        List<JButton> buttons = Arrays.asList(
+                buttonOK,
+                buttonCancel,
+                addBoatButton,
+                removeBoatButton,
+                buttonDelete,
+                HotelDataButton
+        );
+
+        for (JButton btn : buttons) {
+            if (btn == null) continue;
+
+            btn.setBackground(MolvenoColor.BEIGE.getColor());
+            btn.setForeground(MolvenoColor.DARK.getColor());
+            btn.setFont(MolvenoFont.BUTTONLABEL.getFont());
+            btn.setFocusPainted(false);
+            btn.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+
+            btn.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(MolvenoColor.BLUE.getColor());
+                }
+
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(MolvenoColor.BEIGE.getColor());
+                }
+            });
+        }
+
+        if (buttonDelete != null) {
+            buttonDelete.setBackground(MolvenoColor.ORANGE.getColor());
+            buttonDelete.setForeground(MolvenoColor.DARK.getColor());
+        }
+    }
+
+    private void styleBackgrounds() {
+        contentPane.setBackground(MolvenoColor.LIGHT.getColor());
+
+        List<JPanel> panels = Arrays.asList(
+                inputPane,
+                agendaTijdInformatie,
+                confirmationButtonsPanel,
+                dateInfo,
+                errorPane,
+                tijdInformatie,
+                addBoatPane,
+                deletePane,
+                botenPanel,
+                toegevoegdPanel,
+                beschikbaarPanel,
+                contentPane,
+                comboPanel
+        );
+
+        for (JPanel panel : panels) {
+            if (panel != null) {
+                panel.setBackground(MolvenoColor.LIGHT.getColor());
+                panel.setOpaque(true);
+            }
+        }
+        contentPane.setPreferredSize(new Dimension(900, 600));
+    }
+
+    private void setWindowIcon() {
+        ImageIcon logo = new ImageIcon(App.class.getResource("/images/MolvenoLogo.png"));
+        setIconImage(logo.getImage());
+    }
 }
