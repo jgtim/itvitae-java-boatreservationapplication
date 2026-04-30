@@ -411,6 +411,7 @@ public class ReserveringPopup extends JDialog {
                 nameField.setText(currentGuest.voornaam() + " " + currentGuest.achternaam());
                 phoneNumberField.setText(String.valueOf(currentGuest.telefoonnummer()));
                 emailField.setText(currentGuest.email());
+                kamerFacturatieCheckBox.setSelected(true);
             }
         };
         searchWindow.pack();

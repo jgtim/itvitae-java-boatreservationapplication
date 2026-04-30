@@ -184,5 +184,39 @@
       "1 Persoons Kayak 4"
     ],
     "prijs": 10.0
+  },
+  {
+    "reserveringsNummer": 12,
+    "customerRecord": {
+      "naam": "Hugo Brouwer",
+      "telefoonNummer": 697775215,
+      "email": "hugo.brouwer@example.com"
+    },
+    "betaald": true,
+    "kamerFacturatie": false,
+    "datum": "2026-04-30",
+    "begintijd": "11:45",
+    "eindtijd": "13:15",
+    "boatIDs": [
+      "Standaard Roeiboot 6"
+    ],
+    "prijs": 67.5
+  },
+  {
+    "reserveringsNummer": 13,
+    "customerRecord": {
+      "naam": "Hugo Brouwer",
+      "telefoonNummer": 697775215,
+      "email": "hugo.brouwer@example.com"
+    },
+    "betaald": true,
+    "kamerFacturatie": false,
+    "datum": "2026-04-30",
+    "begintijd": "12:30",
+    "eindtijd": "14:15",
+    "boatIDs": [
+      "Standaard Roeiboot 8"
+    ],
+    "prijs": 80.0
   }
 ]

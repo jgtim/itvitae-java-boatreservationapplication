@@ -55,7 +55,7 @@ public class HotelGuestSearch extends JDialog {
     }
 
     private void onSearch() {
-        String searchTerm = searchInputField.getText();
+        String searchTerm = searchInputField.getText().toLowerCase();
         foundGuests = new ArrayList<>();
         if(StringUtils.isNumeric(searchTerm)){
             int roomNumber = Integer.parseInt(searchTerm);
@@ -66,7 +66,7 @@ public class HotelGuestSearch extends JDialog {
             }
         }else{
             for(int i = 0; i < allGuests.size(); i++){
-                if(allGuests.get(i).achternaam().equals(searchTerm)){
+                if(allGuests.get(i).achternaam().toLowerCase().equals(searchTerm)){
                     foundGuests.add(allGuests.get(i));
                 }
             }
