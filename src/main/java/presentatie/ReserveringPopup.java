@@ -409,7 +409,7 @@ public class ReserveringPopup extends JDialog {
                 super.dispose();
                 HotelGuestRecord currentGuest = this.selectedGuest;
                 nameField.setText(currentGuest.voornaam() + " " + currentGuest.achternaam());
-                phoneNumberField.setText(String.valueOf(currentGuest.telefoonnummer()));
+                phoneNumberField.setText(currentGuest.telefoonnummer() == null ? "" : String.valueOf(currentGuest.telefoonnummer()));
                 emailField.setText(currentGuest.email());
                 kamerFacturatieCheckBox.setSelected(true);
             }

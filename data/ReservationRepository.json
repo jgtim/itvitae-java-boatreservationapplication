@@ -234,5 +234,55 @@
       "Standaard Roeiboot 8"
     ],
     "prijs": 12.5
+  },
+  {
+    "reserveringsNummer": 15,
+    "customerRecord": {
+      "naam": "Luuk de Groot",
+      "telefoonNummer": 613278320
+    },
+    "betaald": true,
+    "kamerFacturatie": false,
+    "datum": "2026-04-30",
+    "begintijd": "12:45",
+    "eindtijd": "14:00",
+    "boatIDs": [
+      "Standaard Roeiboot 4"
+    ],
+    "prijs": 57.5
+  },
+  {
+    "reserveringsNummer": 16,
+    "customerRecord": {
+      "naam": "Eva Beek",
+      "telefoonNummer": 0,
+      "email": "eva.beek@testmail.org"
+    },
+    "betaald": true,
+    "kamerFacturatie": false,
+    "datum": "2026-04-30",
+    "begintijd": "13:00",
+    "eindtijd": "13:45",
+    "boatIDs": [
+      "Familie Roeiboot 1"
+    ],
+    "prijs": 42.5
+  },
+  {
+    "reserveringsNummer": 17,
+    "customerRecord": {
+      "naam": "Milan Beek",
+      "telefoonNummer": 632162965,
+      "email": "milan.beek@provider.com"
+    },
+    "betaald": true,
+    "kamerFacturatie": false,
+    "datum": "2026-04-30",
+    "begintijd": "13:45",
+    "eindtijd": "14:45",
+    "boatIDs": [
+      "Standaard Roeiboot 6"
+    ],
+    "prijs": 45.0
   }
 ]
