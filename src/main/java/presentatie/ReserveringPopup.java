@@ -8,6 +8,7 @@ import service.BoatService.BoatServiceImpl;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -71,6 +72,7 @@ public class ReserveringPopup extends JDialog {
     private JLabel beschikbaarLabel;
     private JLabel toegevoegdLabel;
     private JLabel aantalLabel;
+    private JPanel comboPanel;
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
@@ -520,10 +522,10 @@ public class ReserveringPopup extends JDialog {
 
     private boolean isFormValid() {
         if (nameField.getText().isEmpty()) {
-            errorLabel.setText("geen naam ingevuld");
+            errorLabel.setText("Geen naam ingevuld");
             return false;
         } else if (phoneNumberField.getText().isEmpty() && emailField.getText().isEmpty()) {
-            errorLabel.setText("vul telefoonnummer en/of email in");
+            errorLabel.setText("Vul telefoonnummer en/of email in");
             return false;
         } else if (boatIDs.isEmpty()) {
             errorLabel.setText("Er zijn geen boten gereserveerd");
@@ -532,7 +534,7 @@ public class ReserveringPopup extends JDialog {
             errorLabel.setText("Telefoonnummer moet een getal zijn");
             return false;
         } else if (currentMode == ReservationPopupMode.EDITING && timeList.indexOf((String) comboBoxVan.getSelectedItem()) >= timeList.indexOf((String) comboBoxTot.getSelectedItem())) {
-            errorLabel.setText("begintijd moet lager zijn dan eindtijd");
+            errorLabel.setText("Begintijd moet lager zijn dan eindtijd");
             return false;
         }
         errorLabel.setText("");
@@ -727,11 +729,17 @@ public class ReserveringPopup extends JDialog {
         }
 
         List<JTextField> fields = Arrays.asList(nameField, phoneNumberField, emailField, boatAmountField);
+        int padding = 5;
+
         for (JTextField field : fields) {
             field.setBackground(MolvenoColor.LIGHT.getColor());
             field.setForeground(MolvenoColor.DARK.getColor());
             field.setFont(MolvenoFont.PARAGRAPH.getFont());
             field.setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor()));
+
+            Border lineBorder = BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor());
+            Border margin = BorderFactory.createEmptyBorder(padding, padding, padding, padding);
+            field.setBorder(BorderFactory.createCompoundBorder(lineBorder, margin));
         }
 
         List<JLabel> labels = Arrays.asList(dateLabel, phoneNumberLabel, dateField, aantalLabel, beschikbaarLabel, toegevoegdLabel, vanLabel, VanLabel, Van2Label, TotLabel, Tot2Label, totLabel, priceLabel, priceField, emailLabel, nameLabel, kamerFacturatieLabel, betaaldLabel);
@@ -749,13 +757,14 @@ public class ReserveringPopup extends JDialog {
                 pane.setBackground(MolvenoColor.LIGHT.getColor());
                 pane.getViewport().setBackground(MolvenoColor.LIGHT.getColor());
                 pane.setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor()));
-                pane.setPreferredSize(new Dimension(700, 400));
             }
         }
-        availableBoatsScrollPane.setPreferredSize(new Dimension(700, 150));
-        addedBoatsScrollPane.setPreferredSize(new Dimension(700, 250));
+        availableBoatsScrollPane.setPreferredSize(new Dimension(700, 200));
+        addedBoatsScrollPane.setPreferredSize(new Dimension(700, 150));
+
         availableBoatsScrollPane.revalidate();
         addedBoatsScrollPane.revalidate();
+        contentPane.revalidate();
 
         List<JCheckBox> checkBoxes = Arrays.asList(kamerFacturatieCheckBox, betaaldCheckBox);
         for (JCheckBox checkBox : checkBoxes) {
@@ -764,6 +773,42 @@ public class ReserveringPopup extends JDialog {
                 checkBox.setForeground(MolvenoColor.DARK.getColor());
                 checkBox.setFont(MolvenoFont.PARAGRAPH.getFont());
                 checkBox.setFocusPainted(false);
+            }
+        }
+
+        List<JComboBox> combos = Arrays.asList(comboBoxVan, comboBoxTot);
+        for (JComboBox combo : combos) {
+            if (combo != null) {
+                combo.setBackground(MolvenoColor.LIGHT.getColor());
+                combo.setForeground(MolvenoColor.DARK.getColor());
+                combo.setFont(MolvenoFont.PARAGRAPH.getFont());
+                combo.setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor()));
+
+                Object child = combo.getAccessibleContext().getAccessibleChild(0);
+                if (child instanceof javax.swing.plaf.basic.BasicComboPopup) {
+                    javax.swing.plaf.basic.BasicComboPopup popup = (javax.swing.plaf.basic.BasicComboPopup) child;
+                    popup.getList().setBackground(MolvenoColor.LIGHT.getColor());
+                    popup.getList().setSelectionBackground(MolvenoColor.ORANGE.getColor());
+                }
+
+                ((JLabel)combo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+
+                combo.setRenderer(new DefaultListCellRenderer() {
+                    @Override
+                    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                        label.setHorizontalAlignment(SwingConstants.CENTER);
+
+                        if (isSelected) {
+                            label.setBackground(MolvenoColor.ORANGE.getColor());
+                            label.setForeground(MolvenoColor.DARK.getColor());
+                        } else {
+                            label.setBackground(MolvenoColor.LIGHT.getColor());
+                            label.setForeground(MolvenoColor.DARK.getColor());
+                        }
+                        return label;
+                    }
+                });
             }
         }
     }
@@ -865,7 +910,9 @@ public class ReserveringPopup extends JDialog {
                 deletePane,
                 botenPanel,
                 toegevoegdPanel,
-                beschikbaarPanel
+                beschikbaarPanel,
+                contentPane,
+                comboPanel
         );
 
         for (JPanel panel : panels) {
@@ -874,11 +921,11 @@ public class ReserveringPopup extends JDialog {
                 panel.setOpaque(true);
             }
         }
+        contentPane.setPreferredSize(new Dimension(900, 600));
     }
 
     private void setWindowIcon() {
         ImageIcon logo = new ImageIcon(App.class.getResource("/images/MolvenoLogo.png"));
         setIconImage(logo.getImage());
     }
-
 }
