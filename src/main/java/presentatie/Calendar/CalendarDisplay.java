@@ -449,6 +449,17 @@ public class CalendarDisplay extends JPanel {
         //Loop through the calendar grid
         for (int i = 0; i < CalGrid.size(); i++) {
             final int row = i;
+
+            BoatRecord currentBoat = boatList.get(i);
+            JLabel idLabel = boatLabels[i];
+            if (currentBoat.isBroken()) {
+                idLabel.setText(boatIDs[i] + " (defect)");
+                idLabel.setForeground(Color.GRAY);
+            } else {
+                idLabel.setText(boatIDs[i]);
+                idLabel.setForeground(MolvenoColor.DARK.getColor());
+            }
+
             boolean isBroken = boatList.get(i).isBroken();
 
             for (int j = 0; j < 50; j++) {
