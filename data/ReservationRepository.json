@@ -3,7 +3,7 @@
     "reserveringsNummer": 1,
     "customerRecord": {
       "naam": "dsfdsf",
-      "telefoonNummer": 324324,
+      "telefoonNummer": "324324",
       "email": "sfesf"
     },
     "betaald": false,
@@ -20,7 +20,7 @@
     "reserveringsNummer": 2,
     "customerRecord": {
       "naam": "esfsef",
-      "telefoonNummer": 23423,
+      "telefoonNummer": "23423",
       "email": "fefw"
     },
     "betaald": false,
@@ -37,7 +37,7 @@
     "reserveringsNummer": 3,
     "customerRecord": {
       "naam": "wefewf",
-      "telefoonNummer": 234324,
+      "telefoonNummer": "234324",
       "email": "arheerh"
     },
     "betaald": false,
@@ -54,7 +54,7 @@
     "reserveringsNummer": 4,
     "customerRecord": {
       "naam": "dsvdsf",
-      "telefoonNummer": 234324,
+      "telefoonNummer": "234324",
       "email": "sfesf"
     },
     "betaald": false,
@@ -71,7 +71,7 @@
     "reserveringsNummer": 5,
     "customerRecord": {
       "naam": "awfewf",
-      "telefoonNummer": 324234,
+      "telefoonNummer": "324234",
       "email": "sfesfse"
     },
     "betaald": false,
@@ -88,7 +88,7 @@
     "reserveringsNummer": 6,
     "customerRecord": {
       "naam": "serrgersg",
-      "telefoonNummer": 3453245,
+      "telefoonNummer": "3453245",
       "email": "segrseg"
     },
     "betaald": false,
@@ -107,7 +107,7 @@
     "reserveringsNummer": 7,
     "customerRecord": {
       "naam": "s",
-      "telefoonNummer": 1,
+      "telefoonNummer": "1",
       "email": "hfhfh"
     },
     "betaald": false,
@@ -124,7 +124,7 @@
     "reserveringsNummer": 8,
     "customerRecord": {
       "naam": "erg",
-      "telefoonNummer": 34,
+      "telefoonNummer": "34",
       "email": "34"
     },
     "betaald": false,
@@ -141,7 +141,7 @@
     "reserveringsNummer": 9,
     "customerRecord": {
       "naam": "er",
-      "telefoonNummer": 454
+      "telefoonNummer": "454"
     },
     "betaald": false,
     "kamerFacturatie": true,
@@ -157,7 +157,7 @@
     "reserveringsNummer": 10,
     "customerRecord": {
       "naam": "dg",
-      "telefoonNummer": 345
+      "telefoonNummer": "345"
     },
     "betaald": false,
     "kamerFacturatie": true,
@@ -173,7 +173,7 @@
     "reserveringsNummer": 11,
     "customerRecord": {
       "naam": "frfr",
-      "telefoonNummer": 345
+      "telefoonNummer": "345"
     },
     "betaald": false,
     "kamerFacturatie": true,
@@ -189,7 +189,7 @@
     "reserveringsNummer": 12,
     "customerRecord": {
       "naam": "gh",
-      "telefoonNummer": 455
+      "telefoonNummer": "455"
     },
     "betaald": false,
     "kamerFacturatie": true,
@@ -200,5 +200,149 @@
       "Standaard Roeiboot 4"
     ],
     "prijs": 67.5
+  },
+  {
+    "reserveringsNummer": 13,
+    "customerRecord": {
+      "naam": "Bram",
+      "telefoonNummer": "62"
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-30",
+    "begintijd": "11:00",
+    "eindtijd": "13:15",
+    "boatIDs": [
+      "Standaard Roeiboot 4"
+    ],
+    "prijs": 102.5
+  },
+  {
+    "reserveringsNummer": 14,
+    "customerRecord": {
+      "naam": "Johan",
+      "telefoonNummer": "61"
+    },
+    "betaald": true,
+    "kamerFacturatie": false,
+    "datum": "2026-04-30",
+    "begintijd": "12:45",
+    "eindtijd": "14:30",
+    "boatIDs": [
+      "Standaard Roeiboot 7"
+    ],
+    "prijs": 57.5
+  },
+  {
+    "reserveringsNummer": 15,
+    "customerRecord": {
+      "naam": "Stef",
+      "telefoonNummer": "63"
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-04-30",
+    "begintijd": "11:00",
+    "eindtijd": "14:30",
+    "boatIDs": [
+      "Standaard Roeiboot 10"
+    ],
+    "prijs": 67.5
+  },
+  {
+    "reserveringsNummer": 16,
+    "customerRecord": {
+      "naam": "Bram",
+      "telefoonNummer": "621605150"
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-04-30",
+    "begintijd": "11:15",
+    "eindtijd": "13:00",
+    "boatIDs": [
+      "Familie Roeiboot 5"
+    ],
+    "prijs": 97.5
+  },
+  {
+    "reserveringsNummer": 17,
+    "customerRecord": {
+      "naam": "Bram",
+      "telefoonNummer": "0621605150"
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-04-30",
+    "begintijd": "11:15",
+    "eindtijd": "13:00",
+    "boatIDs": [
+      "Standaard Roeiboot 2"
+    ],
+    "prijs": 80.0
+  },
+  {
+    "reserveringsNummer": 18,
+    "customerRecord": {
+      "naam": "Bram",
+      "telefoonNummer": "0621605150"
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-04-30",
+    "begintijd": "12:30",
+    "eindtijd": "14:00",
+    "boatIDs": [
+      "Standaard Roeiboot 8"
+    ],
+    "prijs": 67.5
+  },
+  {
+    "reserveringsNummer": 19,
+    "customerRecord": {
+      "naam": "Bram",
+      "telefoonNummer": "+31621605150"
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-04-30",
+    "begintijd": "11:15",
+    "eindtijd": "12:45",
+    "boatIDs": [
+      "Familie Roeiboot 3"
+    ],
+    "prijs": 82.5
+  },
+  {
+    "reserveringsNummer": 20,
+    "customerRecord": {
+      "naam": "Bram",
+      "telefoonNummer": "0621605150"
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-04-30",
+    "begintijd": "12:00",
+    "eindtijd": "13:30",
+    "boatIDs": [
+      "Standaard Roeiboot 6"
+    ],
+    "prijs": 67.5
+  },
+  {
+    "reserveringsNummer": 21,
+    "customerRecord": {
+      "naam": "Bram",
+      "telefoonNummer": "+31621605150"
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-04-30",
+    "begintijd": "13:00",
+    "eindtijd": "15:30",
+    "boatIDs": [
+      "Familie Roeiboot 2"
+    ],
+    "prijs": 137.5
   }
 ]

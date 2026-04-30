@@ -431,7 +431,7 @@ public class ReserveringPopup extends JDialog {
                 reservationService.getNewReservationNumber(),
                 new CustomerRecord(
                         nameField.getText(),
-                        (phoneNumberField.getText().isBlank()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
+                        (phoneNumberField.getText().isBlank()) ? null : phoneNumberField.getText(),
                         (emailField.getText().isEmpty()) ? null : emailField.getText()
                 ),
                 kamerFacturatieCheckBox.isSelected(),
@@ -457,19 +457,19 @@ public class ReserveringPopup extends JDialog {
 
     private boolean isFormValid() {
         if (nameField.getText().isEmpty()) {
-            errorLabel.setText("geen naam ingevuld");
+            errorLabel.setText("Geen naam ingevuld");
             return false;
         } else if (phoneNumberField.getText().isEmpty() && emailField.getText().isEmpty()) {
-            errorLabel.setText("vul telefoonnummer en/of email in");
+            errorLabel.setText("Vul telefoonnummer en/of email in");
             return false;
         } else if (boatIDs.isEmpty()) {
             errorLabel.setText("Er zijn geen boten gereserveerd");
             return false;
-        } else if (!isANumber(phoneNumberField.getText()) && !phoneNumberField.getText().isBlank()) {
-            errorLabel.setText("Telefoonnummer moet een getal zijn");
+        } else if (!CustomerRecord.isPhoneNumber(phoneNumberField.getText()) && !phoneNumberField.getText().isBlank()) {
+            errorLabel.setText("Vul een geldig telefoonnummer in");
             return false;
         } else if (currentMode == ReservationPopupMode.EDITING && timeList.indexOf((String) comboBoxVan.getSelectedItem()) >= timeList.indexOf((String) comboBoxTot.getSelectedItem())) {
-            errorLabel.setText("begintijd moet lager zijn dan eindtijd");
+            errorLabel.setText("Begintijd moet lager zijn dan eindtijd");
             return false;
         }
         errorLabel.setText("");
@@ -574,15 +574,6 @@ public class ReserveringPopup extends JDialog {
         } catch (Exception ignored) {
         }
 
-    }
-
-    public static boolean isANumber(String phoneNum) {
-        try {
-            Integer.parseInt(phoneNum);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
     }
 
     private void onDelete(ReservationRecord ReservationRecord, CalendarDisplay display) {
