@@ -160,6 +160,9 @@ public class ReserveringPopup extends JDialog {
         // applyBoatTypeRenderer();
 
         setWindowIcon();
+
+        this.pack();
+        this.setLocationRelativeTo(null);
     }
 
 
@@ -275,6 +278,9 @@ public class ReserveringPopup extends JDialog {
         styleComponents();
 
         setWindowIcon();
+
+        this.pack();
+        this.setLocationRelativeTo(null);
         // applyBoatTypeRenderer();
     }
 
@@ -709,8 +715,8 @@ public class ReserveringPopup extends JDialog {
     // Styling -------------------------------------------------------------------------------------------------------
     private void styleComponents() {
         contentPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        inputPane.setPreferredSize(new Dimension(200, 600));
-        addBoatPane.setPreferredSize(new Dimension(700, 600));
+        inputPane.setPreferredSize(new Dimension(200, 400));
+        addBoatPane.setPreferredSize(new Dimension(700, 400));
 
         for (JTable table : Arrays.asList(availableBoatsTable, addedBoatsTable)) {
             table.getColumnModel().getColumn(0).setPreferredWidth(200);
@@ -730,19 +736,24 @@ public class ReserveringPopup extends JDialog {
         for (JLabel label : labels) {
             if (label != null) {
                 label.setForeground(MolvenoColor.DARK.getColor());
-                label.setFont(MolvenoFont.PARAGRAPH.getFont());
+                label.setFont(MolvenoFont.PARAGRAPH.getFont().deriveFont(Font.BOLD));
             }
         }
 
         List<JScrollPane> scrollPanes = Arrays.asList(availableBoatsScrollPane, addedBoatsScrollPane);
+
         for (JScrollPane pane : scrollPanes) {
             if (pane != null) {
                 pane.setBackground(MolvenoColor.LIGHT.getColor());
                 pane.getViewport().setBackground(MolvenoColor.LIGHT.getColor());
                 pane.setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor()));
-                pane.setPreferredSize(new Dimension(700, 600));
+                pane.setPreferredSize(new Dimension(700, 400));
             }
         }
+        availableBoatsScrollPane.setPreferredSize(new Dimension(700, 150));
+        addedBoatsScrollPane.setPreferredSize(new Dimension(700, 250));
+        availableBoatsScrollPane.revalidate();
+        addedBoatsScrollPane.revalidate();
 
         List<JCheckBox> checkBoxes = Arrays.asList(kamerFacturatieCheckBox, betaaldCheckBox);
         for (JCheckBox checkBox : checkBoxes) {
@@ -766,6 +777,7 @@ public class ReserveringPopup extends JDialog {
             table.setSelectionForeground(MolvenoColor.DARK.getColor());
             table.setFont(MolvenoFont.PARAGRAPH.getFont());
             table.setFocusable(false);
+
 
             javax.swing.table.JTableHeader header = table.getTableHeader();
             header.setFont(MolvenoFont.PARAGRAPH.getFont());
