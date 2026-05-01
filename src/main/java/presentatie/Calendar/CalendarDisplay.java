@@ -101,7 +101,6 @@ public class CalendarDisplay extends JPanel {
                             record.boatType().getDisplayBoatType() == boatTypePicker.getSelectedItem())
                     .map(BoatRecord::boatName)
                     .toArray(String[]::new);
-            System.out.println("GET HERE");
             reLoadCalendar(boatService);
         });
 
@@ -437,6 +436,7 @@ public class CalendarDisplay extends JPanel {
 
     //Reloads the calendar display to a newly selected date
     public void reLoadCalendar(BoatService boatService) {
+        createCalendar(boatService);
         //Cancel any selected cells
         createCalendar(boatService);
         cancelSelection();
@@ -517,7 +517,8 @@ public class CalendarDisplay extends JPanel {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (e.getClickCount() == 2) {
-                            if(buttonRow[column].getBackground() == MolvenoColor.ORANGE.getColor()){
+                            System.out.println(CalGrid.get(boatIDs[row])[column].getAvailable());
+                            if(!CalGrid.get(boatIDs[row])[column].getAvailable()){
                                 ReservationRecord reservation = reservationService.getReservationWithReservationNumber(Calendar.getCalendarGrid().get(boatIDs[row])[column].getReservationNumber());
                                 var reserveringPopup = new ReserveringPopup(reservationService, reservation){
                                     @Override
