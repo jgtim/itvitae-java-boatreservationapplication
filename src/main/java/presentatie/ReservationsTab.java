@@ -139,7 +139,7 @@ public class ReservationsTab extends JPanel {
             for (ReservationRecord reservationRecord : reservationRecords) {
                 String phoneNumber;
                 if(reservationRecord.customerRecord().telefoonNummer() != null){
-                    phoneNumber = Integer.toString(reservationRecord.customerRecord().telefoonNummer());
+                    phoneNumber = reservationRecord.customerRecord().telefoonNummer();
                 }else{
                     phoneNumber = "";
                 }
