@@ -786,13 +786,26 @@ public class ReserveringPopup extends JDialog {
             field.setBorder(BorderFactory.createCompoundBorder(lineBorder, margin));
         }
 
-        List<JLabel> labels = Arrays.asList(kamerLabel, phoneNumberLabel, dateLabel, dateField, aantalLabel, beschikbaarLabel, toegevoegdLabel, vanLabel, VanLabel, Van2Label, TotLabel, Tot2Label, totLabel, priceLabel, priceField, emailLabel, nameLabel, kamerFacturatieLabel, betaaldLabel);
+        List<JLabel> labels = Arrays.asList(BotenLabel, kamerLabel, phoneNumberLabel, dateLabel, dateField, aantalLabel, beschikbaarLabel, toegevoegdLabel, vanLabel, VanLabel, Van2Label, TotLabel, Tot2Label, totLabel, priceLabel, priceField, emailLabel, nameLabel, kamerFacturatieLabel, betaaldLabel);
+
+        BotenLabel.setFont(MolvenoFont.PARAGRAPH.getFont().deriveFont(Font.BOLD));
+
+        beschikbaarPanel.setBackground(MolvenoColor.BLUE.getColor());
+        toegevoegdPanel.setBackground(MolvenoColor.BLUE.getColor());
+
+        dateInfo.setBackground(MolvenoColor.GREEN.getColor());
+        tijdInformatie.setBackground(MolvenoColor.GREEN.getColor());
+        agendaTijdInformatie.setBackground(MolvenoColor.GREEN.getColor());
+        Border labelPadding = BorderFactory.createEmptyBorder(5, 0, 5, 0);
+        dateField.setBorder(labelPadding);
+        dateLabel.setBorder(labelPadding);
+
         for (JLabel label : labels) {
-            if (label != null) {
-                label.setForeground(MolvenoColor.DARK.getColor());
-                label.setFont(MolvenoFont.PARAGRAPH.getFont().deriveFont(Font.BOLD));
+                if (label != null) {
+                    label.setForeground(MolvenoColor.DARK.getColor());
+                    label.setFont(MolvenoFont.PARAGRAPH.getFont().deriveFont(Font.BOLD));
+                }
             }
-        }
 
         List<JScrollPane> scrollPanes = Arrays.asList(availableBoatsScrollPane, addedBoatsScrollPane);
 
