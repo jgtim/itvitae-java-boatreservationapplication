@@ -149,6 +149,9 @@ public class ReserveringPopup extends JDialog {
 
         HotelDataButton.addActionListener(e -> searchButtonPressed());
 
+        roomNumberField.setEditable(false);
+        roomNumberField.setEnabled(false);
+
         initializeBoatTables();
         reloadBoatTables();
 
@@ -239,6 +242,7 @@ public class ReserveringPopup extends JDialog {
         phoneNumberField.setEditable(false);
         roomNumberField.setText((reservationRecord.customerRecord().kamerNummer() != null) ? reservationRecord.customerRecord().kamerNummer().toString() : "");
         roomNumberField.setEditable(false);
+        roomNumberField.setEnabled(false);
         emailField.setText(reservationRecord.customerRecord().email());
         emailField.setEditable(false);
         kamerFacturatieCheckBox.setSelected(reservationRecord.kamerFacturatie());
@@ -247,6 +251,7 @@ public class ReserveringPopup extends JDialog {
         betaaldCheckBox.setEnabled(false);
         addBoatButton.setEnabled(false);
         removeBoatButton.setEnabled(false);
+
 
         addBoatButton.addActionListener(e -> {addBoatButtonPressed();});
         removeBoatButton.addActionListener(e -> {removeBoatButtonPressed();});
@@ -325,6 +330,8 @@ public class ReserveringPopup extends JDialog {
         cl.next(tijdInformatie);
         addBoatButton.setEnabled(true);
         removeBoatButton.setEnabled(true);
+        roomNumberField.setEditable(false);
+        roomNumberField.setEnabled(false);
     }
 
     private void setViewMode() {
@@ -335,6 +342,8 @@ public class ReserveringPopup extends JDialog {
             buttonOK.setText("Wijzig");
             addBoatButton.setEnabled(false);
             removeBoatButton.setEnabled(false);
+            roomNumberField.setEditable(false);
+            roomNumberField.setEnabled(false);
         }
     }
 

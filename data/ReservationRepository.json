@@ -12,7 +12,7 @@
     "begintijd": "14:30",
     "eindtijd": "15:30",
     "boatIDs": [
-      "Familie Roeiboot 3"
+      "Familie Roeiboot 1"
     ],
     "prijs": 82.5
   },
@@ -250,5 +250,23 @@
       "Standaard Roeiboot 1"
     ],
     "prijs": 35.0
+  },
+  {
+    "reserveringsNummer": 16,
+    "customerRecord": {
+      "naam": "Hugo Brouwer",
+      "telefoonNummer": 697775215,
+      "email": "hugo.brouwer@example.com",
+      "kamerNummer": 314
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-05-01",
+    "begintijd": "15:45",
+    "eindtijd": "16:00",
+    "boatIDs": [
+      "1 Persoons Kayak 2"
+    ],
+    "prijs": 10.0
   }
 ]
