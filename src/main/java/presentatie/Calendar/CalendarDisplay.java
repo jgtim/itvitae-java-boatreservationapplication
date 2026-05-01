@@ -34,6 +34,7 @@ public class CalendarDisplay extends JPanel {
     private Integer[] selectedEnd = {null, null};
     private LocalDate dateSelected;
     private ReservationService reservationService;
+    private JComboBox<String> boatTypePicker = new JComboBox<>();
 
     public CalendarDisplay(ReservationService reservationService, BoatService boatService) {
         setBackground(MolvenoColor.LIGHT.getColor());
@@ -57,7 +58,6 @@ public class CalendarDisplay extends JPanel {
         datePickerPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, datePickerPanel.getPreferredSize().height));
         datePickerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JComboBox<String> boatTypePicker = new JComboBox<>();
         boatTypePicker.setBackground(MolvenoColor.BEIGE.getColor());
         boatTypePicker.setForeground(MolvenoColor.DARK.getColor());
         boatTypePicker.setFont(MolvenoFont.BUTTONLABEL.getFont());
@@ -444,13 +444,16 @@ public class CalendarDisplay extends JPanel {
         //Get the calendar information for the selected date
         Calendar = new Calendar(reservationService, dateSelected, boatIDs);
         HashMap<String, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
-        ArrayList<domain.BoatRecord> boatList = boatService.getBoatList();
+        //ArrayList<domain.BoatRecord> boatList = boatService.getBoatList();
+        Object[] boatList = boatService.getBoatList().stream()
+                .filter(record -> boatTypePicker.getSelectedItem() == "Alle Boten" ||
+                        record.boatType().getDisplayBoatType() == boatTypePicker.getSelectedItem()).toArray();
 
         //Loop through the calendar grid
-        for (int i = 0; i < CalGrid.size(); i++) {
+        for (int i = 0; i < boatList.length; i++) {
             final int row = i;
 
-            BoatRecord currentBoat = boatList.get(i);
+            BoatRecord currentBoat = (BoatRecord) boatList[i];
             JLabel idLabel = boatLabels[i];
             if (currentBoat.isBroken()) {
                 idLabel.setText(boatIDs[i] + " (defect)");
@@ -460,7 +463,7 @@ public class CalendarDisplay extends JPanel {
                 idLabel.setForeground(MolvenoColor.DARK.getColor());
             }
 
-            boolean isBroken = boatList.get(i).isBroken();
+            boolean isBroken = currentBoat.isBroken();
 
             for (int j = 0; j < 50; j++) {
                 final int column = j;
