@@ -250,5 +250,57 @@
       "Standaard Roeiboot 1"
     ],
     "prijs": 35.0
+  },
+  {
+    "reserveringsNummer": 16,
+    "customerRecord": {
+      "naam": "dfgdfg",
+      "email": "dfgdfg"
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-05-01",
+    "begintijd": "12:15",
+    "eindtijd": "13:45",
+    "boatIDs": [
+      "Standaard Roeiboot 7"
+    ],
+    "prijs": 67.5
+  },
+  {
+    "reserveringsNummer": 17,
+    "customerRecord": {
+      "naam": "ghfg",
+      "email": "hfgh"
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-05-01",
+    "begintijd": "10:00",
+    "eindtijd": "12:30",
+    "boatIDs": [
+      "Standaard Roeiboot 1",
+      "Standaard Roeiboot 3",
+      "Standaard Roeiboot 4"
+    ],
+    "prijs": 135.0
+  },
+  {
+    "reserveringsNummer": 18,
+    "customerRecord": {
+      "naam": "ftk",
+      "email": "tdky"
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-05-01",
+    "begintijd": "13:15",
+    "eindtijd": "15:15",
+    "boatIDs": [
+      "Standaard Roeiboot 1",
+      "Standaard Roeiboot 4",
+      "Standaard Roeiboot 2"
+    ],
+    "prijs": 105.0
   }
 ]

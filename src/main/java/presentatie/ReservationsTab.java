@@ -3,6 +3,7 @@ package presentatie;
 import domain.MolvenoColor;
 import domain.MolvenoFont;
 import domain.ReservationRecord;
+import service.BoatService.BoatService;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
@@ -26,7 +27,7 @@ public class ReservationsTab extends JPanel {
     private DefaultTableModel tableModel;
     private ReservationService reservationService;
 
-    public ReservationsTab(ReservationService reservationService) {
+    public ReservationsTab(ReservationService reservationService, BoatService boatService) {
         this.reservationService = reservationService;
         this.setLayout(new java.awt.BorderLayout());
         mainPanel.setBackground(MolvenoColor.LIGHT.getColor());
@@ -105,7 +106,7 @@ public class ReservationsTab extends JPanel {
                         int modelRow = table1.convertRowIndexToModel(viewRow);
                         int reservationNumber = (Integer) tableModel.getValueAt(modelRow, 0);
 
-                        var reserveringPopup = new ReserveringPopup(reservationService,
+                        var reserveringPopup = new ReserveringPopup(reservationService, boatService,
                                 reservationService.getReservationWithReservationNumber(reservationNumber)) {
                             @Override
                             public void dispose() {

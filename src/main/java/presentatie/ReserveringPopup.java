@@ -170,8 +170,9 @@ public class ReserveringPopup extends JDialog {
 
 
     // Constructor voor bestaande reserveringen
-    public ReserveringPopup(ReservationService reservationService, ReservationRecord reservationRecord) {
+    public ReserveringPopup(ReservationService reservationService, BoatService boatService, ReservationRecord reservationRecord) {
         this.reservationService = reservationService;
+        this.boatService = boatService;
 
         this.getRootPane().setDefaultButton(buttonOK);
         currentMode = ReservationPopupMode.VIEWING;
@@ -197,7 +198,6 @@ public class ReserveringPopup extends JDialog {
 
         calculateTimeSpan(OPEN_TIMES, reservationRecord.begintijd(), reservationRecord.eindtijd());
         var boatDataHandler = new BoatDataExcel();
-        boatService = new BoatServiceImpl(boatDataHandler.read());
         allBoats = boatService.getBoatList();
         this.validIDs = Arrays.asList(
                 allBoats.stream()
@@ -338,7 +338,7 @@ public class ReserveringPopup extends JDialog {
         // Check if new boats are overlapping with existing ones
         boolean isOverLapping = false;
         for (String boatID : new ArrayList<>(boatIDs)) {
-            if (reservationService.isBoatIDOverLapping(boatID, dateString, begintijd, eindtijd, currentReservation.reserveringsNummer())) {
+            if (boatService.isBoatBroken(boatID) || reservationService.isBoatIDOverLapping(boatID, dateString, begintijd, eindtijd, currentReservation.reserveringsNummer())) {
                 boatIDs.remove(boatID);
                 boatIDs.add(reservationService.getFirstAvailableBoatOfType(boatService.getBoatTypeFromID(boatID), boatIDs, boatService, begintijd, eindtijd, dateString));
             }

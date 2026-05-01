@@ -100,6 +100,7 @@ public class ReservationServiceImpl implements ReservationService {
                     subtractedBoats.add(boatRecord.boatName());
                 }
             }
+
         }
 
         for (ReservationRecord reservationRecord : reservationRecords) {
@@ -131,7 +132,7 @@ public class ReservationServiceImpl implements ReservationService {
         ArrayList<BoatRecord> boatList = boatService.getBoatList();
         for (BoatRecord boatRecord : boatList) {
             if (boatRecord.boatType() == selectedBoatType && !boatIDs.contains(boatRecord.boatName())) {
-                if (isBoatAvailableDuringTime(boatRecord.boatName(), startTime, endTime, dateString)) {
+                if (isBoatAvailableDuringTime(boatRecord.boatName(), startTime, endTime, dateString) && !boatRecord.isBroken()) {
                     return boatRecord.boatName();
                 }
             }

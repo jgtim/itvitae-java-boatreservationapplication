@@ -43,7 +43,7 @@ public class App extends JFrame {
         // Creating JPanels (tabbladen)
         JPanel agenda = new CalendarDisplay(reservationService, boatService);
         JPanel bootCatalogue = new BoatTab(boatService);
-        ReservationsTab reservations = new ReservationsTab(reservationService);
+        ReservationsTab reservations = new ReservationsTab(reservationService, boatService);
 
         // Adding JPanels to JTabbedPane
         tabPane.add("Agenda", agenda);
