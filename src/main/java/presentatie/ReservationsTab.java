@@ -14,6 +14,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ReservationsTab extends JPanel {
     private JPanel mainPanel;
@@ -135,6 +137,8 @@ public class ReservationsTab extends JPanel {
         tableModel.setRowCount(0);
         ArrayList<ReservationRecord> reservationRecords = reservationService.getReservations();
 
+        DateTimeFormatter dateDisplayFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
         if (reservationRecords != null) {
             for (ReservationRecord reservationRecord : reservationRecords) {
                 String phoneNumber;
@@ -143,12 +147,16 @@ public class ReservationsTab extends JPanel {
                 }else{
                     phoneNumber = "";
                 }
+
+                LocalDate date = LocalDate.parse(reservationRecord.datum());
+                String formattedDate = date.format(dateDisplayFormatter);
+
                 Object[] reservationFields = {
                         reservationRecord.reserveringsNummer(),
                         reservationRecord.customerRecord().naam(),
                         phoneNumber,
                         reservationRecord.customerRecord().email(),
-                        reservationRecord.datum(),
+                        formattedDate,
                         reservationRecord.begintijd(),
                         reservationRecord.eindtijd()
                         };
@@ -243,13 +251,17 @@ public class ReservationsTab extends JPanel {
         searchPanel.setBackground(MolvenoColor.BLUE.getColor());
         searchPanel.setPreferredSize(new Dimension(searchPanel.getPreferredSize().width, 60));
 
-        searchLabel.setText("<html><b>Zoeken: <b><html>");
-        searchLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
+        searchLabel.setText("Zoek op naam of reserveringsnummer:");
+        searchLabel.setFont(MolvenoFont.PARAGRAPH.getFont().deriveFont(Font.BOLD));
         searchLabel.setBackground(MolvenoColor.LIGHT.getColor());
         searchLabel.setForeground(MolvenoColor.DARK.getColor());
 
         searchField.setFont(MolvenoFont.PARAGRAPH.getFont());
         searchField.setBackground(MolvenoColor.LIGHT.getColor());
         searchField.setForeground(MolvenoColor.DARK.getColor());
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }

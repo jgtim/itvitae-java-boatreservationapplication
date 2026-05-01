@@ -695,6 +695,7 @@ public class ReserveringPopup extends JDialog {
 
     public void reloadSelectableTimes() {
         // For each element in the StartTimes combobox check if its possible to switch to
+        String oldStartTime = (String) comboBoxVan.getSelectedItem();
         var startTimes = new ArrayList<String>(timeList);
         BoatType[] boatTypes = BoatType.class.getEnumConstants();
         for (String time : timeList) {
@@ -714,8 +715,12 @@ public class ReserveringPopup extends JDialog {
             }
         }
         comboBoxVan.setModel(new DefaultComboBoxModel<>(startTimes.toArray()));
+        if (startTimes.contains(oldStartTime)) {
+            comboBoxVan.setSelectedItem(oldStartTime);
+        }
 
         // For each element in the EndTimes combobox check if its possible to switch to
+        String oldEndTime = (String) comboBoxTot.getSelectedItem();
         var endTimes = new ArrayList<String>(timeList);
         for (String time : timeList) {
             for (BoatType boatType : boatTypes) {
@@ -737,6 +742,9 @@ public class ReserveringPopup extends JDialog {
             }
         }
         comboBoxTot.setModel(new DefaultComboBoxModel<>(endTimes.toArray()));
+        if (endTimes.contains(oldEndTime)) {
+            comboBoxTot.setSelectedItem(oldEndTime);
+        }
 
 
     }

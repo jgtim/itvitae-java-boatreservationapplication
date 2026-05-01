@@ -1,4 +1,4 @@
-package presentatie.BoatTab;
+package presentatie.BoatCatalogue;
 
 import domain.*;
 import service.BoatService.BoatService;
@@ -13,20 +13,19 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class BoatTab extends JPanel {
+public class BoatCatalogue extends JPanel {
     private BoatStatusHandlerImpl boatStatusHandler;
     private BoatServiceImpl boatService;
 
 
-    public BoatTab(BoatService boatService) {
-        // Setting BoatTab layout as BorderLayout
+    public BoatCatalogue(BoatService boatService) {
+        // Setting BoatCatalogue layout as BorderLayout
         setLayout(new BorderLayout());
         this.boatService = (BoatServiceImpl) boatService;
 
         // RIGHT SIDE -------------------------------------------------------------------------------------------------
         // JPanel boat details (on right side of tab)
         JPanel boatDetails = new JPanel(new BorderLayout(10, 10));
-        boatDetails.setBorder(new EmptyBorder(10, 10, 10, 10));
         boatDetails.setBackground(MolvenoColor.LIGHT.getColor());
 
         // Button for setting boat isBroken status
@@ -36,7 +35,11 @@ public class BoatTab extends JPanel {
         boatBrokenBtn.setFont(MolvenoFont.BUTTONLABEL.getFont());
         boatBrokenBtn.setForeground(MolvenoColor.DARK.getColor());
         boatBrokenBtn.setBackground(MolvenoColor.BEIGE.getColor());
-        boatBrokenBtn.setVisible(false);
+        boatBrokenBtn.setEnabled(false);
+        boatBrokenBtn.setOpaque(false);
+        boatBrokenBtn.setContentAreaFilled(false);
+        boatBrokenBtn.setBorderPainted(false);
+        boatBrokenBtn.setText("");
 
         // Wrapper for boatBrokenBtn
         JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -45,21 +48,34 @@ public class BoatTab extends JPanel {
 
         boatDetails.add(buttonWrapper, BorderLayout.SOUTH);
 
+        JPanel detailHeaderWrapper = new JPanel(new BorderLayout());
+        detailHeaderWrapper.setBackground(MolvenoColor.BLUE.getColor());
+        detailHeaderWrapper.setPreferredSize(new Dimension(0, 60));
+        detailHeaderWrapper.setBorder(new EmptyBorder(0, 15, 0, 0));
+
         // Header Button (NORTH on JPanel boatDetails)
-        JButton detailHeaderBtn = new JButton("Zoek en selecteer een boot aan de linkerzijde.");
+        JButton detailHeaderBtn = new JButton("");
         detailHeaderBtn.setContentAreaFilled(false);
         detailHeaderBtn.setBorderPainted(false);
         detailHeaderBtn.setFocusPainted(false);
         detailHeaderBtn.setFont(MolvenoFont.H3.getFont());
         detailHeaderBtn.setForeground(MolvenoColor.DARK.getColor());
-        detailHeaderBtn.setBackground(MolvenoColor.BEIGE.getColor());
+        detailHeaderBtn.setHorizontalAlignment(SwingConstants.CENTER);
+
+        detailHeaderWrapper.add(detailHeaderBtn, BorderLayout.CENTER);
+
         // Adding Header Button to North side boatDetails JPanel
-        boatDetails.add(detailHeaderBtn, BorderLayout.NORTH);
+        boatDetails.add(detailHeaderWrapper, BorderLayout.NORTH);
 
         // JPanel detailPanel, divided in LEFT and RIGHT, below detailHeaderBtn
         JPanel detailPanel = new JPanel(new GridLayout(1, 2));
         detailPanel.setBorder(BorderFactory.createLineBorder(MolvenoColor.DARK.getColor()));
         detailPanel.setBackground(MolvenoColor.LIGHT.getColor());
+
+        JPanel centerContentWrapper = new JPanel(new BorderLayout());
+        centerContentWrapper.setOpaque(false);
+        centerContentWrapper.setBorder(new EmptyBorder(10, 10, 10, 10));
+        centerContentWrapper.add(detailPanel, BorderLayout.CENTER);
 
         // LEFT, 1st column of detailPanel; text in the form of JLabel detailLabel
         JLabel detailLabel = new JLabel("");
@@ -75,7 +91,7 @@ public class BoatTab extends JPanel {
         JPanel photoPanel = new JPanel(new GridBagLayout());
         photoPanel.setFont(MolvenoFont.PARAGRAPH.getFont());
         photoPanel.setForeground(MolvenoColor.DARK.getColor());
-        photoPanel.setBackground(MolvenoColor.BLUE.getColor());
+        photoPanel.setBackground(MolvenoColor.GREEN.getColor());
 
 
 
@@ -85,8 +101,13 @@ public class BoatTab extends JPanel {
         photoPanel.add(photoLabel);
         detailPanel.add(photoPanel);
 
-        // Add JPanel detailPanel (with on LEFT detailLabel and on RIGHT photoPanel) to JPanel boatDetails
-        boatDetails.add(detailPanel, BorderLayout.CENTER);
+        JPanel rightSideContentContainer = new JPanel();
+        rightSideContentContainer.setLayout(new BoxLayout(rightSideContentContainer, BoxLayout.Y_AXIS));
+        rightSideContentContainer.setOpaque(false);
+        rightSideContentContainer.add(Box.createVerticalStrut(30));
+        rightSideContentContainer.add(centerContentWrapper);
+
+        boatDetails.add(rightSideContentContainer, BorderLayout.CENTER);
 
 
         // --- SIDEBAR ON LEFT ----------------------------------------------------------------------------------------
@@ -120,80 +141,107 @@ public class BoatTab extends JPanel {
         JScrollPane boatScrollPane = new JScrollPane(boatSidePanel);
         boatScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // just making sure
         boatScrollPane.getVerticalScrollBar().setUnitIncrement(16); // smoother scrolling, otherwise too slow
-        boatScrollPane.setPreferredSize(new Dimension(180, 0)); // set Thumb and Track width
+        boatScrollPane.setPreferredSize(new Dimension(270, 0)); // set Thumb and Track width
 
 
-        // SEARCHBAR ON TOP OF LEFT SCROLL PANE ------------------------------------------------------------------------
-        // Creating a searchbar in the form of JTextField boatSearchBar
-        JTextField boatSearchBar = new JTextField();
+//        // SEARCHBAR ON TOP OF LEFT SCROLL PANE ------------------------------------------------------------------------
+//        // Creating a searchbar in the form of JTextField boatSearchBar
+//        JTextField boatSearchBar = new JTextField();
+//
+//        // Adjusting look and feel of boatSearchBar by using a TitledBorder
+//        Font searchBarFont = MolvenoFont.PARAGRAPH.getFont();
+//        TitledBorder searchBarBorder = BorderFactory.createTitledBorder(
+//                BorderFactory.createLineBorder(MolvenoColor.DARK.getColor()),
+//                "Zoek je boot: ",
+//                TitledBorder.LEFT,
+//                TitledBorder.TOP,
+//                searchBarFont,
+//                MolvenoColor.DARK.getColor());
+//
+//        // Using Titled Border and adjusting rest of Look and Feel
+//        boatSearchBar.setBorder(searchBarBorder);
+//        boatSearchBar.setPreferredSize(new Dimension(260, 60));
+//        boatSearchBar.setFont(MolvenoFont.PARAGRAPH.getFont());
+//        boatSearchBar.setForeground(MolvenoColor.DARK.getColor());
 
-        // Adjusting look and feel of boatSearchBar by using a TitledBorder
-        Font searchBarFont = MolvenoFont.PARAGRAPH.getFont();
-        TitledBorder searchBarBorder = BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(MolvenoColor.DARK.getColor()),
-                "Zoek je boot: ",
-                TitledBorder.LEFT,
-                TitledBorder.TOP,
-                searchBarFont,
-                MolvenoColor.DARK.getColor());
+        JPanel boatPanel = new JPanel(new BorderLayout());
+        boatPanel.setBackground(MolvenoColor.BLUE.getColor());
 
-        // Using Titled Border and adjusting rest of Look and Feel
-        boatSearchBar.setBorder(searchBarBorder);
-        boatSearchBar.setPreferredSize(new Dimension(260, 60));
-        boatSearchBar.setFont(MolvenoFont.PARAGRAPH.getFont());
-        boatSearchBar.setForeground(MolvenoColor.DARK.getColor());
+        JLabel boatLabel = new JLabel("Bekijk hieronder alle boten:");
+        boatLabel.setFont(MolvenoFont.PARAGRAPH.getFont().deriveFont(Font.BOLD));
+        boatLabel.setForeground(MolvenoColor.DARK.getColor());
+        boatLabel.setBackground(MolvenoColor.BLUE.getColor());
+        boatLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        boatLabel.setVerticalAlignment(SwingConstants.CENTER);
+        boatPanel.add(boatLabel);
 
+        JPanel sidebarHeaderWrapper = new JPanel(new BorderLayout());
+        sidebarHeaderWrapper.setBackground(MolvenoColor.BLUE.getColor());
+        sidebarHeaderWrapper.setPreferredSize(new Dimension(290, 60));
+        sidebarHeaderWrapper.add(boatPanel, BorderLayout.CENTER);
 
-        // Searchbar Logic
-        boatSearchBar.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void changedUpdate(DocumentEvent e) { filter(); }
-            @Override
-            public void removeUpdate(DocumentEvent e) { filter(); }
-            @Override
-            public void insertUpdate(DocumentEvent e) { filter(); }
-
-            // Method to filter what is typed in the Search Bar
-            public void filter() {
-                // Creating String 'filter' with is set to whatever text is typed in the boatSearchBar (and changed to all lowercase)
-                String filter = boatSearchBar.getText().toLowerCase();
-
-                // Checking which of the two cards in CardLayout is currently showing
-                JPanel activePanel;
-                if (boatTypePanel.isShowing()) { activePanel = boatTypePanel; }
-                else { activePanel = boatTypeMemberPanel; }
-
-                // Creating Component Array to include the JButtons and created strut (for margins). Need to hide both for pretty view!
-                Component[] components = activePanel.getComponents();
-                for (int i = 0; i < components.length; i++) {
-                    Component comp = components[i];
-                    if (comp instanceof JButton) {
-                        JButton btn = (JButton) comp;
-                        boolean matches = btn.getText().toLowerCase().contains(filter);
-                        btn.setVisible(matches);
-
-                        // Look at the NEXT component (the strut) and match its visibility to the button
-                        if (i + 1 < components.length && !(components[i + 1] instanceof JButton)) {
-                            components[i + 1].setVisible(matches);
-                        }
-                    }
-                }
-                boatTypePanel.revalidate();
-                boatTypePanel.repaint();
-            }
-        });
+//        // Searchbar Logic
+//        boatSearchBar.getDocument().addDocumentListener(new DocumentListener() {
+//            @Override
+//            public void changedUpdate(DocumentEvent e) { filter(); }
+//            @Override
+//            public void removeUpdate(DocumentEvent e) { filter(); }
+//            @Override
+//            public void insertUpdate(DocumentEvent e) { filter(); }
+//
+//            // Method to filter what is typed in the Search Bar
+//            public void filter() {
+//                // Creating String 'filter' with is set to whatever text is typed in the boatSearchBar (and changed to all lowercase)
+//                String filter = boatSearchBar.getText().toLowerCase();
+//
+//                // Checking which of the two cards in CardLayout is currently showing
+//                JPanel activePanel;
+//                if (boatTypePanel.isShowing()) { activePanel = boatTypePanel; }
+//                else { activePanel = boatTypeMemberPanel; }
+//
+//                // Creating Component Array to include the JButtons and created strut (for margins). Need to hide both for pretty view!
+//                Component[] components = activePanel.getComponents();
+//                for (int i = 0; i < components.length; i++) {
+//                    Component comp = components[i];
+//                    if (comp instanceof JButton) {
+//                        JButton btn = (JButton) comp;
+//                        boolean matches = btn.getText().toLowerCase().contains(filter);
+//                        btn.setVisible(matches);
+//
+//                        // Look at the NEXT component (the strut) and match its visibility to the button
+//                        if (i + 1 < components.length && !(components[i + 1] instanceof JButton)) {
+//                            components[i + 1].setVisible(matches);
+//                        }
+//                    }
+//                }
+//                boatTypePanel.revalidate();
+//                boatTypePanel.repaint();
+//            }
+//        });
         // -------------------------------------------------------------------------------------------------------------
 
         // Create JPanel wrapper for boatSearchBar so margins can be added
-        JPanel boatSearchBarWrapper = new JPanel(new BorderLayout());
-        boatSearchBarWrapper.setBackground(MolvenoColor.LIGHT.getColor());
-        boatSearchBarWrapper.setBorder(new EmptyBorder(10, 10, 10, 10));
-        boatSearchBarWrapper.add(boatSearchBar, BorderLayout.CENTER);
+//        JPanel boatSearchBarWrapper = new JPanel(new BorderLayout());
+//        boatSearchBarWrapper.setBackground(MolvenoColor.LIGHT.getColor());
+//        boatSearchBarWrapper.setBorder(new EmptyBorder(10, 10, 10, 10));
+//        boatSearchBarWrapper.add(boatSearchBar, BorderLayout.CENTER);
 
         // Create JPanel wrapper for combining boatSearchBarWrapper (NORTH) and boatScrollPane (CENTER)
+// 1. Create the whitespace spacer (30px high)
+        Component headerSpacer = Box.createVerticalStrut(30);
+
+        JPanel sidebarHeaderContainer = new JPanel();
+        sidebarHeaderContainer.setLayout(new BoxLayout(sidebarHeaderContainer, BoxLayout.Y_AXIS));
+        sidebarHeaderContainer.setOpaque(false);
+
+        sidebarHeaderContainer.add(sidebarHeaderWrapper);
+        sidebarHeaderContainer.add(headerSpacer);
+
         JPanel sidebarWrapper = new JPanel(new BorderLayout());
-        sidebarWrapper.setPreferredSize(new Dimension(260, 0));
-        sidebarWrapper.add(boatSearchBarWrapper, BorderLayout.NORTH);
+        sidebarWrapper.setPreferredSize(new Dimension(290, 0));
+        sidebarWrapper.setBackground(MolvenoColor.LIGHT.getColor());
+
+        sidebarWrapper.add(sidebarHeaderContainer, BorderLayout.NORTH);
         sidebarWrapper.add(boatScrollPane, BorderLayout.CENTER);
 
         add(sidebarWrapper, BorderLayout.WEST);
@@ -271,7 +319,11 @@ public class BoatTab extends JPanel {
             // Creating interaction between Boat Buttons in JScrollPane and JButton detailHeader
             boatBtn.addActionListener(e -> {
                         header.setText(b.boatName());
-                        boatBrokenBtn.setVisible(true);
+                        boatBrokenBtn.setEnabled(true);
+                        boatBrokenBtn.setOpaque(true);
+                        boatBrokenBtn.setContentAreaFilled(true);
+                        boatBrokenBtn.setBorderPainted(true);
+                        boatBrokenBtn.setBackground(MolvenoColor.BEIGE.getColor());
 
                         // Mini method to refresh UI and get latest version of Boat Record
                         Runnable refreshDisplay = () -> {
@@ -290,8 +342,8 @@ public class BoatTab extends JPanel {
                                     "<b>Elektrische motor:</b> " + (b.isElectric() ? "Ja" : "Nee") + "<br>" +
                                     "<b>Reddingsvest aan boord:</b> " + (b.hasLifeJackets() ? "Ja" : "Nee") + "<br><br>" +
 
-                                    "<b>Prijs per 15 minuten:</b> " + b.price15() + " euro <br>" +
-                                    "<b>Prijs per 30 minuten:</b> " + b.price30() + " euro <br><br>" +
+                                    "<b>Prijs per 15 minuten:</b> &euro;" + String.format("%.2f", b.price15()) + "<br>" +
+                                    "<b>Prijs per 30 minuten:</b> &euro;" + String.format("%.2f", b.price30()) + "<br><br>" +
 
                                     "<b>Status: <b>" + (current.isBroken() ? "DEFECT" : "Klaar voor gebruik") +
 

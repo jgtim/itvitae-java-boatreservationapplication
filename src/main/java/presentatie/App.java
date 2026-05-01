@@ -3,7 +3,7 @@ package presentatie;
 import domain.MolvenoColor;
 import domain.MolvenoFont;
 import domain.TabIndex;
-import presentatie.BoatTab.BoatTab;
+import presentatie.BoatCatalogue.BoatCatalogue;
 import presentatie.Calendar.CalendarDisplay;
 import service.BoatService.BoatService;
 import service.ReservationService.ReservationService;
@@ -42,7 +42,7 @@ public class App extends JFrame {
 
         // Creating JPanels (tabbladen)
         JPanel agenda = new CalendarDisplay(reservationService, boatService);
-        JPanel bootCatalogue = new BoatTab(boatService);
+        JPanel bootCatalogue = new BoatCatalogue(boatService);
         ReservationsTab reservations = new ReservationsTab(reservationService, boatService);
 
         // Adding JPanels to JTabbedPane
