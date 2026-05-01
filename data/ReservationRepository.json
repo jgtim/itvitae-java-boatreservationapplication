@@ -268,5 +268,23 @@
       "1 Persoons Kayak 2"
     ],
     "prijs": 10.0
+  },
+  {
+    "reserveringsNummer": 17,
+    "customerRecord": {
+      "naam": "Hugo Brouwer",
+      "telefoonNummer": 697775215,
+      "email": "hugo.brouwer@example.com",
+      "kamerNummer": 314
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-05-01",
+    "begintijd": "10:45",
+    "eindtijd": "11:00",
+    "boatIDs": [
+      "Standaard Roeiboot 9"
+    ],
+    "prijs": 12.5
   }
 ]

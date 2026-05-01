@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import java.time.format.DateTimeFormatter;
+
 
 public class ReserveringPopup extends JDialog {
     private JPanel contentPane;
@@ -113,7 +115,8 @@ public class ReserveringPopup extends JDialog {
         vanLabel.setText(van);
         totLabel.setText(tot);
         calculateTimeSpan(this.DisplayTab.getCalendar().timeBoxes, van, tot);
-        dateField.setText(datum.toString());
+        // dateField.setText(datum.toString());
+        dateField.setText(formatDisplayDate(datum));
         var boatDataHandler = new BoatDataExcel();
         allBoats = boatDataHandler.read();
         this.validIDs = Arrays.asList(
@@ -233,7 +236,9 @@ public class ReserveringPopup extends JDialog {
         });
 
         // Populate the fields of the popup with the selected reservation
-        dateField.setText(reservationRecord.datum());
+        // dateField.setText(reservationRecord.datum());
+        LocalDate existingDate = LocalDate.parse(reservationRecord.datum());
+        dateField.setText(formatDisplayDate(existingDate));
         vanLabel.setText(reservationRecord.begintijd());
         totLabel.setText(reservationRecord.eindtijd());
         nameField.setText(reservationRecord.customerRecord().naam());
@@ -958,5 +963,10 @@ public class ReserveringPopup extends JDialog {
     private void setWindowIcon() {
         ImageIcon logo = new ImageIcon(App.class.getResource("/images/MolvenoLogo.png"));
         setIconImage(logo.getImage());
+    }
+
+    private String formatDisplayDate(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return date.format(formatter);
     }
 }
