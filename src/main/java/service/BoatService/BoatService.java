@@ -14,4 +14,6 @@ public interface BoatService {
 
     double getBoatPrice15FromName(String name) throws Exception;
     double getBoatPrice30FromName(String name) throws Exception;
+
+    boolean isBoatBroken(String boatID);
 }

@@ -250,5 +250,23 @@
       "Standaard Roeiboot 1"
     ],
     "prijs": 35.0
+  },
+  {
+    "reserveringsNummer": 16,
+    "customerRecord": {
+      "naam": "sfaesf",
+      "email": "aewfaew"
+    },
+    "betaald": false,
+    "kamerFacturatie": false,
+    "datum": "2026-05-01",
+    "begintijd": "12:00",
+    "eindtijd": "13:00",
+    "boatIDs": [
+      "Standaard Roeiboot 1",
+      "Standaard Roeiboot 4",
+      "Standaard Roeiboot 5"
+    ],
+    "prijs": 135.0
   }
 ]

@@ -517,7 +517,7 @@ public class CalendarDisplay extends JPanel {
                         if (e.getClickCount() == 2) {
                             if(buttonRow[column].getBackground() == MolvenoColor.ORANGE.getColor()){
                                 ReservationRecord reservation = reservationService.getReservationWithReservationNumber(Calendar.getCalendarGrid().get(boatIDs[row])[column].getReservationNumber());
-                                var reserveringPopup = new ReserveringPopup(reservationService, reservation){
+                                var reserveringPopup = new ReserveringPopup(reservationService, boatService, reservation){
                                     @Override
                                     public void dispose() {
                                         super.dispose();
