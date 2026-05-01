@@ -13,6 +13,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ReservationsTab extends JPanel {
     private JPanel mainPanel;
@@ -134,6 +136,8 @@ public class ReservationsTab extends JPanel {
         tableModel.setRowCount(0);
         ArrayList<ReservationRecord> reservationRecords = reservationService.getReservations();
 
+        DateTimeFormatter dateDisplayFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
         if (reservationRecords != null) {
             for (ReservationRecord reservationRecord : reservationRecords) {
                 String phoneNumber;
@@ -142,12 +146,16 @@ public class ReservationsTab extends JPanel {
                 }else{
                     phoneNumber = "";
                 }
+
+                LocalDate date = LocalDate.parse(reservationRecord.datum());
+                String formattedDate = date.format(dateDisplayFormatter);
+
                 Object[] reservationFields = {
                         reservationRecord.reserveringsNummer(),
                         reservationRecord.customerRecord().naam(),
                         phoneNumber,
                         reservationRecord.customerRecord().email(),
-                        reservationRecord.datum(),
+                        formattedDate,
                         reservationRecord.begintijd(),
                         reservationRecord.eindtijd()
                         };
