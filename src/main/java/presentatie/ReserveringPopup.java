@@ -123,7 +123,7 @@ public class ReserveringPopup extends JDialog {
         this.reservationService = reservationService;
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+        // getRootPane().setDefaultButton(buttonOK);
 
         buttonOK.addActionListener(e -> onOK());
         buttonCancel.addActionListener(e -> onCancel());
@@ -173,6 +173,10 @@ public class ReserveringPopup extends JDialog {
     // Constructor voor bestaande reserveringen
     public ReserveringPopup(ReservationService reservationService, ReservationRecord reservationRecord) {
         this.reservationService = reservationService;
+
+        this.getRootPane().setDefaultButton(buttonOK);
+        currentMode = ReservationPopupMode.VIEWING;
+
         //TODO REMOVE
         contentPane.remove(HotelDataButton);
         currentMode = ReservationPopupMode.VIEWING;
@@ -482,7 +486,7 @@ public class ReserveringPopup extends JDialog {
                 reservationService.getNewReservationNumber(),
                 new CustomerRecord(
                         nameField.getText(),
-                        (phoneNumberField.getText().isBlank()) ? null : Integer.parseInt(phoneNumberField.getText().replace(" ", "")),
+                        (phoneNumberField.getText().isBlank()) ? null : phoneNumberField.getText(),
                         (emailField.getText().isEmpty()) ? null : emailField.getText(),
                         (roomNumberField.getText().isBlank()) ? null : Integer.parseInt(roomNumberField.getText().replace(" ", ""))
 
@@ -518,8 +522,8 @@ public class ReserveringPopup extends JDialog {
         } else if (boatIDs.isEmpty()) {
             errorLabel.setText("Er zijn geen boten gereserveerd");
             return false;
-        } else if (!isANumber(phoneNumberField.getText()) && !phoneNumberField.getText().isBlank()) {
-            errorLabel.setText("Telefoonnummer moet een getal zijn");
+        } else if (!CustomerRecord.isPhoneNumber(phoneNumberField.getText()) && !phoneNumberField.getText().isBlank()) {
+            errorLabel.setText("Vul een geldig telefoonnummer in");
             return false;
         } else if (currentMode == ReservationPopupMode.EDITING && timeList.indexOf((String) comboBoxVan.getSelectedItem()) >= timeList.indexOf((String) comboBoxTot.getSelectedItem())) {
             errorLabel.setText("Begintijd moet lager zijn dan eindtijd");
