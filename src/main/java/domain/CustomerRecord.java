@@ -2,11 +2,11 @@ package domain;
 
 import java.util.regex.Pattern;
 
-public record CustomerRecord(String naam, String telefoonNummer, String email) {
+public record CustomerRecord(String naam, String telefoonNummer, String email, Integer kamerNummer) {
 
-    public CustomerRecord(String naam, String telefoonOfEmail) {
-        this(naam, isPhoneNumber(telefoonOfEmail) ? telefoonOfEmail : "", isPhoneNumber(telefoonOfEmail) ? "N/A" : telefoonOfEmail);
-    }
+//    public CustomerRecord(String naam, String telefoonOfEmail) {
+//        this(naam, isPhoneNumber(telefoonOfEmail) ? telefoonOfEmail : "", isPhoneNumber(telefoonOfEmail) ? "N/A" : telefoonOfEmail);
+//    }
 
     @Override
     public String toString() {

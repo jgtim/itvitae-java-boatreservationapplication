@@ -8,6 +8,8 @@ import service.BoatService.BoatServiceImpl;
 import service.ReservationService.ReservationService;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
@@ -51,6 +53,27 @@ public class ReserveringPopup extends JDialog {
     private JPanel deletePane;
     private JButton buttonDelete;
     private JLabel priceField;
+    private JTextField roomNumberField;
+    private JPanel botenPanel;
+    private JScrollPane availableBoatsScrollPane;
+    private JScrollPane addedBoatsScrollPane;
+    private JPanel beschikbaarPanel;
+    private JPanel toegevoegdPanel;
+    private JLabel nameLabel;
+    private JLabel phoneNumberLabel;
+    private JLabel kamerFacturatieLabel;
+    private JLabel betaaldLabel;
+    private JLabel emailLabel;
+    private JLabel priceLabel;
+    private JLabel VanLabel;
+    private JLabel TotLabel;
+    private JLabel Van2Label;
+    private JLabel Tot2Label;
+    private JLabel BotenLabel;
+    private JLabel beschikbaarLabel;
+    private JLabel toegevoegdLabel;
+    private JLabel aantalLabel;
+    private JPanel comboPanel;
     private LocalDate datum;
     private String begintijd;
     private String eindtijd;
@@ -100,7 +123,7 @@ public class ReserveringPopup extends JDialog {
         this.reservationService = reservationService;
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+        // getRootPane().setDefaultButton(buttonOK);
 
         buttonOK.addActionListener(e -> onOK());
         buttonCancel.addActionListener(e -> onCancel());
@@ -132,6 +155,17 @@ public class ReserveringPopup extends JDialog {
         selectedBoatType = boatService.getBoatTypeFromID(preSelectedBoat);
         addBoat();
         addedBoatsTable.setRowSelectionInterval(0, 0);
+
+        styleBackgrounds();
+        styleButtons();
+        styleTables();
+        styleComponents();
+        // applyBoatTypeRenderer();
+
+        setWindowIcon();
+
+        this.pack();
+        this.setLocationRelativeTo(null);
     }
 
 
@@ -139,6 +173,10 @@ public class ReserveringPopup extends JDialog {
     // Constructor voor bestaande reserveringen
     public ReserveringPopup(ReservationService reservationService, ReservationRecord reservationRecord) {
         this.reservationService = reservationService;
+
+        this.getRootPane().setDefaultButton(buttonOK);
+        currentMode = ReservationPopupMode.VIEWING;
+
         //TODO REMOVE
         contentPane.remove(HotelDataButton);
         currentMode = ReservationPopupMode.VIEWING;
@@ -198,22 +236,8 @@ public class ReserveringPopup extends JDialog {
         nameField.setEditable(false);
         phoneNumberField.setText((reservationRecord.customerRecord().telefoonNummer() != null) ? reservationRecord.customerRecord().telefoonNummer().toString() : "");
         phoneNumberField.setEditable(false);
-        emailField.setText(reservationRecord.customerRecord().email());
-        emailField.setEditable(false);
-        kamerFacturatieCheckBox.setSelected(reservationRecord.kamerFacturatie());
-        kamerFacturatieCheckBox.setEnabled(false);
-        betaaldCheckBox.setSelected(reservationRecord.betaald());
-        betaaldCheckBox.setEnabled(false);
-        addBoatButton.setEnabled(false);
-        removeBoatButton.setEnabled(false);
-        // Populate the fields of the popup with the selected reservation
-        dateField.setText(reservationRecord.datum());
-        vanLabel.setText(reservationRecord.begintijd());
-        totLabel.setText(reservationRecord.eindtijd());
-        nameField.setText(reservationRecord.customerRecord().naam());
-        nameField.setEditable(false);
-        phoneNumberField.setText((reservationRecord.customerRecord().telefoonNummer() != null) ? reservationRecord.customerRecord().telefoonNummer().toString() : "");
-        phoneNumberField.setEditable(false);
+        roomNumberField.setText((reservationRecord.customerRecord().kamerNummer() != null) ? reservationRecord.customerRecord().kamerNummer().toString() : "");
+        roomNumberField.setEditable(false);
         emailField.setText(reservationRecord.customerRecord().email());
         emailField.setEditable(false);
         kamerFacturatieCheckBox.setSelected(reservationRecord.kamerFacturatie());
@@ -242,6 +266,17 @@ public class ReserveringPopup extends JDialog {
         initializeBoatTables();
         reloadBoatTables();
         reloadSelectableTimes();
+
+        styleBackgrounds();
+        styleButtons();
+        styleTables();
+        styleComponents();
+
+        setWindowIcon();
+
+        this.pack();
+        this.setLocationRelativeTo(null);
+        // applyBoatTypeRenderer();
     }
 
     //this calculates the cost of existing boats
@@ -255,9 +290,8 @@ public class ReserveringPopup extends JDialog {
             if (add15) {
                 price += boatPrice15;
             }
-            priceField.setText("€" + String.format("%.2f", price));
         }
-
+        priceField.setText("€" + String.format("%.2f", price));
     }
 
     private ReserveringPopup getReserveringPopup() {
@@ -318,7 +352,6 @@ public class ReserveringPopup extends JDialog {
                 .eindtijd(comboBoxTot.getSelectedItem().toString())
                 .boatIDs(boatIDs)
                 .build();
-        System.out.println(updatedReservation);
         reservationService.updateReservation(updatedReservation);
         vanLabel.setText((String) comboBoxVan.getSelectedItem());
         totLabel.setText((String) comboBoxTot.getSelectedItem());
@@ -414,6 +447,7 @@ public class ReserveringPopup extends JDialog {
                 phoneNumberField.setText(currentGuest.telefoonnummer() == null ? "" : String.valueOf(currentGuest.telefoonnummer()));
                 emailField.setText(currentGuest.email());
                 kamerFacturatieCheckBox.setSelected(true);
+                roomNumberField.setText(String.valueOf(currentGuest.kamernummer()));
             }
         };
         searchWindow.pack();
@@ -453,7 +487,9 @@ public class ReserveringPopup extends JDialog {
                 new CustomerRecord(
                         nameField.getText(),
                         (phoneNumberField.getText().isBlank()) ? null : phoneNumberField.getText(),
-                        (emailField.getText().isEmpty()) ? null : emailField.getText()
+                        (emailField.getText().isEmpty()) ? null : emailField.getText(),
+                        (roomNumberField.getText().isBlank()) ? null : Integer.parseInt(roomNumberField.getText().replace(" ", ""))
+
                 ),
                 betaaldCheckBox.isSelected(),
                 kamerFacturatieCheckBox.isSelected(),
@@ -463,7 +499,7 @@ public class ReserveringPopup extends JDialog {
                 boatIDs,
                 price
 
-        );
+                );
     }
 
     private void onCancel() {
@@ -491,6 +527,9 @@ public class ReserveringPopup extends JDialog {
             return false;
         } else if (currentMode == ReservationPopupMode.EDITING && timeList.indexOf((String) comboBoxVan.getSelectedItem()) >= timeList.indexOf((String) comboBoxTot.getSelectedItem())) {
             errorLabel.setText("Begintijd moet lager zijn dan eindtijd");
+            return false;
+        } else if  (!isANumber(roomNumberField.getText()) && !roomNumberField.getText().isBlank()) {
+            errorLabel.setText("Kamernummer moet een getal zijn");
             return false;
         }
         errorLabel.setText("");
@@ -523,6 +562,11 @@ public class ReserveringPopup extends JDialog {
         availableBoatsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addedBoatsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+        availableBoatsTable.getTableHeader().setReorderingAllowed(false);
+        addedBoatsTable.getTableHeader().setReorderingAllowed(false);
+
+        availableBoatsTable.getTableHeader().setResizingAllowed(false);
+        addedBoatsTable.getTableHeader().setResizingAllowed(false);
 
         addedBoatsTable.addMouseListener(new MouseAdapter() {
             @Override
@@ -597,6 +641,15 @@ public class ReserveringPopup extends JDialog {
 
     }
 
+    public static boolean isANumber(String phoneNum) {
+        try {
+            Integer.parseInt(phoneNum);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     private void onDelete(ReservationRecord ReservationRecord, CalendarDisplay display) {
         reservationService.deleteReservation(ReservationRecord);
 
@@ -663,4 +716,216 @@ public class ReserveringPopup extends JDialog {
         return result;
     }
 
+    // Styling -------------------------------------------------------------------------------------------------------
+    private void styleComponents() {
+        contentPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        inputPane.setPreferredSize(new Dimension(200, 400));
+        addBoatPane.setPreferredSize(new Dimension(700, 400));
+
+        for (JTable table : Arrays.asList(availableBoatsTable, addedBoatsTable)) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(200);
+            table.getColumnModel().getColumn(1).setPreferredWidth(100);
+            table.getColumnModel().getColumn(2).setPreferredWidth(100);
+        }
+
+        List<JTextField> fields = Arrays.asList(nameField, phoneNumberField, emailField, boatAmountField);
+        int padding = 5;
+
+        for (JTextField field : fields) {
+            field.setBackground(MolvenoColor.LIGHT.getColor());
+            field.setForeground(MolvenoColor.DARK.getColor());
+            field.setFont(MolvenoFont.PARAGRAPH.getFont());
+            field.setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor()));
+
+            Border lineBorder = BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor());
+            Border margin = BorderFactory.createEmptyBorder(padding, padding, padding, padding);
+            field.setBorder(BorderFactory.createCompoundBorder(lineBorder, margin));
+        }
+
+        List<JLabel> labels = Arrays.asList(dateLabel, phoneNumberLabel, dateField, aantalLabel, beschikbaarLabel, toegevoegdLabel, vanLabel, VanLabel, Van2Label, TotLabel, Tot2Label, totLabel, priceLabel, priceField, emailLabel, nameLabel, kamerFacturatieLabel, betaaldLabel);
+        for (JLabel label : labels) {
+            if (label != null) {
+                label.setForeground(MolvenoColor.DARK.getColor());
+                label.setFont(MolvenoFont.PARAGRAPH.getFont().deriveFont(Font.BOLD));
+            }
+        }
+
+        List<JScrollPane> scrollPanes = Arrays.asList(availableBoatsScrollPane, addedBoatsScrollPane);
+
+        for (JScrollPane pane : scrollPanes) {
+            if (pane != null) {
+                pane.setBackground(MolvenoColor.LIGHT.getColor());
+                pane.getViewport().setBackground(MolvenoColor.LIGHT.getColor());
+                pane.setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor()));
+            }
+        }
+        availableBoatsScrollPane.setPreferredSize(new Dimension(700, 200));
+        addedBoatsScrollPane.setPreferredSize(new Dimension(700, 150));
+
+        availableBoatsScrollPane.revalidate();
+        addedBoatsScrollPane.revalidate();
+        contentPane.revalidate();
+
+        List<JCheckBox> checkBoxes = Arrays.asList(kamerFacturatieCheckBox, betaaldCheckBox);
+        for (JCheckBox checkBox : checkBoxes) {
+            if (checkBox != null) {
+                checkBox.setBackground(MolvenoColor.LIGHT.getColor());
+                checkBox.setForeground(MolvenoColor.DARK.getColor());
+                checkBox.setFont(MolvenoFont.PARAGRAPH.getFont());
+                checkBox.setFocusPainted(false);
+            }
+        }
+
+        List<JComboBox> combos = Arrays.asList(comboBoxVan, comboBoxTot);
+        for (JComboBox combo : combos) {
+            if (combo != null) {
+                combo.setBackground(MolvenoColor.LIGHT.getColor());
+                combo.setForeground(MolvenoColor.DARK.getColor());
+                combo.setFont(MolvenoFont.PARAGRAPH.getFont());
+                combo.setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor()));
+
+                Object child = combo.getAccessibleContext().getAccessibleChild(0);
+                if (child instanceof javax.swing.plaf.basic.BasicComboPopup) {
+                    javax.swing.plaf.basic.BasicComboPopup popup = (javax.swing.plaf.basic.BasicComboPopup) child;
+                    popup.getList().setBackground(MolvenoColor.LIGHT.getColor());
+                    popup.getList().setSelectionBackground(MolvenoColor.ORANGE.getColor());
+                }
+
+                ((JLabel)combo.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+
+                combo.setRenderer(new DefaultListCellRenderer() {
+                    @Override
+                    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                        label.setHorizontalAlignment(SwingConstants.CENTER);
+
+                        if (isSelected) {
+                            label.setBackground(MolvenoColor.ORANGE.getColor());
+                            label.setForeground(MolvenoColor.DARK.getColor());
+                        } else {
+                            label.setBackground(MolvenoColor.LIGHT.getColor());
+                            label.setForeground(MolvenoColor.DARK.getColor());
+                        }
+                        return label;
+                    }
+                });
+            }
+        }
+    }
+
+    private void styleTables () {
+        for (JTable table : Arrays.asList(availableBoatsTable, addedBoatsTable)) {
+            table.setRowHeight(25);
+            table.setIntercellSpacing(new Dimension(10, 5));
+
+            table.setBackground(MolvenoColor.LIGHT.getColor());
+            table.setGridColor(MolvenoColor.BEIGE.getColor());
+            table.setSelectionBackground(MolvenoColor.ORANGE.getColor());
+            table.setSelectionForeground(MolvenoColor.DARK.getColor());
+            table.setFont(MolvenoFont.PARAGRAPH.getFont());
+            table.setFocusable(false);
+
+
+            javax.swing.table.JTableHeader header = table.getTableHeader();
+            header.setFont(MolvenoFont.PARAGRAPH.getFont());
+
+            header.setDefaultRenderer(new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value,
+                                                               boolean isSelected, boolean hasFocus,
+                                                               int row, int column) {
+                    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                    setBackground(MolvenoColor.GREEN.getColor());
+                    setForeground(MolvenoColor.DARK.getColor());
+                    setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, MolvenoColor.BEIGE.getColor()));
+                    setHorizontalAlignment(JLabel.CENTER);
+
+                    return this;
+                }
+            });
+        }
+    }
+
+    private void applyBoatTypeRenderer(JTable table) {
+        table.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            protected void setValue(Object value) {
+                if (value instanceof BoatType) {
+                    setText(((BoatType) value).getDisplayBoatType());
+                } else {
+                    super.setValue(value);
+                }
+            }
+        });
+    }
+
+    private void styleButtons() {
+        List<JButton> buttons = Arrays.asList(
+                buttonOK,
+                buttonCancel,
+                addBoatButton,
+                removeBoatButton,
+                buttonDelete,
+                HotelDataButton
+        );
+
+        for (JButton btn : buttons) {
+            if (btn == null) continue;
+
+            btn.setBackground(MolvenoColor.BEIGE.getColor());
+            btn.setForeground(MolvenoColor.DARK.getColor());
+            btn.setFont(MolvenoFont.BUTTONLABEL.getFont());
+            btn.setFocusPainted(false);
+            btn.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+
+            btn.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(MolvenoColor.BLUE.getColor());
+                }
+
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(MolvenoColor.BEIGE.getColor());
+                }
+            });
+        }
+
+        if (buttonDelete != null) {
+            buttonDelete.setBackground(MolvenoColor.ORANGE.getColor());
+            buttonDelete.setForeground(MolvenoColor.DARK.getColor());
+        }
+    }
+
+    private void styleBackgrounds() {
+        contentPane.setBackground(MolvenoColor.LIGHT.getColor());
+
+        List<JPanel> panels = Arrays.asList(
+                inputPane,
+                agendaTijdInformatie,
+                confirmationButtonsPanel,
+                dateInfo,
+                errorPane,
+                tijdInformatie,
+                addBoatPane,
+                deletePane,
+                botenPanel,
+                toegevoegdPanel,
+                beschikbaarPanel,
+                contentPane,
+                comboPanel
+        );
+
+        for (JPanel panel : panels) {
+            if (panel != null) {
+                panel.setBackground(MolvenoColor.LIGHT.getColor());
+                panel.setOpaque(true);
+            }
+        }
+        contentPane.setPreferredSize(new Dimension(900, 600));
+    }
+
+    private void setWindowIcon() {
+        ImageIcon logo = new ImageIcon(App.class.getResource("/images/MolvenoLogo.png"));
+        setIconImage(logo.getImage());
+    }
 }
