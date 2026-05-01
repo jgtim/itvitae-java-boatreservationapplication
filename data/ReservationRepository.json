@@ -250,5 +250,95 @@
       "Standaard Roeiboot 1"
     ],
     "prijs": 35.0
+  },
+  {
+    "reserveringsNummer": 16,
+    "customerRecord": {
+      "naam": "Thijs de Groot",
+      "telefoonNummer": "0619335534",
+      "email": "thijs.degroot@example.com",
+      "kamerNummer": 361
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-05-01",
+    "begintijd": "12:00",
+    "eindtijd": "13:00",
+    "boatIDs": [
+      "Standaard Roeiboot 7"
+    ],
+    "prijs": 45.0
+  },
+  {
+    "reserveringsNummer": 17,
+    "customerRecord": {
+      "naam": "Eva de Groot",
+      "telefoonNummer": "0681979055",
+      "email": "eva.degroot@testmail.org",
+      "kamerNummer": 98
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-05-01",
+    "begintijd": "13:00",
+    "eindtijd": "14:00",
+    "boatIDs": [
+      "Standaard Roeiboot 7"
+    ],
+    "prijs": 45.0
+  },
+  {
+    "reserveringsNummer": 18,
+    "customerRecord": {
+      "naam": "Lotte de Groot",
+      "telefoonNummer": "0660185867",
+      "email": "lotte.degroot@mail.nl",
+      "kamerNummer": 79
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-05-01",
+    "begintijd": "14:00",
+    "eindtijd": "15:00",
+    "boatIDs": [
+      "Standaard Roeiboot 7"
+    ],
+    "prijs": 45.0
+  },
+  {
+    "reserveringsNummer": 19,
+    "customerRecord": {
+      "naam": "Thijs de Groot",
+      "telefoonNummer": "0619335534",
+      "email": "thijs.degroot@example.com",
+      "kamerNummer": 361
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-05-01",
+    "begintijd": "12:30",
+    "eindtijd": "13:00",
+    "boatIDs": [
+      "Standaard Roeiboot 10"
+    ],
+    "prijs": 22.5
+  },
+  {
+    "reserveringsNummer": 20,
+    "customerRecord": {
+      "naam": "Daan de Groot",
+      "telefoonNummer": "0667887757",
+      "email": "daan.degroot@example.com",
+      "kamerNummer": 187
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-05-01",
+    "begintijd": "13:00",
+    "eindtijd": "14:15",
+    "boatIDs": [
+      "Standaard Roeiboot 10"
+    ],
+    "prijs": 57.5
   }
 ]

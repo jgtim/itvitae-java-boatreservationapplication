@@ -47,7 +47,7 @@ public class Calendar {
                 if(!Available){
                     for(int r = 0; r < boatReservations.size(); r++){
                         ReservationRecord record = boatReservations.get(r);
-                        if(j >= timeList.indexOf(record.begintijd()) && j <= timeList.indexOf(record.eindtijd())){
+                        if(j >= timeList.indexOf(record.begintijd()) && j <= timeList.indexOf(record.eindtijd()) - 1){
                             reservationNumber = record.reserveringsNummer();
                             break;
                         };
