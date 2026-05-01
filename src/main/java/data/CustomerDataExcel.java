@@ -48,16 +48,8 @@ public class CustomerDataExcel implements CustomerDataHandler {
                     String firstName = row.getCellAsString(1).orElse("");
                     int roomNumber = row.getCellAsNumber(2).orElse(BigDecimal.valueOf(0)).intValue();
                     //NOTE may want this to be an actual number instead
-                    String phoneNumberString = row.getCellAsString(3).orElse(null);
-                    Integer phoneNumber;
-                    if(phoneNumberString != null){
-                        phoneNumber = Integer.parseInt(phoneNumberString);
-                    }else{
-                        phoneNumber = null;
-                    }
-
+                    String phoneNumber = row.getCellAsString(3).orElse("");
                     String email = row.getCellAsString(4).orElse("");
-
 
                     //Add the guest to the list
                     guestList.add(new HotelGuestRecord(
