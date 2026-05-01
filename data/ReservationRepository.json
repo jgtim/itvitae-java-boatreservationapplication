@@ -250,5 +250,41 @@
       "Standaard Roeiboot 1"
     ],
     "prijs": 35.0
+  },
+  {
+    "reserveringsNummer": 16,
+    "customerRecord": {
+      "naam": "Thijs de Groot",
+      "telefoonNummer": 619335534,
+      "email": "thijs.degroot@example.com",
+      "kamerNummer": 361
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-05-01",
+    "begintijd": "09:00",
+    "eindtijd": "12:15",
+    "boatIDs": [
+      "Premium Elektrische Boot 1"
+    ],
+    "prijs": 80.0
+  },
+  {
+    "reserveringsNummer": 17,
+    "customerRecord": {
+      "naam": "Hugo Brouwer",
+      "telefoonNummer": 697775215,
+      "email": "hugo.brouwer@example.com",
+      "kamerNummer": 314
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-05-01",
+    "begintijd": "12:45",
+    "eindtijd": "13:00",
+    "boatIDs": [
+      "Standaard Roeiboot 9"
+    ],
+    "prijs": 12.5
   }
 ]
