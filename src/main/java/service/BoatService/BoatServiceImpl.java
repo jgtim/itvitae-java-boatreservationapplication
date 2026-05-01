@@ -71,7 +71,7 @@ public class BoatServiceImpl implements BoatService {
     public int getBoatAmountOfType(BoatType boatType) {
         int result = 0;
         for (BoatRecord boatRecord : boatList) {
-            if (boatRecord.boatType() == boatType) {
+            if (boatRecord.boatType() == boatType && !boatRecord.isBroken()) {
                 result += 1;
             }
         }
@@ -116,6 +116,16 @@ public class BoatServiceImpl implements BoatService {
             }
         }
         throw new Exception("Price30 not found");
+    }
+
+    @Override
+    public boolean isBoatBroken(String boatID) {
+        for (BoatRecord boatRecord : boatList) {
+            if (boatRecord.boatName().equals(boatID)) {
+                return boatRecord.isBroken();
+            }
+        }
+        return false;
     }
 
 

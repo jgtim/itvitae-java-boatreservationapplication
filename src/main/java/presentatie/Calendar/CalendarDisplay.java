@@ -517,7 +517,7 @@ public class CalendarDisplay extends JPanel {
                             System.out.println(CalGrid.get(boatIDs[row])[column].getAvailable());
                             if(!CalGrid.get(boatIDs[row])[column].getAvailable()){
                                 ReservationRecord reservation = reservationService.getReservationWithReservationNumber(Calendar.getCalendarGrid().get(boatIDs[row])[column].getReservationNumber());
-                                var reserveringPopup = new ReserveringPopup(reservationService, reservation){
+                                var reserveringPopup = new ReserveringPopup(reservationService, boatService, reservation){
                                     @Override
                                     public void dispose() {
                                         super.dispose();
