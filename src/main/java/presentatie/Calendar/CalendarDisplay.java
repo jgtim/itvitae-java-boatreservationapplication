@@ -11,7 +11,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -466,25 +465,26 @@ public class CalendarDisplay extends JPanel {
             for (int j = 0; j < 50; j++) {
                 final int column = j;
                 JButton cell = allCells[i][j];
-                cell.setEnabled(true);
-                if (!CalGrid.get(boatIDs[row])[column].getAvailable()) {
-                    cellBorder(i, j, cell);
-                } else {
-                    cell.setUI(new javax.swing.plaf.basic.BasicButtonUI());
-                    cell.setBackground(MolvenoColor.LIGHT.getColor());
-                    if (column % 4 == 0) {
-                        allCells[i][j].setBorder(BorderFactory.createCompoundBorder(
-                                BorderFactory.createMatteBorder(0, 1, 0, 0, MolvenoColor.DARK.getColor()), // Hour line
-                                BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1)
-                        ));
-                    } else {
-                        allCells[i][j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
-                    }
-                    System.out.println(allCells[i][j].getBorder());
-                }
+
                 if (isBroken) {
                     cell.setEnabled(false);
                     cell.setBackground(Color.GRAY);
+                } else {
+                    cell.setEnabled(true);
+                    if (!CalGrid.get(boatIDs[row])[column].getAvailable()) {
+                        cellBorder(i, j, cell);
+                    } else {
+                        cell.setUI(new javax.swing.plaf.basic.BasicButtonUI());
+                        cell.setBackground(MolvenoColor.LIGHT.getColor());
+                        if (column % 4 == 0) {
+                            allCells[i][j].setBorder(BorderFactory.createCompoundBorder(
+                                BorderFactory.createMatteBorder(0, 1, 0, 0, MolvenoColor.DARK.getColor()), // Hour line
+                                BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1)
+                        ));
+                        } else {
+                            allCells[i][j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
+                        }
+                    }
                 }
             }
         }
@@ -515,7 +515,7 @@ public class CalendarDisplay extends JPanel {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (e.getClickCount() == 2) {
-                            if(!CalGrid.get(boatIDs[row])[column].getAvailable()){
+                            if(buttonRow[column].getBackground() == MolvenoColor.ORANGE.getColor()){
                                 ReservationRecord reservation = reservationService.getReservationWithReservationNumber(Calendar.getCalendarGrid().get(boatIDs[row])[column].getReservationNumber());
                                 var reserveringPopup = new ReserveringPopup(reservationService, reservation){
                                     @Override
