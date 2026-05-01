@@ -234,24 +234,5 @@
       "Standaard Roeiboot 8"
     ],
     "prijs": 12.5
-<<<<<<< reservation-popup-ui
-=======
-  },
-  {
-    "reserveringsNummer": 15,
-    "customerRecord": {
-      "naam": "timehog",
-      "telefoonNummer": "6555555"
-    },
-    "betaald": false,
-    "kamerFacturatie": false,
-    "datum": "2026-04-30",
-    "begintijd": "10:30",
-    "eindtijd": "15:00",
-    "boatIDs": [
-      "Standaard Roeiboot 1"
-    ],
-    "prijs": 35.0
->>>>>>> main
   }
 ]
