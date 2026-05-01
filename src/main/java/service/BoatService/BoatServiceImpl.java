@@ -71,7 +71,7 @@ public class BoatServiceImpl implements BoatService {
     public int getBoatAmountOfType(BoatType boatType) {
         int result = 0;
         for (BoatRecord boatRecord : boatList) {
-            if (boatRecord.boatType() == boatType) {
+            if (boatRecord.boatType() == boatType && !boatRecord.isBroken()) {
                 result += 1;
             }
         }
