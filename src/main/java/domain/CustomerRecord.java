@@ -1,17 +1,20 @@
 package domain;
 
-public record CustomerRecord(String naam, Integer telefoonNummer, String email, Integer kamerNummer) {
+import java.util.regex.Pattern;
 
-    //public CustomerRecord(String naam, int telefoonNummer) {
-    //    this(naam, telefoonNummer, "N/A");
-    //}
+public record CustomerRecord(String naam, String telefoonNummer, String email, Integer kamerNummer) {
 
-    //public CustomerRecord(String naam, String email) {
-    //    this(naam, 0, email);
-    //}
+//    public CustomerRecord(String naam, String telefoonOfEmail) {
+//        this(naam, isPhoneNumber(telefoonOfEmail) ? telefoonOfEmail : "", isPhoneNumber(telefoonOfEmail) ? "N/A" : telefoonOfEmail);
+//    }
 
     @Override
     public String toString() {
         return naam + ", " + telefoonNummer + ", " + email;
+    }
+
+    public static boolean isPhoneNumber(String phoneNumber) {
+        String pattern = "^(\\+\\d{1,3})?\\d{6,11}$";
+        return phoneNumber.matches(pattern);
     }
 }

@@ -94,17 +94,11 @@ public class HotelGuestSearch extends JDialog {
     private void reloadTable() {
         tableModel.setRowCount(0);
         for (HotelGuestRecord guest : foundGuests) {
-            String phoneNumber;
-            if(guest.telefoonnummer() != null){
-                phoneNumber = Integer.toString(guest.telefoonnummer());
-            }else{
-                phoneNumber = "";
-            }
             Object[] guestFields = {
                     guest.achternaam(),
                     guest.voornaam(),
                     guest.kamernummer(),
-                    phoneNumber,
+                    guest.telefoonnummer(),
                     guest.email()
             };
             tableModel.addRow(guestFields);
