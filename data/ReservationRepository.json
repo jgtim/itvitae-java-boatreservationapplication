@@ -340,5 +340,23 @@
       "Standaard Roeiboot 10"
     ],
     "prijs": 57.5
+  },
+  {
+    "reserveringsNummer": 21,
+    "customerRecord": {
+      "naam": "Thijs de Groot",
+      "telefoonNummer": "0619335534",
+      "email": "thijs.degroot@example.com",
+      "kamerNummer": 361
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-05-01",
+    "begintijd": "12:00",
+    "eindtijd": "13:00",
+    "boatIDs": [
+      "Standaard Roeiboot 4"
+    ],
+    "prijs": 45.0
   }
 ]
