@@ -95,13 +95,13 @@ public class CalendarDisplay extends JPanel {
         }
         boatTypePicker.setPreferredSize(new Dimension(220, 35));
         boatTypePicker.setMaximumSize(new Dimension(220, 35));
-        boatTypePicker.addItemListener(itemEvent -> {
+        boatTypePicker.addActionListener(e -> {
             boatIDs = boatService.getBoatList().stream()
-                    .filter(record -> itemEvent.getItem() == "Alle Boten" ||
-                            record.boatType().getDisplayBoatType() == itemEvent.getItem())
+                    .filter(record -> boatTypePicker.getSelectedItem() == "Alle Boten" ||
+                            record.boatType().getDisplayBoatType() == boatTypePicker.getSelectedItem())
                     .map(BoatRecord::boatName)
                     .toArray(String[]::new);
-            createCalendar(boatService);
+            System.out.println("GET HERE");
             reLoadCalendar(boatService);
         });
 
@@ -186,7 +186,6 @@ public class CalendarDisplay extends JPanel {
         dateSelected = datePicker.getDate();
 
         initializeCalendar();
-        createCalendar(boatService);
         reLoadCalendar(boatService);
 
         //this panel contains the "reserve" and "cancel" buttons
@@ -439,10 +438,10 @@ public class CalendarDisplay extends JPanel {
     //Reloads the calendar display to a newly selected date
     public void reLoadCalendar(BoatService boatService) {
         //Cancel any selected cells
+        createCalendar(boatService);
         cancelSelection();
-
         //Get the calendar information for the selected date
-        Calendar = new Calendar(reservationService, dateSelected, boatIDs);
+        //Calendar = new Calendar(reservationService, dateSelected, boatIDs);
         HashMap<String, CalendarCell[]> CalGrid = Calendar.getCalendarGrid();
         //ArrayList<domain.BoatRecord> boatList = boatService.getBoatList();
         Object[] boatList = boatService.getBoatList().stream()
@@ -454,14 +453,14 @@ public class CalendarDisplay extends JPanel {
             final int row = i;
 
             BoatRecord currentBoat = (BoatRecord) boatList[i];
-            JLabel idLabel = boatLabels[i];
-            if (currentBoat.isBroken()) {
-                idLabel.setText(boatIDs[i] + " (defect)");
-                idLabel.setForeground(Color.GRAY);
-            } else {
-                idLabel.setText(boatIDs[i]);
-                idLabel.setForeground(MolvenoColor.DARK.getColor());
-            }
+//            JLabel idLabel = boatLabels[i];
+//            if (currentBoat.isBroken()) {
+//                idLabel.setText(boatIDs[i] + " (defect)");
+//                idLabel.setForeground(Color.GRAY);
+//            } else {
+//                idLabel.setText(boatIDs[i]);
+//                idLabel.setForeground(MolvenoColor.DARK.getColor());
+//            }
 
             boolean isBroken = currentBoat.isBroken();
 
@@ -499,7 +498,7 @@ public class CalendarDisplay extends JPanel {
 
     private void createCalendar(BoatService boatService) {
         fullCalendar.removeAll();
-
+        System.out.println("NUM BOATIDS: " + boatIDs.length);
         // Giving the Integer[] BoatIDs to the Calendar constructor ---
         Calendar = new Calendar(reservationService, dateSelected, boatIDs);
         allCells = new JButton[boatIDs.length][50];
