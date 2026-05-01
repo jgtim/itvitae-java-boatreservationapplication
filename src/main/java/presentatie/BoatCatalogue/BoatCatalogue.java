@@ -35,7 +35,11 @@ public class BoatCatalogue extends JPanel {
         boatBrokenBtn.setFont(MolvenoFont.BUTTONLABEL.getFont());
         boatBrokenBtn.setForeground(MolvenoColor.DARK.getColor());
         boatBrokenBtn.setBackground(MolvenoColor.BEIGE.getColor());
-        boatBrokenBtn.setVisible(false);
+        boatBrokenBtn.setEnabled(false);
+        boatBrokenBtn.setOpaque(false);
+        boatBrokenBtn.setContentAreaFilled(false);
+        boatBrokenBtn.setBorderPainted(false);
+        boatBrokenBtn.setText("");
 
         // Wrapper for boatBrokenBtn
         JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -97,8 +101,13 @@ public class BoatCatalogue extends JPanel {
         photoPanel.add(photoLabel);
         detailPanel.add(photoPanel);
 
-        // Add JPanel detailPanel (with on LEFT detailLabel and on RIGHT photoPanel) to JPanel boatDetails
-        boatDetails.add(detailPanel, BorderLayout.CENTER);
+        JPanel rightSideContentContainer = new JPanel();
+        rightSideContentContainer.setLayout(new BoxLayout(rightSideContentContainer, BoxLayout.Y_AXIS));
+        rightSideContentContainer.setOpaque(false);
+        rightSideContentContainer.add(Box.createVerticalStrut(30));
+        rightSideContentContainer.add(centerContentWrapper);
+
+        boatDetails.add(rightSideContentContainer, BorderLayout.CENTER);
 
 
         // --- SIDEBAR ON LEFT ----------------------------------------------------------------------------------------
@@ -218,10 +227,21 @@ public class BoatCatalogue extends JPanel {
 //        boatSearchBarWrapper.add(boatSearchBar, BorderLayout.CENTER);
 
         // Create JPanel wrapper for combining boatSearchBarWrapper (NORTH) and boatScrollPane (CENTER)
+// 1. Create the whitespace spacer (30px high)
+        Component headerSpacer = Box.createVerticalStrut(30);
+
+        JPanel sidebarHeaderContainer = new JPanel();
+        sidebarHeaderContainer.setLayout(new BoxLayout(sidebarHeaderContainer, BoxLayout.Y_AXIS));
+        sidebarHeaderContainer.setOpaque(false);
+
+        sidebarHeaderContainer.add(sidebarHeaderWrapper);
+        sidebarHeaderContainer.add(headerSpacer);
+
         JPanel sidebarWrapper = new JPanel(new BorderLayout());
         sidebarWrapper.setPreferredSize(new Dimension(290, 0));
         sidebarWrapper.setBackground(MolvenoColor.LIGHT.getColor());
-        sidebarWrapper.add(sidebarHeaderWrapper, BorderLayout.NORTH);
+
+        sidebarWrapper.add(sidebarHeaderContainer, BorderLayout.NORTH);
         sidebarWrapper.add(boatScrollPane, BorderLayout.CENTER);
 
         add(sidebarWrapper, BorderLayout.WEST);
@@ -299,7 +319,11 @@ public class BoatCatalogue extends JPanel {
             // Creating interaction between Boat Buttons in JScrollPane and JButton detailHeader
             boatBtn.addActionListener(e -> {
                         header.setText(b.boatName());
-                        boatBrokenBtn.setVisible(true);
+                        boatBrokenBtn.setEnabled(true);
+                        boatBrokenBtn.setOpaque(true);
+                        boatBrokenBtn.setContentAreaFilled(true);
+                        boatBrokenBtn.setBorderPainted(true);
+                        boatBrokenBtn.setBackground(MolvenoColor.BEIGE.getColor());
 
                         // Mini method to refresh UI and get latest version of Boat Record
                         Runnable refreshDisplay = () -> {
