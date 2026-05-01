@@ -302,7 +302,7 @@ public class CalendarDisplay extends JPanel {
 
             for(int j = this.selectedStart[1]; j < endTime + 1; j++){
                 this.Calendar.getCalendarGrid().get(boatIDs[row])[j].reserve(reservationNumber);
-                cellBorder(row, j, allCells[row][j]);
+                cellBorder(row, j, allCells[row][j], false);
                 // allCells[row][j].setBackground(MolvenoColor.DARK.getColor());
             }
         }
@@ -401,7 +401,7 @@ public class CalendarDisplay extends JPanel {
     }
 
     // Method for drawing borders around reserved timeslot block
-    private void cellBorder(int row, int col, JButton cell) {
+    private void cellBorder(int row, int col, JButton cell, boolean isBroken) {
         CalendarCell[] rowData = Calendar.getCalendarGrid().get(boatIDs[row]);
         int currentResNumber = rowData[col].getReservationNumber();
 
@@ -425,7 +425,7 @@ public class CalendarDisplay extends JPanel {
 
         cell.setUI(new javax.swing.plaf.basic.BasicButtonUI());
 
-        cell.setBackground(MolvenoColor.ORANGE.getColor());
+        cell.setBackground(isBroken ? Color.GRAY : MolvenoColor.ORANGE.getColor());
 
         if (isHourStart && !prevReserved) {
             left = 4;
@@ -464,25 +464,23 @@ public class CalendarDisplay extends JPanel {
             for (int j = 0; j < 50; j++) {
                 final int column = j;
                 JButton cell = allCells[i][j];
-
                 if (isBroken) {
                     cell.setEnabled(false);
-                    cell.setBackground(Color.GRAY);
                 } else {
                     cell.setEnabled(true);
-                    if (!CalGrid.get(boatIDs[row])[column].getAvailable()) {
-                        cellBorder(i, j, cell);
+                }
+                if (!CalGrid.get(boatIDs[row])[column].getAvailable()) {
+                    cellBorder(i, j, cell, isBroken);
+                } else {
+                    cell.setUI(new javax.swing.plaf.basic.BasicButtonUI());
+                    cell.setBackground(isBroken ? Color.GRAY : MolvenoColor.LIGHT.getColor());
+                    if (column % 4 == 0) {
+                        allCells[i][j].setBorder(BorderFactory.createCompoundBorder(
+                            BorderFactory.createMatteBorder(0, 1, 0, 0, MolvenoColor.DARK.getColor()), // Hour line
+                            BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1)
+                    ));
                     } else {
-                        cell.setUI(new javax.swing.plaf.basic.BasicButtonUI());
-                        cell.setBackground(MolvenoColor.LIGHT.getColor());
-                        if (column % 4 == 0) {
-                            allCells[i][j].setBorder(BorderFactory.createCompoundBorder(
-                                BorderFactory.createMatteBorder(0, 1, 0, 0, MolvenoColor.DARK.getColor()), // Hour line
-                                BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1)
-                        ));
-                        } else {
-                            allCells[i][j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
-                        }
+                        allCells[i][j].setBorder(BorderFactory.createLineBorder(MolvenoColor.BEIGE.getColor(), 1));
                     }
                 }
             }
