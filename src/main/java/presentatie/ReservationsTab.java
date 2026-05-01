@@ -250,13 +250,17 @@ public class ReservationsTab extends JPanel {
         searchPanel.setBackground(MolvenoColor.BLUE.getColor());
         searchPanel.setPreferredSize(new Dimension(searchPanel.getPreferredSize().width, 60));
 
-        searchLabel.setText("<html><b>Zoeken: <b><html>");
-        searchLabel.setFont(MolvenoFont.PARAGRAPH.getFont());
+        searchLabel.setText("Zoek op naam of reserveringsnummer:");
+        searchLabel.setFont(MolvenoFont.PARAGRAPH.getFont().deriveFont(Font.BOLD));
         searchLabel.setBackground(MolvenoColor.LIGHT.getColor());
         searchLabel.setForeground(MolvenoColor.DARK.getColor());
 
         searchField.setFont(MolvenoFont.PARAGRAPH.getFont());
         searchField.setBackground(MolvenoColor.LIGHT.getColor());
         searchField.setForeground(MolvenoColor.DARK.getColor());
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }
