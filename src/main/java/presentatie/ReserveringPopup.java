@@ -123,7 +123,7 @@ public class ReserveringPopup extends JDialog {
         this.reservationService = reservationService;
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+        // getRootPane().setDefaultButton(buttonOK);
 
         buttonOK.addActionListener(e -> onOK());
         buttonCancel.addActionListener(e -> onCancel());
@@ -173,6 +173,10 @@ public class ReserveringPopup extends JDialog {
     // Constructor voor bestaande reserveringen
     public ReserveringPopup(ReservationService reservationService, ReservationRecord reservationRecord) {
         this.reservationService = reservationService;
+
+        this.getRootPane().setDefaultButton(buttonOK);
+        currentMode = ReservationPopupMode.VIEWING;
+
         //TODO REMOVE
         contentPane.remove(HotelDataButton);
         currentMode = ReservationPopupMode.VIEWING;
