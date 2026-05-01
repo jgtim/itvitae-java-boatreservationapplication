@@ -453,14 +453,14 @@ public class CalendarDisplay extends JPanel {
             final int row = i;
 
             BoatRecord currentBoat = (BoatRecord) boatList[i];
-//            JLabel idLabel = boatLabels[i];
-//            if (currentBoat.isBroken()) {
-//                idLabel.setText(boatIDs[i] + " (defect)");
-//                idLabel.setForeground(Color.GRAY);
-//            } else {
-//                idLabel.setText(boatIDs[i]);
-//                idLabel.setForeground(MolvenoColor.DARK.getColor());
-//            }
+            JLabel idLabel = boatLabels[i];
+            if (currentBoat.isBroken()) {
+                idLabel.setText(boatIDs[i] + " (defect)");
+                idLabel.setForeground(Color.GRAY);
+            } else {
+                idLabel.setText(boatIDs[i]);
+                idLabel.setForeground(MolvenoColor.DARK.getColor());
+            }
 
             boolean isBroken = currentBoat.isBroken();
 
