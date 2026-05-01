@@ -96,7 +96,7 @@ public class ReserveringPopup extends JDialog {
     private String dateString;
     List<String> timeList;
 
-    //constructor voor het aanmaken van nieuwe reserveringen
+    // constructor voor het aanmaken van nieuwe reserveringen
     public ReserveringPopup(ReservationService reservationService, BoatService boatService, CalendarDisplay display,
                             String van, String tot, LocalDate datum, ArrayList<String> reservedBoats, String preSelectedBoat) {
         this.boatService = boatService;
@@ -238,19 +238,24 @@ public class ReserveringPopup extends JDialog {
         totLabel.setText(reservationRecord.eindtijd());
         nameField.setText(reservationRecord.customerRecord().naam());
         nameField.setEditable(false);
+        nameField.setEnabled(false);
         phoneNumberField.setText((reservationRecord.customerRecord().telefoonNummer() != null) ? reservationRecord.customerRecord().telefoonNummer().toString() : "");
         phoneNumberField.setEditable(false);
+        phoneNumberField.setEnabled(false);
         roomNumberField.setText((reservationRecord.customerRecord().kamerNummer() != null) ? reservationRecord.customerRecord().kamerNummer().toString() : "");
         roomNumberField.setEditable(false);
         roomNumberField.setEnabled(false);
         emailField.setText(reservationRecord.customerRecord().email());
         emailField.setEditable(false);
+        emailField.setEnabled(false);
         kamerFacturatieCheckBox.setSelected(reservationRecord.kamerFacturatie());
         kamerFacturatieCheckBox.setEnabled(false);
         betaaldCheckBox.setSelected(reservationRecord.betaald());
         betaaldCheckBox.setEnabled(false);
         addBoatButton.setEnabled(false);
         removeBoatButton.setEnabled(false);
+        boatAmountField.setEditable(false);
+        boatAmountField.setEnabled(false);
 
 
         addBoatButton.addActionListener(e -> {addBoatButtonPressed();});
@@ -332,6 +337,14 @@ public class ReserveringPopup extends JDialog {
         removeBoatButton.setEnabled(true);
         roomNumberField.setEditable(false);
         roomNumberField.setEnabled(false);
+        boatAmountField.setEditable(true);
+        boatAmountField.setEnabled(true);
+        nameField.setEditable(false);
+        nameField.setEnabled(false);
+        phoneNumberField.setEditable(false);
+        phoneNumberField.setEnabled(false);
+        emailField.setEditable(false);
+        emailField.setEnabled(false);
     }
 
     private void setViewMode() {
@@ -344,6 +357,14 @@ public class ReserveringPopup extends JDialog {
             removeBoatButton.setEnabled(false);
             roomNumberField.setEditable(false);
             roomNumberField.setEnabled(false);
+            boatAmountField.setEditable(false);
+            boatAmountField.setEnabled(false);
+            nameField.setEditable(false);
+            nameField.setEnabled(false);
+            phoneNumberField.setEditable(false);
+            phoneNumberField.setEnabled(false);
+            emailField.setEditable(false);
+            emailField.setEnabled(false);
         }
     }
 
@@ -752,7 +773,7 @@ public class ReserveringPopup extends JDialog {
             field.setBorder(BorderFactory.createCompoundBorder(lineBorder, margin));
         }
 
-        List<JLabel> labels = Arrays.asList(kamerLabel, phoneNumberLabel, dateField, aantalLabel, beschikbaarLabel, toegevoegdLabel, vanLabel, VanLabel, Van2Label, TotLabel, Tot2Label, totLabel, priceLabel, priceField, emailLabel, nameLabel, kamerFacturatieLabel, betaaldLabel);
+        List<JLabel> labels = Arrays.asList(kamerLabel, phoneNumberLabel, dateLabel, dateField, aantalLabel, beschikbaarLabel, toegevoegdLabel, vanLabel, VanLabel, Van2Label, TotLabel, Tot2Label, totLabel, priceLabel, priceField, emailLabel, nameLabel, kamerFacturatieLabel, betaaldLabel);
         for (JLabel label : labels) {
             if (label != null) {
                 label.setForeground(MolvenoColor.DARK.getColor());
