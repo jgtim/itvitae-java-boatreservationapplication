@@ -1,4 +1,4 @@
-package presentatie.BoatTab;
+package presentatie.BoatCatalogue;
 
 import domain.*;
 import service.BoatService.BoatService;
@@ -13,13 +13,13 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class BoatTab extends JPanel {
+public class BoatCatalogue extends JPanel {
     private BoatStatusHandlerImpl boatStatusHandler;
     private BoatServiceImpl boatService;
 
 
-    public BoatTab(BoatService boatService) {
-        // Setting BoatTab layout as BorderLayout
+    public BoatCatalogue(BoatService boatService) {
+        // Setting BoatCatalogue layout as BorderLayout
         setLayout(new BorderLayout());
         this.boatService = (BoatServiceImpl) boatService;
 
@@ -120,7 +120,7 @@ public class BoatTab extends JPanel {
         JScrollPane boatScrollPane = new JScrollPane(boatSidePanel);
         boatScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // just making sure
         boatScrollPane.getVerticalScrollBar().setUnitIncrement(16); // smoother scrolling, otherwise too slow
-        boatScrollPane.setPreferredSize(new Dimension(180, 0)); // set Thumb and Track width
+        boatScrollPane.setPreferredSize(new Dimension(270, 0)); // set Thumb and Track width
 
 
         // SEARCHBAR ON TOP OF LEFT SCROLL PANE ------------------------------------------------------------------------
@@ -192,7 +192,7 @@ public class BoatTab extends JPanel {
 
         // Create JPanel wrapper for combining boatSearchBarWrapper (NORTH) and boatScrollPane (CENTER)
         JPanel sidebarWrapper = new JPanel(new BorderLayout());
-        sidebarWrapper.setPreferredSize(new Dimension(260, 0));
+        sidebarWrapper.setPreferredSize(new Dimension(290, 0));
         sidebarWrapper.add(boatSearchBarWrapper, BorderLayout.NORTH);
         sidebarWrapper.add(boatScrollPane, BorderLayout.CENTER);
 
@@ -290,8 +290,8 @@ public class BoatTab extends JPanel {
                                     "<b>Elektrische motor:</b> " + (b.isElectric() ? "Ja" : "Nee") + "<br>" +
                                     "<b>Reddingsvest aan boord:</b> " + (b.hasLifeJackets() ? "Ja" : "Nee") + "<br><br>" +
 
-                                    "<b>Prijs per 15 minuten:</b> " + b.price15() + " euro <br>" +
-                                    "<b>Prijs per 30 minuten:</b> " + b.price30() + " euro <br><br>" +
+                                    "<b>Prijs per 15 minuten:</b> &euro;" + String.format("%.2f", b.price15()) + "<br>" +
+                                    "<b>Prijs per 30 minuten:</b> &euro;" + String.format("%.2f", b.price30()) + "<br><br>" +
 
                                     "<b>Status: <b>" + (current.isBroken() ? "DEFECT" : "Klaar voor gebruik") +
 
