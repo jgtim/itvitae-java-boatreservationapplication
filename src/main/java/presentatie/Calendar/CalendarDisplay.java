@@ -102,7 +102,6 @@ public class CalendarDisplay extends JPanel {
                             record.boatType().getDisplayBoatType() == itemEvent.getItem())
                     .map(BoatRecord::boatName)
                     .toArray(String[]::new);
-            createCalendar(boatService);
             reLoadCalendar(boatService);
         });
 
@@ -187,7 +186,6 @@ public class CalendarDisplay extends JPanel {
         dateSelected = datePicker.getDate();
 
         initializeCalendar();
-        createCalendar(boatService);
         reLoadCalendar(boatService);
 
         //this panel contains the "reserve" and "cancel" buttons
@@ -439,6 +437,7 @@ public class CalendarDisplay extends JPanel {
 
     //Reloads the calendar display to a newly selected date
     public void reLoadCalendar(BoatService boatService) {
+        createCalendar(boatService);
         //Cancel any selected cells
         cancelSelection();
 
@@ -515,6 +514,7 @@ public class CalendarDisplay extends JPanel {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (e.getClickCount() == 2) {
+                            System.out.println(CalGrid.get(boatIDs[row])[column].getAvailable());
                             if(!CalGrid.get(boatIDs[row])[column].getAvailable()){
                                 ReservationRecord reservation = reservationService.getReservationWithReservationNumber(Calendar.getCalendarGrid().get(boatIDs[row])[column].getReservationNumber());
                                 var reserveringPopup = new ReserveringPopup(reservationService, reservation){
