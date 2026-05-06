@@ -358,5 +358,59 @@
       "Standaard Roeiboot 4"
     ],
     "prijs": 45.0
+  },
+  {
+    "reserveringsNummer": 22,
+    "customerRecord": {
+      "naam": "Mila de Groot",
+      "telefoonNummer": "0639219319",
+      "email": "mila.degroot@example.com",
+      "kamerNummer": 152
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-05-06",
+    "begintijd": "11:45",
+    "eindtijd": "13:30",
+    "boatIDs": [
+      "Standaard Roeiboot 7"
+    ],
+    "prijs": 80.0
+  },
+  {
+    "reserveringsNummer": 23,
+    "customerRecord": {
+      "naam": "Eva de Groot",
+      "telefoonNummer": "0681979055",
+      "email": "eva.degroot@testmail.org",
+      "kamerNummer": 98
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-05-06",
+    "begintijd": "12:15",
+    "eindtijd": "14:15",
+    "boatIDs": [
+      "Standaard Roeiboot 9"
+    ],
+    "prijs": 90.0
+  },
+  {
+    "reserveringsNummer": 24,
+    "customerRecord": {
+      "naam": "Hugo Brouwer",
+      "telefoonNummer": "0697775215",
+      "email": "hugo.brouwer@example.com",
+      "kamerNummer": 314
+    },
+    "betaald": false,
+    "kamerFacturatie": true,
+    "datum": "2026-05-06",
+    "begintijd": "13:30",
+    "eindtijd": "14:45",
+    "boatIDs": [
+      "Standaard Roeiboot 7"
+    ],
+    "prijs": 57.5
   }
 ]
