@@ -203,15 +203,12 @@ public class ReserveringPopup extends JDialog {
                 "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45",
                 "21:00", "21:15", "21:30"
         };
-
-        calculateTimeSpan(OPEN_TIMES, reservationRecord.begintijd(), reservationRecord.eindtijd());
         allBoats = boatService.getBoatList();
         this.validIDs = Arrays.asList(
                 allBoats.stream()
                         .map(BoatRecord::boatName)
                         .toArray(String[]::new)
         );
-        calculateCost();
         setContentPane(contentPane);
         setModal(true);
 //        getRootPane().setDefaultButton(buttonOK);
@@ -233,6 +230,7 @@ public class ReserveringPopup extends JDialog {
                 calculateCost();
             }
         });
+
 
         // Populate the fields of the popup with the selected reservation
         // dateField.setText(reservationRecord.datum());
@@ -270,6 +268,8 @@ public class ReserveringPopup extends JDialog {
 
         buttonCancel.addActionListener(e -> onCancel());
         buttonDelete.addActionListener(e -> onDelete(reservationRecord));
+        calculateTimeSpan(OPEN_TIMES, reservationRecord.begintijd(), reservationRecord.eindtijd());
+        calculateCost();
 
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -280,7 +280,7 @@ public class ReserveringPopup extends JDialog {
         });
         initializeBoatTables();
         reloadBoatTables();
-        reloadSelectableTimes();
+        //reloadSelectableTimes();
 
         styleBackgrounds();
         styleButtons();
